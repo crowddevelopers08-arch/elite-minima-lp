@@ -25,7 +25,9 @@ export default function Hero() {
             </h1>
             <TitleUnderline className="mt-3" />
 
-            <p className="mt-3 flex max-w-full flex-nowrap items-center gap-x-2 text-[clamp(0.72rem,0.58rem+0.5vw,0.98rem)] leading-relaxed text-[var(--e-muted)] whitespace-nowrap">
+            {/* wraps below sm — as a single nowrap row this was clipped on every
+                phone width. The spans keep their own phrases intact. */}
+            <p className="mt-3 flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 text-[clamp(0.72rem,0.58rem+0.5vw,0.98rem)] leading-relaxed text-[var(--e-muted)] [&>span]:whitespace-nowrap">
               <span>Laser &amp; Minimally Invasive Care</span>
               <span className="text-[var(--e-green)]">•</span>
               <span>Personalized Treatment</span>
@@ -59,21 +61,29 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="rise d5 mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
-            {STATS.map(({ icon: Icon, value, suffix, label }) => (
-              <div key={label} className="card flex items-center gap-3 p-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)]">
-                  <Icon className="h-4.5 w-4.5" />
+          {/* Four columns on mobile with each card spanning two, so the odd third
+              card can start at column 2 and sit centred under the other two.
+              A plain 2-col grid can only left-align or full-width it. */}
+          <div className="rise d5 mt-3 grid grid-cols-4 gap-2.5 sm:grid-cols-3 sm:gap-3">
+            {STATS.map(({ icon: Icon, value, suffix, label }, i) => (
+              <div
+                key={label}
+                className={`card col-span-2 flex items-center gap-2.5 p-3 sm:col-span-1 sm:col-start-auto sm:gap-3 sm:p-4 ${
+                  i === STATS.length - 1 ? "col-start-2" : ""
+                }`}
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)] sm:h-10 sm:w-10">
+                  <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                 </span>
                 <div className="min-w-0">
                   {value !== null ? (
-                    <p className="text-[1.15rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.3rem]">
+                    <p className="text-[1.05rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.3rem]">
                       <CountUp end={value} suffix={suffix} />
                     </p>
                   ) : (
-                    <p className="text-[1.05rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.15rem]">Safe &amp; Secure</p>
+                    <p className="text-[0.95rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.15rem]">Safe &amp; Secure</p>
                   )}
-                  <p className="mt-1 text-[0.72rem] leading-tight text-[var(--e-muted)]">{label}</p>
+                  <p className="mt-1 text-[0.68rem] leading-tight text-[var(--e-muted)] sm:text-[0.72rem]">{label}</p>
                 </div>
               </div>
             ))}

@@ -27,9 +27,9 @@ export const CONSULT_HOURS = "Consultations 4:00 PM – 8:00 PM, by appointment"
 /** Proctology specialist for this page. */
 export const DOCTOR = {
   name: "Dr. Lohit Sai K",
-  title: "Consultant Surgeon & Proctology Specialist",
-  subtitle: "General, Minimally Invasive & Laparoscopic Surgeon",
-  qualifications: "M.B.B.S · M.S. (General Surgery) · DNB · F.MAS · D.MAS · M.MAS · FALS · FISCP · FAIS · FIAGES",
+  title: "General, Minimally Invasive & Laparoscopic Surgeon",
+  qualifications: "M.B.B.S, M.S. (General Surgery), DNB, F.MAS, D.MAS, M.MAS, FALS, FISCP, FAIS, FIAGES",
+  highlight: "Renowned for advanced laparoscopic, laser proctological, and abdominal reconstructive procedures.",
   expertise: [
     "Piles Treatment",
     "Laser Piles Treatment",

@@ -83,7 +83,10 @@ export default function TreatmentOptions() {
         </Reveal>
 
         <motion.div
-          className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2"
+          // Two-up only from lg. At sm the 160px image and the 2-col grid landed
+          // together and crushed the copy to a 40px column; one card per row
+          // below lg keeps it at 340px+.
+          className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2"
           variants={GRID}
           initial={reduced ? false : "hidden"}
           whileInView="show"
