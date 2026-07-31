@@ -4,7 +4,17 @@ import Image from "next/image"
 import { LuPhone, LuMail, LuMapPin } from "react-icons/lu"
 import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa"
 import { track } from "./track"
-import { BRAND, BRAND_FULL, ADDRESS_FULL, EMAIL, PHONE_DISPLAY, PHONE_TEL, WHATSAPP_URL } from "./config"
+import {
+  BRAND,
+  BRAND_FULL,
+  ADDRESS_FULL,
+  EMAIL,
+  FACEBOOK_URL,
+  INSTAGRAM_URL,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  WHATSAPP_URL,
+} from "./config"
 
 const EXPLORE = [
   { label: "Reviews", href: "#reviews" },
@@ -18,8 +28,8 @@ const EXPLORE = [
 const TREATMENTS = ["Laser Piles Treatment", "Minimally Invasive Piles Treatment", "Non-Surgical Piles Treatment", "Advanced Piles Surgery", "Fissure & Fistula Treatment"]
 
 const SOCIALS = [
-  { Icon: FaInstagram, href: "#", label: "Instagram" },
-  { Icon: FaFacebookF, href: "#", label: "Facebook" },
+  { Icon: FaInstagram, href: INSTAGRAM_URL, label: "Instagram" },
+  { Icon: FaFacebookF, href: FACEBOOK_URL, label: "Facebook" },
   { Icon: FaWhatsapp, href: WHATSAPP_URL, label: "WhatsApp" },
 ]
 

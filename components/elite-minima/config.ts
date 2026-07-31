@@ -13,6 +13,9 @@ export const WHATSAPP_URL = "https://wa.me/919500091428"
 
 export const EMAIL = "eliteminima@gmail.com"
 
+export const INSTAGRAM_URL = "https://www.instagram.com/eliteminima/"
+export const FACEBOOK_URL = "https://www.facebook.com/people/Eliteminima/61578080883956/"
+
 export const ADDRESS_SHORT = "Anna Nagar, Chennai"
 export const ADDRESS_FULL =
   "Ground Floor, New No. 47/1, Old No. Z-165, MIG Flat 64A, Block 64, 5th Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
