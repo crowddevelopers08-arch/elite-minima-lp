@@ -45,5 +45,5 @@ export const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=" +
   encodeURIComponent("Elite Minima Clinic, 5th Avenue, Anna Nagar, Chennai 600040")
 
-/** YouTube embed for the hero video. Replace with the clinic's final video URL when ready. */
-export const HERO_YOUTUBE_EMBED_URL = "https://www.youtube.com/embed/VIDEO_ID"
+/** Hero media. The hero now shows a still image; swap this path to change it. */
+export const HERO_IMAGE = "/hero.jpg"

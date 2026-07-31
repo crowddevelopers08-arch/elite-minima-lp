@@ -1,9 +1,10 @@
 "use client"
 
+import Image from "next/image"
 import { ShieldCheck, Stethoscope, Award } from "lucide-react"
 import CountUp from "./CountUp"
 import TitleUnderline from "./TitleUnderline"
-import { HERO_YOUTUBE_EMBED_URL } from "./config"
+import { HERO_IMAGE } from "./config"
 import LeadForm from "./LeadForm"
 
 const STATS = [
@@ -13,8 +14,6 @@ const STATS = [
 ]
 
 export default function Hero() {
-  const hasYoutubeVideo = !HERO_YOUTUBE_EMBED_URL.includes("VIDEO_ID")
-
   return (
     <section id="top" className="relative overflow-hidden bg-[var(--e-canvas)]">
       <div className="mx-auto grid w-full max-w-[1350px] gap-5 px-5 py-4 sm:px-8 sm:py-5 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-8 lg:py-4">
@@ -36,28 +35,20 @@ export default function Hero() {
             </p>
           </div>
 
-          <div className="rise d4 mt-4 overflow-hidden rounded-[24px] border border-[var(--e-line)] bg-[var(--e-ink)] shadow-[0_18px_60px_-30px_rgba(14,22,38,0.42)]">
-            <div className="h-[220px] w-full sm:h-[290px] lg:h-[355px]">
-              {hasYoutubeVideo ? (
-                <iframe
-                  className="h-full w-full"
-                  src={HERO_YOUTUBE_EMBED_URL}
-                  title="Elite Minima Clinic video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="relative flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(81,62,152,0.45),_transparent_54%),linear-gradient(135deg,_rgba(8,56,28,0.98),_rgba(14,22,38,0.96))] px-6 text-center">
-                  <div className="dot-tex absolute inset-0 opacity-20" aria-hidden />
-                  <div className="relative max-w-[30rem]">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white/60">YouTube Video</p>
-                    <p className="mt-3 text-[1.25rem] font-semibold leading-snug text-white sm:text-[1.5rem]">
-                      Add the clinic&apos;s YouTube embed URL in <code>config.ts</code> to show the hero video here.
-                    </p>
-                  </div>
-                </div>
-              )}
+          {/* The frame keeps the video slot's fixed heights so the column stays
+              balanced against the booking form. The source is 16:9 and the box is
+              wider than that at lg, so object-cover trims top and bottom — the
+              model sits centred, which is what survives the crop. */}
+          <div className="rise d4 mt-4 overflow-hidden rounded-[24px] border border-[var(--e-line)] bg-[var(--e-line-soft)] shadow-[0_18px_60px_-30px_rgba(14,22,38,0.42)]">
+            <div className="relative h-[220px] w-full sm:h-[290px] lg:h-[355px]">
+              <Image
+                src={HERO_IMAGE}
+                alt="A clinician holding an anatomical cross-section model of the anal canal showing hemorrhoids"
+                fill
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                priority
+                className="object-cover object-center"
+              />
             </div>
           </div>
 
