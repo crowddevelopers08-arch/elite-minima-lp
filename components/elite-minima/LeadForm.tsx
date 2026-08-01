@@ -8,29 +8,114 @@ const LEAD_ENDPOINT = "/api/leads"
 
 const CONCERNS = ["Bleeding", "Pain", "Swelling or Lump", "Itching", "Other"]
 
-/** "15:30" → "3:30 PM". The native time input always hands back 24-hour. */
-function to12Hour(value: string) {
-  if (!value) return ""
-  const [h, m] = value.split(":").map(Number)
-  if (Number.isNaN(h) || Number.isNaN(m)) return value
-  const suffix = h >= 12 ? "PM" : "AM"
-  return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${suffix}`
+/* ── Callback window (clinic time, IST) ───────────────────────────────────
+   Slots are held as minutes-since-midnight so "is this one in the past?" is a
+   plain number comparison rather than string wrangling.                     */
+const OPEN_MIN = 10 * 60 // 10:00 AM — first bookable slot
+const CLOSE_MIN = 19 * 60 // 7:00 PM — last bookable slot, inclusive
+const STEP_MIN = 60
+
+function toLabel(mins: number) {
+  const h = Math.floor(mins / 60)
+  const m = mins % 60
+  return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`
+}
+
+function toRangeLabel(startMins: number) {
+  return `${toLabel(startMins)} - ${toLabel(startMins + STEP_MIN)}`
+}
+
+const SLOTS: { mins: number; label: string }[] = []
+for (let m = OPEN_MIN; m <= 18 * 60; m += STEP_MIN) SLOTS.push({ mins: m, label: toRangeLabel(m) })
+
+/** "Now" in the clinic's timezone, regardless of where the visitor is. */
+function istNow() {
+  const d = new Date()
+  const ist = new Date(d.getTime() + d.getTimezoneOffset() * 60_000 + 5.5 * 3_600_000)
+  return {
+    minutes: ist.getHours() * 60 + ist.getMinutes(),
+    date: `${ist.getFullYear()}-${String(ist.getMonth() + 1).padStart(2, "0")}-${String(ist.getDate()).padStart(2, "0")}`,
+  }
 }
 
 export default function LeadForm({ compact = false }: { compact?: boolean }) {
   const formRef = useRef<HTMLFormElement>(null)
   const [done, setDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [minDate, setMinDate] = useState("")
+  const [today, setToday] = useState("") // IST date, also the date input's min
+  const [nowMins, setNowMins] = useState(0)
+  const [callDate, setCallDate] = useState("")
+  const [selectedTime, setSelectedTime] = useState("")
+  const [showTimePicker, setShowTimePicker] = useState(false)
+  const timePickerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
 
-  // Built from local parts, not toISOString() — that returns UTC and would let
-  // an IST visitor pick "yesterday" for most of the evening.
+  // Only today's remaining slots are restricted; any later date opens them all.
+  const isToday = callDate !== "" && callDate === today
+  const isPast = (mins: number) => isToday && mins <= nowMins
+  const firstOpen = SLOTS.find((s) => !isPast(s.mins))
+
   useEffect(() => {
-    const d = new Date()
-    setMinDate(
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
-    )
+    const { minutes, date } = istNow()
+    setNowMins(minutes)
+    setToday(date)
   }, [])
+
+  // Keep the selection valid: land on the first open slot, and move off one
+  // that has since become unreachable (e.g. after switching back to today).
+  useEffect(() => {
+    if (!today) return
+    const stillOpen = SLOTS.find((s) => s.label === selectedTime && !isPast(s.mins))
+    if (!stillOpen) setSelectedTime(firstOpen ? firstOpen.label : "")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today, callDate, nowMins])
+
+  const closePicker = () => {
+    setShowTimePicker(false)
+    inputRef.current?.focus()
+  }
+
+  // While the popup is open: Escape closes it, and outside clicks dismiss it.
+  useEffect(() => {
+    if (!showTimePicker) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closePicker()
+    }
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (!timePickerRef.current?.contains(e.target as Node)) setShowTimePicker(false)
+    }
+    document.addEventListener("keydown", onKey)
+    document.addEventListener("mousedown", onPointerDown)
+    document.addEventListener("touchstart", onPointerDown)
+    return () => {
+      document.removeEventListener("keydown", onKey)
+      document.removeEventListener("mousedown", onPointerDown)
+      document.removeEventListener("touchstart", onPointerDown)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTimePicker])
+
+  // Open on the current choice rather than always at the top of the list
+  useEffect(() => {
+    if (!showTimePicker) return
+    const el = listRef.current?.querySelector<HTMLElement>('[aria-selected="true"]')
+    el?.scrollIntoView({ block: "center" })
+    requestAnimationFrame(() => (el ?? listRef.current?.querySelector<HTMLButtonElement>("button:not([disabled])"))?.focus())
+  }, [showTimePicker])
+
+  /** Arrow keys walk the open slots; the chips are buttons, so Enter is free. */
+  const onListKeyDown = (e: React.KeyboardEvent) => {
+    if (!e.key.startsWith("Arrow")) return
+    const items = Array.from(listRef.current?.querySelectorAll<HTMLButtonElement>("button:not([disabled])") ?? [])
+    if (!items.length) return
+    e.preventDefault()
+    const i = items.indexOf(document.activeElement as HTMLButtonElement)
+    const cols = 3
+    const step = e.key === "ArrowDown" ? cols : e.key === "ArrowUp" ? -cols : e.key === "ArrowRight" ? 1 : -1
+    const next = Math.min(Math.max((i === -1 ? 0 : i) + step, 0), items.length - 1)
+    items[i === -1 ? 0 : next].focus()
+  }
 
   useEffect(() => {
     const form = formRef.current
@@ -65,7 +150,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       email: raw.email,
       area: raw.concern,
       callDate: raw.callDate, // ISO yyyy-mm-dd, so the sheet sorts it correctly
-      callTime: to12Hour(raw.callTime), // readable, e.g. "3:30 PM"
+      callTime: raw.callTime, // 12-hour with AM/PM, e.g. "3:30 PM"
       branch: raw.branch || BRANCH,
       source: raw.utm_source || "direct",
       medium: raw.utm_medium || "",
@@ -87,6 +172,17 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
     } catch {
       setSubmitting(false)
       alert(`That did not go through. Please call ${PHONE_DISPLAY} instead.`)
+    }
+  }
+
+  const handleTimeSelect = (time: string) => {
+    setSelectedTime(time)
+    setShowTimePicker(false)
+    // Update the hidden input value
+    const form = formRef.current
+    if (form) {
+      const input = form.querySelector<HTMLInputElement>('[name="callTime"]')
+      if (input) input.value = time
     }
   }
 
@@ -139,8 +235,6 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
               </select>
             </Field>
 
-            {/* Native date/time inputs give the OS calendar and clock pickers —
-                no extra library, and mobile gets its own wheel UI for free. */}
             <div className="grid grid-cols-2 gap-2.5">
               <Field label="Preferred Date" htmlFor="lf-calldate">
                 <input
@@ -148,19 +242,86 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
                   name="callDate"
                   type="date"
                   required
-                  min={minDate}
+                  min={today}
+                  value={callDate}
+                  onChange={(e) => setCallDate(e.target.value)}
                   className={`${inputCls} min-w-0`}
                 />
               </Field>
 
               <Field label="Preferred Time" htmlFor="lf-calltime">
-                <input
-                  id="lf-calltime"
-                  name="callTime"
-                  type="time"
-                  required
-                  className={`${inputCls} min-w-0`}
-                />
+                <div className="relative" ref={timePickerRef}>
+                  <button
+                    id="lf-calltime"
+                    ref={inputRef as React.RefObject<HTMLButtonElement>}
+                    type="button"
+                    role="combobox"
+                    aria-haspopup="listbox"
+                    aria-expanded={showTimePicker}
+                    aria-controls="lf-timelist"
+                    onClick={() => setShowTimePicker((v) => !v)}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        setShowTimePicker(true)
+                        requestAnimationFrame(() =>
+                          listRef.current?.querySelector<HTMLButtonElement>("button:not([disabled])")?.focus(),
+                        )
+                      }
+                    }}
+                    className={`${inputCls} min-w-0 cursor-pointer text-left ${selectedTime ? "" : "text-[var(--e-muted)]"}`}
+                  >
+                    {selectedTime || "Select time"}
+                  </button>
+                  {/* the real field — a button carries no form value of its own */}
+                  <input type="hidden" name="callTime" value={selectedTime} />
+
+                  {showTimePicker && (
+                    <div
+                      id="lf-timelist"
+                      ref={listRef}
+                      role="listbox"
+                      aria-label="Preferred call time, clinic time"
+                      onKeyDown={onListKeyDown}
+                      className="absolute bottom-full z-50 mb-1 max-h-64 w-full overflow-y-auto rounded-xl border border-[var(--e-line)] bg-white shadow-[0_20px_60px_-20px_rgba(14,22,38,0.35)]"
+                    >
+                      <div className="sticky top-0 z-10 border-b border-[var(--e-line)] bg-[var(--e-canvas)] px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--e-muted)]">
+                        Clinic time (IST) · 10:00 AM – 7:00 PM
+                      </div>
+
+                      {!firstOpen && (
+                        <p className="px-3 py-4 text-center text-[0.82rem] leading-relaxed text-[var(--e-muted)]">
+                          No slots left today. Please pick another date.
+                        </p>
+                      )}
+
+                      {SLOTS.map(({ mins, label }) => {
+                        const past = isPast(mins)
+                        const isSelected = label === selectedTime
+                        return (
+                          <button
+                            key={label}
+                            type="button"
+                            role="option"
+                            aria-selected={isSelected}
+                            disabled={past}
+                            onClick={() => handleTimeSelect(label)}
+                            className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-[0.9rem] transition-colors duration-150 ${
+                              past
+                                ? "cursor-not-allowed text-[var(--e-line)] line-through"
+                                : isSelected
+                                  ? "bg-[var(--e-green-soft)] font-semibold text-[var(--e-green-deep)]"
+                                  : "text-[var(--e-ink)] hover:bg-[var(--e-green-soft)]"
+                            }`}
+                          >
+                            <span>{label}</span>
+                            {isSelected && <span aria-hidden className="text-[var(--e-green-deep)]">✓</span>}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
               </Field>
             </div>
           </div>
@@ -175,8 +336,6 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
           <input type="hidden" name="branch" defaultValue={BRANCH} />
           <input type="hidden" name="page_url" />
 
-          {/* .elite .btn sets 14px block padding and outranks a py-* utility,
-              so the trimmed height is applied inline */}
           <button
             type="submit"
             disabled={submitting}
