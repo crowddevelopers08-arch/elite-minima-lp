@@ -50,3 +50,16 @@ export const MAP_DIRECTIONS_URL =
 
 /** Hero media. The hero now shows a still image; swap this path to change it. */
 export const HERO_IMAGE = "/hero.jpg"
+
+/* ── Review funnel (/review → Google or /client-feedback) ──────────────────
+   REPLACE GOOGLE_REVIEW_URL before launch: Google Business Profile →
+   "Ask for reviews" → copy the g.page link. Until it is replaced the review
+   page falls back to a Maps search for the clinic, so the button still lands
+   somewhere useful instead of 404-ing.                                      */
+export const GOOGLE_REVIEW_URL = "https://g.page/r/CVvv0ToOxi7OEBM/review"
+
+export const GOOGLE_REVIEW_FALLBACK_URL =
+  "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(MAP_QUERY)
+
+/** True while GOOGLE_REVIEW_URL is still the untouched placeholder. */
+export const REVIEW_LINK_IS_PLACEHOLDER = GOOGLE_REVIEW_URL.includes("REPLACE_WITH")

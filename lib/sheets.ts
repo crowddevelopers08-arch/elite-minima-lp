@@ -1,14 +1,21 @@
 // lib/sheets.ts
-// Pushes a thereshape booking lead to the Google Sheet via the Apps Script web
-// app (see thereshape-apps-script.gs). Best-effort: callers should catch and
-// record the failure without blocking the lead from being saved.
+// Pushes Elite Minima submissions to the Google Sheet via the Apps Script web
+// app (see eliteminima-apps-script.gs). One deployment serves both forms; the
+// `formType` field decides which tab the row lands in.
+//
+// Best-effort by design: callers should catch and record the failure without
+// blocking the visitor's submission.
+
+/** Tab names — these must match the ones in eliteminima-apps-script.gs. */
+export const LEADS_TAB = "Elite Minima Piles Leads"
+export const FEEDBACK_TAB = "Elite Minima Feedback"
 
 export interface SheetLead {
   name: string
   phone: string
   email?: string | null
   address?: string | null
-  area?: string | null // hair concern / symptom
+  area?: string | null // the concern picked in the booking form
   duration?: string | null // how long it has been
   callTime?: string | null // preferred call time window
   branch?: string | null
@@ -18,12 +25,24 @@ export interface SheetLead {
   pageUrl?: string | null
 }
 
+export interface SheetFeedback {
+  name: string
+  email: string
+  phone: string
+  suggestions: string
+  pageUrl?: string | null
+  /** Star score from /review, 1–5. 0 when they skipped the rating step. */
+  rating?: number | null
+}
+
 export interface SheetResult {
   synced: boolean
   raw?: unknown
 }
 
-export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
+/** Shared transport. Apps Script /exec 302-redirects to its content, and
+ *  returns an HTML error page if the script throws before our JSON response. */
+async function postToAppsScript(payload: Record<string, unknown>): Promise<SheetResult> {
   const endpoint = process.env.GOOGLE_SHEETS_URL
   if (!endpoint) {
     throw new Error("GOOGLE_SHEETS_URL environment variable is not set")
@@ -32,7 +51,38 @@ export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 15000)
 
-  const payload = {
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      redirect: "follow",
+      signal: controller.signal,
+    })
+
+    const responseText = await response.text()
+
+    let data: { error?: string; success?: boolean } = {}
+    try {
+      data = responseText ? JSON.parse(responseText) : {}
+    } catch {
+      throw new Error("Google Sheets returned a non-JSON response")
+    }
+
+    if (!response.ok || data.error) {
+      throw new Error(data.error || `HTTP ${response.status} from Google Sheets`)
+    }
+
+    return { synced: true, raw: data }
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
+  return postToAppsScript({
+    formType: "lead",
+    sheetTab: LEADS_TAB,
     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
     name: lead.name,
     phone: lead.phone.replace(/\D/g, ""),
@@ -46,35 +96,20 @@ export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
     medium: lead.medium || "",
     campaign: lead.campaign || "",
     pageUrl: lead.pageUrl || "",
-    sheetTab: "thereshape Leads",
-  }
+  })
+}
 
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      redirect: "follow", // Apps Script /exec 302-redirects to its content
-      signal: controller.signal,
-    })
-
-    const responseText = await response.text()
-
-    let data: { error?: string; success?: boolean } = {}
-    try {
-      data = responseText ? JSON.parse(responseText) : {}
-    } catch {
-      // Apps Script returns an HTML error page when the script throws before
-      // reaching our JSON response — surface that as a failure.
-      throw new Error("Google Sheets returned a non-JSON response")
-    }
-
-    if (!response.ok || data.error) {
-      throw new Error(data.error || `HTTP ${response.status} from Google Sheets`)
-    }
-
-    return { synced: true, raw: data }
-  } finally {
-    clearTimeout(timeout)
-  }
+export async function sendFeedbackToGoogleSheet(feedback: SheetFeedback): Promise<SheetResult> {
+  return postToAppsScript({
+    formType: "feedback",
+    sheetTab: FEEDBACK_TAB,
+    timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+    name: feedback.name.trim(),
+    email: feedback.email.trim(),
+    phone: feedback.phone.replace(/\D/g, ""),
+    rating: feedback.rating || "",
+    suggestions: feedback.suggestions.trim(),
+    pageUrl: feedback.pageUrl || "",
+    source: "Elite Minima — Client Feedback",
+  })
 }
