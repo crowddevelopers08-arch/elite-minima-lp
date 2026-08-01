@@ -12,10 +12,19 @@ const EXPERTISE = ["Piles Treatment", "Laser Piles Treatment", "Fissure Treatmen
 export default function Doctor() {
   return (
     <section id="doctor" className="border-b border-[var(--e-line)] bg-[var(--e-canvas)] py-10 sm:py-12 lg:py-14">
-      <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-10 px-5 sm:px-8 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
+      {/* Heading and body are separate children so the portrait can sit between
+          them on mobile. At lg they are placed back into one column via explicit
+          rows, with the portrait spanning both alongside. */}
+      <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-6 px-5 sm:px-8 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-x-16 lg:gap-y-0">
+        <Reveal className="min-w-0 lg:col-start-2 lg:row-start-1">
+          <p className="kicker">Meet Your Specialist</p>
+          <h2 className="mt-4">Expert Care for Piles &amp; Proctology Conditions</h2>
+          <TitleUnderline className="mt-3" />
+        </Reveal>
+
         {/* portrait — object-top so the 2:3 source loses its crop from the shirt
             rather than the top of the head when it fills this 4:5 frame */}
-        <Reveal className="mx-auto w-full max-w-[360px] lg:mx-0">
+        <Reveal index={1} className="mx-auto w-full max-w-[360px] lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mx-0">
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] border border-[var(--e-line)] bg-white">
             <Image
               src="/lok.jpeg"
@@ -27,12 +36,10 @@ export default function Doctor() {
           </div>
         </Reveal>
 
-        {/* details */}
-        <Reveal index={1} className="min-w-0">
-          <p className="kicker">Meet Your Specialist</p>
-          <h2 className="mt-4">Expert Care for Piles &amp; Proctology Conditions</h2>
-          <TitleUnderline className="mt-3" />
-          <p className="mt-4 max-w-[60ch] text-[0.98rem] leading-relaxed text-[var(--e-muted)]">
+        <Reveal index={2} className="min-w-0 lg:col-start-2 lg:row-start-2">
+          {/* no base margin — the flex gap spaces this off the portrait on mobile;
+              at lg the row gap is 0 so it needs its own offset from the underline */}
+          <p className="max-w-[60ch] text-[0.98rem] leading-relaxed text-[var(--e-muted)] lg:mt-4">
             At Elite Minima – The Surgical Speciality Clinic, our specialists provide personalized evaluation and advanced treatment for piles,
             fissures, fistulas and other proctology conditions, with both non-surgical and minimally invasive treatment options.
           </p>
