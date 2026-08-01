@@ -5,7 +5,7 @@
    Two payload shapes arrive at this one webhook:
 
      /api/leads     -> { formType:'lead', sheetTab, timestamp, name, phone,
-                         email, area (the concern picked), callTime, address,
+                         email, area (the concern picked), callDate, callTime, address,
                          duration, branch, source, medium, campaign, pageUrl }
 
      /api/feedback  -> { formType:'feedback', sheetTab, timestamp, name, email,
@@ -20,9 +20,9 @@
    (`suggestions` / a "feedback" source) and otherwise falls back to Leads, so a
    hand-rolled or legacy POST is never silently dropped.
 
-   NOTE: the booking form currently collects name, phone, email, concern and
-   preferred call time only. Address and Duration are kept as columns because
-   lib/sheets.ts still sends them and the form may grow — expect them blank.
+   NOTE: the booking form collects name, phone, email, concern and a preferred
+   callback date + time (separate native pickers). Address and Duration are kept
+   as columns because lib/sheets.ts still sends them — expect them blank.
 
    ⚠️  If a "thereshape Leads" tab exists from the previous build, run
    migrateLegacyLeadsTab() once after pasting this code. It copies those rows
@@ -167,9 +167,9 @@ var LEADS_TAB    = 'Elite Minima Piles Leads';
 var FEEDBACK_TAB = 'Elite Minima Feedback';
 
 var LEADS_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Concern',
-                     'Preferred Call Time', 'Address', 'Duration', 'Branch',
-                     'Source', 'Medium', 'Campaign', 'Page URL'];
-var LEADS_WIDTHS  = [175, 160, 130, 210, 180, 165, 200, 140, 160, 130, 120, 150, 300];
+                     'Preferred Date', 'Preferred Time', 'Address', 'Duration',
+                     'Branch', 'Source', 'Medium', 'Campaign', 'Page URL'];
+var LEADS_WIDTHS  = [175, 160, 130, 210, 180, 130, 130, 200, 140, 160, 130, 120, 150, 300];
 
 var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Rating',
                         'Suggestions', 'Source', 'Page URL'];
@@ -290,7 +290,8 @@ function doPost(e) {
       data.phone || '',
       data.email || '',
       data.area || data.concern || '',   // `area` is what lib/sheets.ts sends
-      data.callTime || '',
+      data.callDate || '',               // ISO yyyy-mm-dd, so Sheets sorts it
+      data.callTime || '',               // readable, e.g. "3:30 PM"
       data.address || '',
       data.duration || '',
       data.branch || 'Elite Minima Clinic',
@@ -302,7 +303,8 @@ function doPost(e) {
 
     styleRow(sheet, nextRow, LEADS_HEADERS.length);
     sheet.getRange(nextRow, 3).setHorizontalAlignment('center'); // Phone
-    sheet.getRange(nextRow, 6).setHorizontalAlignment('center'); // Preferred Call Time
+    sheet.getRange(nextRow, 6).setHorizontalAlignment('center'); // Preferred Date
+    sheet.getRange(nextRow, 7).setHorizontalAlignment('center'); // Preferred Time
 
     Logger.log('Lead saved to row: ' + nextRow);
     return _json({ success: true, tab: LEADS_TAB, row: nextRow });
@@ -332,7 +334,8 @@ function testLead() {
     phone: '9876543210',
     email: 'test.lead@example.com',
     area: 'Bleeding',
-    callTime: '9 AM - 12 PM',
+    callDate: '2026-08-12',
+    callTime: '10:30 AM',
     address: '',
     duration: '',
     branch: 'Elite Minima Clinic',
@@ -352,7 +355,8 @@ function testLeadDirect() {
     phone: '9123456780',
     email: 'organic@example.com',
     area: 'Swelling or Lump',
-    callTime: '3 PM - 6 PM',
+    callDate: '2026-08-14',
+    callTime: '4:15 PM',
     branch: 'Elite Minima Clinic',
     source: 'direct',
     pageUrl: 'https://eliteminima.in/'
@@ -466,6 +470,7 @@ function reformatLeadsSheet() {
       styleRow(s, i, LEADS_HEADERS.length);
       s.getRange(i, 3).setHorizontalAlignment('center');
       s.getRange(i, 6).setHorizontalAlignment('center');
+      s.getRange(i, 7).setHorizontalAlignment('center');
     }
     Logger.log(LEADS_TAB + ' reformatted. Rows: ' + last);
   } catch (e) {
@@ -525,8 +530,10 @@ function reformatFeedbackSheet() {
 
 var LEGACY_LEADS_TAB = 'thereshape Leads';
 
-// old index -> new position
-var LEGACY_TO_NEW = [0, 1, 2, 3, 5, 7, 4, 6, 8, 9, 10, 11, 12];
+// Old legacy index for each new column, in new-column order.
+// -1 = the legacy layout had no equivalent (it stored one combined call-time
+// field, which now maps to Preferred Time; Preferred Date is left blank).
+var LEGACY_TO_NEW = [0, 1, 2, 3, 5, -1, 7, 4, 6, 8, 9, 10, 11, 12];
 
 function migrateLegacyLeadsTab() {
   try {
@@ -562,6 +569,7 @@ function migrateLegacyLeadsTab() {
       if (seen[key]) { skipped++; return; }
 
       var mapped = LEGACY_TO_NEW.map(function (oldIdx) {
+        if (oldIdx < 0) return '';
         var v = r[oldIdx];
         return (v === undefined || v === null) ? '' : v;
       });
@@ -571,6 +579,7 @@ function migrateLegacyLeadsTab() {
       styleRow(target, nextRow, LEADS_HEADERS.length);
       target.getRange(nextRow, 3).setHorizontalAlignment('center');
       target.getRange(nextRow, 6).setHorizontalAlignment('center');
+      target.getRange(nextRow, 7).setHorizontalAlignment('center');
       seen[key] = true;
       copied++;
     });

@@ -10,7 +10,8 @@ export interface TeleCRMLead {
   address?: string | null
   area?: string | null // hair concern / symptom
   duration?: string | null // how long it has been
-  callTime?: string | null // preferred call time window
+  callDate?: string | null // preferred call date, ISO yyyy-mm-dd
+  callTime?: string | null // preferred call time, e.g. "3:30 PM"
   branch?: string | null
   source?: string | null // utm_source or "direct"
   medium?: string | null
@@ -63,6 +64,7 @@ export async function sendToTeleCRM(lead: TeleCRMLead): Promise<TeleCRMResult> {
       Address: lead.address || "",
       Area_of_Pain: lead.area || "",
       Duration: lead.duration || "",
+      Preferred_Call_Date: lead.callDate || "",
       Preferred_Call_Time: lead.callTime || "",
       FormName: "Elite Minima LP Leads",
       Lead_Source: lead.source || "direct",
@@ -76,7 +78,10 @@ export async function sendToTeleCRM(lead: TeleCRMLead): Promise<TeleCRMResult> {
       { type: "SYSTEM_NOTE", text: `Address: ${lead.address || "Not specified"}` },
       { type: "SYSTEM_NOTE", text: `Concern: ${lead.area || "Not specified"}` },
       { type: "SYSTEM_NOTE", text: `Duration: ${lead.duration || "Not specified"}` },
-      { type: "SYSTEM_NOTE", text: `Preferred call time: ${lead.callTime || "Not specified"}` },
+      {
+        type: "SYSTEM_NOTE",
+        text: `Preferred callback: ${[lead.callDate, lead.callTime].filter(Boolean).join(" at ") || "Not specified"}`,
+      },
       { type: "SYSTEM_NOTE", text: `Campaign source: ${lead.source || "direct"}` },
       { type: "SYSTEM_NOTE", text: `Campaign: ${lead.campaign || "Not specified"}` },
       { type: "SYSTEM_NOTE", text: `Landing page: ${sourceURL}` },

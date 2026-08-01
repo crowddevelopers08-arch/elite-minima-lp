@@ -18,7 +18,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, email, address, area, duration, callTime, branch, source, medium, campaign, pageUrl } = body
+    const { name, phone, email, address, area, duration, callDate, callTime, branch, source, medium, campaign, pageUrl } = body
 
     if (!name || !phone) {
       return NextResponse.json({ error: 'Name and phone are required' }, { status: 400 })
@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
       address,
       area,
       duration,
+      callDate,
       callTime,
       branch: branch || 'Elite Minima Clinic',
       source,

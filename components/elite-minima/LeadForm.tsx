@@ -7,12 +7,30 @@ import { BRANCH, PHONE_DISPLAY, PHONE_TEL } from "./config"
 const LEAD_ENDPOINT = "/api/leads"
 
 const CONCERNS = ["Bleeding", "Pain", "Swelling or Lump", "Itching", "Other"]
-const CALL_TIMES = ["9 AM - 12 PM", "12 PM - 3 PM", "3 PM - 6 PM"]
+
+/** "15:30" → "3:30 PM". The native time input always hands back 24-hour. */
+function to12Hour(value: string) {
+  if (!value) return ""
+  const [h, m] = value.split(":").map(Number)
+  if (Number.isNaN(h) || Number.isNaN(m)) return value
+  const suffix = h >= 12 ? "PM" : "AM"
+  return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${suffix}`
+}
 
 export default function LeadForm({ compact = false }: { compact?: boolean }) {
   const formRef = useRef<HTMLFormElement>(null)
   const [done, setDone] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [minDate, setMinDate] = useState("")
+
+  // Built from local parts, not toISOString() — that returns UTC and would let
+  // an IST visitor pick "yesterday" for most of the evening.
+  useEffect(() => {
+    const d = new Date()
+    setMinDate(
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+    )
+  }, [])
 
   useEffect(() => {
     const form = formRef.current
@@ -46,7 +64,8 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       phone: raw.phone,
       email: raw.email,
       area: raw.concern,
-      callTime: raw.callTime,
+      callDate: raw.callDate, // ISO yyyy-mm-dd, so the sheet sorts it correctly
+      callTime: to12Hour(raw.callTime), // readable, e.g. "3:30 PM"
       branch: raw.branch || BRANCH,
       source: raw.utm_source || "direct",
       medium: raw.utm_medium || "",
@@ -120,16 +139,30 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
               </select>
             </Field>
 
-            <Field label="Preferred Call Time" htmlFor="lf-calltime">
-              <select id="lf-calltime" name="callTime" required defaultValue="" className={inputCls}>
-                <option value="" disabled>
-                  Select a time window
-                </option>
-                {CALL_TIMES.map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
-            </Field>
+            {/* Native date/time inputs give the OS calendar and clock pickers —
+                no extra library, and mobile gets its own wheel UI for free. */}
+            <div className="grid grid-cols-2 gap-2.5">
+              <Field label="Preferred Date" htmlFor="lf-calldate">
+                <input
+                  id="lf-calldate"
+                  name="callDate"
+                  type="date"
+                  required
+                  min={minDate}
+                  className={`${inputCls} min-w-0`}
+                />
+              </Field>
+
+              <Field label="Preferred Time" htmlFor="lf-calltime">
+                <input
+                  id="lf-calltime"
+                  name="callTime"
+                  type="time"
+                  required
+                  className={`${inputCls} min-w-0`}
+                />
+              </Field>
+            </div>
           </div>
 
           <input type="hidden" name="utm_source" />

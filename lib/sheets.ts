@@ -17,7 +17,8 @@ export interface SheetLead {
   address?: string | null
   area?: string | null // the concern picked in the booking form
   duration?: string | null // how long it has been
-  callTime?: string | null // preferred call time window
+  callDate?: string | null // preferred call date, ISO yyyy-mm-dd
+  callTime?: string | null // preferred call time, e.g. "3:30 PM"
   branch?: string | null
   source?: string | null // utm_source or "direct"
   medium?: string | null
@@ -90,6 +91,7 @@ export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
     address: lead.address || "",
     area: lead.area || "",
     duration: lead.duration || "",
+    callDate: lead.callDate || "",
     callTime: lead.callTime || "",
     branch: lead.branch || "Elite Minima Clinic",
     source: lead.source || "direct",
