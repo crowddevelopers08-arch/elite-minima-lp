@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Menu, X, Phone } from "lucide-react"
 import { track } from "./track"
-import { BRAND_FULL, PHONE_DISPLAY, PHONE_TEL } from "./config"
+import { BRAND_FULL, IMAGES, PHONE_DISPLAY, PHONE_TEL } from "./config"
 
 const NAV = [
   { label: "Reviews", href: "#reviews", id: "reviews" },
@@ -89,7 +89,7 @@ export default function Header() {
               label — no duplicate text beside it. */}
           <a href="#top" className="flex flex-none items-center">
             <Image
-              src="/logo-lockup.png"
+              src={IMAGES.logoLockup}
               alt={BRAND_FULL}
               width={776}
               height={180}

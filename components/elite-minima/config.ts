@@ -48,8 +48,32 @@ export const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=" +
   encodeURIComponent("Elite Minima Clinic, 5th Avenue, Anna Nagar, Chennai 600040")
 
-/** Hero media. The hero now shows a still image; swap this path to change it. */
-export const HERO_IMAGE = "/hero.jpg"
+/* ── Image assets ──────────────────────────────────────────────────────────
+   Every image on the site is served from Cloudinary — nothing is read out of
+   /public. To swap an asset, upload it and update the URL here.             */
+const CDN = "https://res.cloudinary.com/k4ojpvgo/image/upload"
+
+export const IMAGES = {
+  /** Full brand lockup — mark plus wordmark. Header, footer, standalone pages. */
+  logoLockup: `${CDN}/v1785733388/logo-lockup_kusseq.png`,
+  /** Mark only, no wordmark. Used where horizontal space is tight. */
+  logoMark: `${CDN}/v1785733388/logo-mark_nepn4x.png`,
+  /** Square clinic logo, for avatars and share targets. */
+  logoSquare: `${CDN}/v1785733387/elitminima-logo_gjcpbt.jpg`,
+  /** Hero still (photo) and its illustrated alternative. */
+  hero: `${CDN}/v1785733387/hero_qbuuvr.jpg`,
+  heroIllustration: `${CDN}/v1785733388/hero_hv8qyi.png`,
+  /** Dr. Lohit Sai K portrait. */
+  doctor: `${CDN}/v1785733389/lok_wllfis.jpg`,
+  /** Clinical images for the treatment-options cards. */
+  pilesCausesAndSymptoms: `${CDN}/v1785733389/Piles-Causes-And-Symptoms_wrfg5l.webp`,
+  pilesDiagram: `${CDN}/v1785733388/piles_jfvzeb.jpg`,
+  pilesModel: `${CDN}/v1785733387/images_dwygdd.jpg`,
+  clinicianWithModel: `${CDN}/v1785733388/432110982_qvlkpb.jpg`,
+} as const
+
+/** Hero media. The hero now shows a still image; swap this URL to change it. */
+export const HERO_IMAGE = IMAGES.hero
 
 /* ── Review funnel (/review → Google or /client-feedback) ──────────────────
    REPLACE GOOGLE_REVIEW_URL before launch: Google Business Profile →

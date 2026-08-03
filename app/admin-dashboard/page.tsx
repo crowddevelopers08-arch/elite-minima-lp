@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { IMAGES } from "@/components/elite-minima/config"
 
 interface Lead {
   id: string
@@ -292,7 +293,7 @@ export default function LeadsDashboard() {
         <CardHeader className="border-b border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-3">
-              <Image src="/logo-mark.png" alt="" width={276} height={186} className="h-9 w-auto" aria-hidden />
+              <Image src={IMAGES.logoMark} alt="" width={276} height={186} className="h-9 w-auto" aria-hidden />
               <div>
                 <CardTitle className="text-2xl font-bold text-gray-900">Leads Management</CardTitle>
                 <CardDescription className="text-gray-600">

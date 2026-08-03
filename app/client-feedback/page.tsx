@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Star } from "lucide-react"
-import { BRAND_FULL, PHONE_DISPLAY, PHONE_TEL } from "@/components/elite-minima/config"
+import { BRAND_FULL, IMAGES, PHONE_DISPLAY, PHONE_TEL } from "@/components/elite-minima/config"
 
 type Status = { type: "success" | "error"; text: string } | null
 
@@ -74,7 +74,7 @@ export default function ClientFeedbackPage() {
       <div className="mx-auto my-6 w-full max-w-[560px] rounded-[28px] bg-white p-5 shadow-[0_40px_80px_-40px_rgba(8,56,28,0.65)] sm:p-8">
         <div className="mb-5 flex justify-center sm:mb-7">
           <Image
-            src="/logo-lockup.png"
+            src={IMAGES.logoLockup}
             alt={BRAND_FULL}
             width={776}
             height={180}

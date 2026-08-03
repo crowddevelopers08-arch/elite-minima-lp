@@ -10,6 +10,7 @@ import {
   ADDRESS_FULL,
   EMAIL,
   FACEBOOK_URL,
+  IMAGES,
   INSTAGRAM_URL,
   PHONE_DISPLAY,
   PHONE_TEL,
@@ -41,7 +42,7 @@ export default function Footer() {
           {/* The mark is printed for white; on the dark footer it sits on its own
               paper chip rather than being knocked out. */}
           <span className="inline-flex rounded-2xl bg-white px-4 py-3">
-            <Image src="/logo-lockup.png" alt={BRAND_FULL} width={776} height={180} className="h-9 w-auto sm:h-10" />
+            <Image src={IMAGES.logoLockup} alt={BRAND_FULL} width={776} height={180} className="h-9 w-auto sm:h-10" />
           </span>
           <p className="mt-4 text-[0.92rem] leading-relaxed text-white/60">
             {BRAND_FULL} — specialized, personalized evaluation and advanced treatment for piles, fissures, fistulas and other proctology

@@ -187,7 +187,11 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div className={`rounded-[24px] border border-[var(--e-line)] bg-white ${compact ? "p-4 sm:p-5" : "p-5 sm:p-6"} shadow-[0_30px_60px_-36px_rgba(14,22,38,0.28)]`}>
+    // @container: the date/time row pairs up on the card's own width, not the
+    // viewport's. The card is full-bleed on phones but drops into the hero's
+    // narrow 2fr column at lg, so a viewport breakpoint would get it wrong at
+    // one end or the other.
+    <div className={`@container rounded-[24px] border border-[var(--e-line)] bg-white ${compact ? "p-4 sm:p-5" : "p-5 sm:p-6"} shadow-[0_30px_60px_-36px_rgba(14,22,38,0.28)]`}>
       {!done ? (
         <form ref={formRef} onSubmit={onSubmit} noValidate>
           <h3 className="text-[1.05rem] font-bold text-[var(--e-ink)]">Book a Consultation</h3>
@@ -235,7 +239,10 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
               </select>
             </Field>
 
-            <div className="grid grid-cols-2 gap-2.5">
+            {/* Stacked until the card can hold two slot labels ("10:00 AM -
+                11:00 AM") without wrapping — below that the two controls wrap
+                to unequal heights and the date field loses its picker icon. */}
+            <div className="grid grid-cols-1 gap-3 @min-[420px]:grid-cols-2 @min-[420px]:gap-2.5">
               <Field label="Preferred Date" htmlFor="lf-calldate">
                 <input
                   id="lf-calldate"
@@ -245,7 +252,10 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
                   min={today}
                   value={callDate}
                   onChange={(e) => setCallDate(e.target.value)}
-                  className={`${inputCls} min-w-0`}
+                  /* appearance-none: iOS Safari sizes a bare date input from
+                     its own content and ignores width:100%, which overflows
+                     the column on a phone. */
+                  className={`${inputCls} min-w-0 appearance-none`}
                 />
               </Field>
 
@@ -269,7 +279,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
                         )
                       }
                     }}
-                    className={`${inputCls} min-w-0 cursor-pointer text-left ${selectedTime ? "" : "text-[var(--e-muted)]"}`}
+                    className={`${inputCls} min-w-0 cursor-pointer whitespace-nowrap text-left ${selectedTime ? "" : "text-[var(--e-muted)]"}`}
                   >
                     {selectedTime || "Select time"}
                   </button>
@@ -365,8 +375,11 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
   )
 }
 
+/* min-h-11 keeps every control on a 44px touch target and, more importantly,
+   keeps the date input and the time button the same height side by side — the
+   two render at different intrinsic heights otherwise. */
 const inputCls =
-  "w-full rounded-xl border border-[var(--e-line)] bg-[var(--e-canvas)] px-4 py-2.5 text-[0.95rem] text-[var(--e-ink)] transition-all duration-150 focus:border-[var(--e-green)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--e-green-soft)]"
+  "min-h-11 w-full rounded-xl border border-[var(--e-line)] bg-[var(--e-canvas)] px-4 py-2.5 text-[0.95rem] text-[var(--e-ink)] transition-all duration-150 focus:border-[var(--e-green)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--e-green-soft)]"
 
 function Field({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (

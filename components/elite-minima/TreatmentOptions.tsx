@@ -15,13 +15,14 @@ import TitleUnderline from "./TitleUnderline"
 import { Magnetic } from "./motion"
 import { C, EASE } from "./tokens"
 import { track } from "./track"
+import { IMAGES } from "./config"
 
 /* The four clinical images are illustrative of the condition, not of the
    individual procedures — `w`/`h` are the files' true intrinsic sizes, since
    next.config sets `images.unoptimized` and does no resizing of its own. */
 const OPTIONS = [
   {
-    img: "/Piles-Causes-And-Symptoms.webp",
+    img: IMAGES.pilesCausesAndSymptoms,
     w: 745,
     h: 470,
     alt: "A man holding his lower back in discomfort, with a magnifying glass revealing a cross-section of the anal canal",
@@ -29,7 +30,7 @@ const OPTIONS = [
     desc: "For suitable early-stage piles, treatment may include medications, stool softeners, dietary modifications and lifestyle guidance to relieve symptoms, reduce straining and support healthier bowel habits.",
   },
   {
-    img: "/piles.jpg",
+    img: IMAGES.pilesDiagram,
     w: 612,
     h: 611,
     alt: "Cross-section diagram of the anal canal labelling internal and external hemorrhoids and bleeding",
@@ -37,7 +38,7 @@ const OPTIONS = [
     desc: "For selected cases, minimally invasive procedures may be recommended to treat piles while limiting tissue disruption and supporting a smoother recovery.",
   },
   {
-    img: "/images.jpg",
+    img: IMAGES.pilesModel,
     w: 250,
     h: 250,
     alt: "Anatomical model showing hemorrhoids within the anal canal",
@@ -45,7 +46,7 @@ const OPTIONS = [
     desc: "For suitable moderate or advanced cases, laser piles treatment offers a precise, minimally invasive approach. Depending on the condition and procedure, it may offer benefits such as minimal bleeding, same-day discharge and a faster return to routine activities.",
   },
   {
-    img: "/432110982.jpg",
+    img: IMAGES.clinicianWithModel,
     w: 700,
     h: 461,
     alt: "A clinician in a white coat holding an anatomical model of the anal canal and pointing to it with a pen",

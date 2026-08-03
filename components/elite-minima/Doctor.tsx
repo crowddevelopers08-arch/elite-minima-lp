@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react"
 import Reveal from "./Reveal"
 import TitleUnderline from "./TitleUnderline"
 import { track } from "./track"
-import { ADDRESS_SHORT, DOCTOR } from "./config"
+import { ADDRESS_SHORT, DOCTOR, IMAGES } from "./config"
 
 const EXPERTISE = ["Piles Treatment", "Laser Piles Treatment", "Fissure Treatment", "Fistula Treatment", "Minimally Invasive Procedures"]
 
@@ -27,7 +27,7 @@ export default function Doctor() {
         <Reveal index={1} className="mx-auto w-full max-w-[360px] lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mx-0">
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] border border-[var(--e-line)] bg-white">
             <Image
-              src="/lok.jpeg"
+              src={IMAGES.doctor}
               alt={`${DOCTOR.name}, ${DOCTOR.title}`}
               fill
               sizes="(min-width: 1024px) 360px, 100vw"

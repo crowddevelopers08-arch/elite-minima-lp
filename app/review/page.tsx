@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import RatingPrompt from "@/components/elite-minima/RatingPrompt"
-import { BRAND_FULL } from "@/components/elite-minima/config"
+import { BRAND_FULL, IMAGES } from "@/components/elite-minima/config"
 
 export const metadata: Metadata = {
   title: "Share Your Review | Elite Minima",
@@ -22,7 +22,7 @@ export default function ReviewPage() {
           {/* the lockup already carries the name and tagline, so it stands in
               for the wordmark-and-subtitle pair at the top of the reference */}
           <Image
-            src="/logo-lockup.png"
+            src={IMAGES.logoLockup}
             alt={BRAND_FULL}
             width={776}
             height={180}
