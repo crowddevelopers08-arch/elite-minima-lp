@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { track } from "./track"
-import { BRANCH, PHONE_DISPLAY, PHONE_TEL } from "./config"
+import { BRANCH, PHONE_ALT_DISPLAY, PHONE_DISPLAY, PHONES } from "./config"
 
 const LEAD_ENDPOINT = "/api/leads"
 
@@ -171,7 +171,7 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
       window.location.href = "/thank-you"
     } catch {
       setSubmitting(false)
-      alert(`That did not go through. Please call ${PHONE_DISPLAY} instead.`)
+      alert(`That did not go through. Please call ${PHONE_DISPLAY} or ${PHONE_ALT_DISPLAY} instead.`)
     }
   }
 
@@ -357,9 +357,14 @@ export default function LeadForm({ compact = false }: { compact?: boolean }) {
 
           <p className="mt-2.5 text-center text-[0.75rem] leading-relaxed text-[var(--e-muted)]">
             Or call{" "}
-            <a href={`tel:${PHONE_TEL}`} onClick={() => track("call_click", { branch: BRANCH })} className="font-semibold text-[var(--e-green-deep)]">
-              {PHONE_DISPLAY}
-            </a>
+            {PHONES.map((p, i) => (
+              <span key={p.tel}>
+                {i > 0 && " or "}
+                <a href={`tel:${p.tel}`} onClick={() => track("call_click", { branch: BRANCH })} className="font-semibold text-[var(--e-green-deep)]">
+                  {p.display}
+                </a>
+              </span>
+            ))}
           </p>
         </form>
       ) : (

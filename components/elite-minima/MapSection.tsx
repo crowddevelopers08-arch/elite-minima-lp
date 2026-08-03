@@ -7,7 +7,7 @@ import Reveal from "./Reveal"
 import TitleUnderline from "./TitleUnderline"
 import { track } from "./track"
 import { EASE } from "./tokens"
-import { ADDRESS_FULL, MAP_QUERY, PHONE_DISPLAY, PHONE_TEL } from "./config"
+import { ADDRESS_FULL, MAP_QUERY, PHONES } from "./config"
 
 /* Viewfinder brackets — top corners only. The bottom of a Google embed is
    occupied by attribution and the zoom/fullscreen controls. */
@@ -95,13 +95,16 @@ export default function MapSection() {
             viewport={VIEW}
           >
             <Cell icon={Phone} label="Phone" reduced={!!reduced}>
-              <a
-                href={`tel:${PHONE_TEL}`}
-                onClick={() => track("call_click", { branch: "Elite Minima Clinic", section: "map" })}
-                className="text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
-              >
-                {PHONE_DISPLAY}
-              </a>
+              {PHONES.map((p) => (
+                <a
+                  key={p.tel}
+                  href={`tel:${p.tel}`}
+                  onClick={() => track("call_click", { branch: "Elite Minima Clinic", section: "map" })}
+                  className="block text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
+                >
+                  {p.display}
+                </a>
+              ))}
             </Cell>
 
             <Cell icon={MapPin} label="Address" reduced={!!reduced}>
@@ -153,7 +156,9 @@ function Cell({
       </span>
 
       <span className="mt-4 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[var(--e-muted)]">{label}</span>
-      <div className="mt-1.5 flex justify-center">{children}</div>
+      {/* column, so a cell holding more than one value (the two phone lines)
+          stacks instead of running them together on one row */}
+      <div className="mt-1.5 flex flex-col items-center gap-1">{children}</div>
     </motion.div>
   )
 }

@@ -5,7 +5,7 @@ import { CheckCircle2, Phone, ArrowLeft, PhoneCall, CalendarCheck, Stethoscope }
 import { FaWhatsapp } from "react-icons/fa"
 import Header from "@/components/elite-minima/Header"
 import Footer from "@/components/elite-minima/Footer"
-import { HOURS, PHONE_DISPLAY, PHONE_TEL, WHATSAPP_URL } from "@/components/elite-minima/config"
+import { HOURS, PHONES, WHATSAPP_URL } from "@/components/elite-minima/config"
 
 /** What actually happens next, so the wait after submitting feels accounted for. */
 const NEXT_STEPS = [
@@ -40,10 +40,12 @@ export default function ThankYouPage() {
             </p>
 
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <a href={`tel:${PHONE_TEL}`} className="btn btn-primary w-full sm:w-auto">
-                <Phone className="h-4 w-4" />
-                Call {PHONE_DISPLAY}
-              </a>
+              {PHONES.map((p, i) => (
+                <a key={p.tel} href={`tel:${p.tel}`} className={`btn w-full sm:w-auto ${i === 0 ? "btn-primary" : "btn-ghost"}`}>
+                  <Phone className="h-4 w-4" />
+                  Call {p.display}
+                </a>
+              ))}
               <a
                 href={WHATSAPP_URL}
                 target="_blank"

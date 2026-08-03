@@ -5,8 +5,20 @@ export const BRAND = "Elite Minima"
 export const BRAND_FULL = "Elite Minima — The Surgical Speciality Clinic"
 export const BRANCH = "Elite Minima Clinic"
 
-export const PHONE_DISPLAY = "+91 98949 84103"
-export const PHONE_TEL = "+919894984103"
+/** Primary line — the only number shown in the navbar, and the tel: target for
+    single-button call CTAs. */
+export const PHONE_DISPLAY = "+91 95000 91428"
+export const PHONE_TEL = "+919500091428"
+
+/** Second line — listed beside the primary everywhere except the navbar. */
+export const PHONE_ALT_DISPLAY = "+91 98949 84103"
+export const PHONE_ALT_TEL = "+919894984103"
+
+/** Both lines in display order, for the places that list them together. */
+export const PHONES = [
+  { display: PHONE_DISPLAY, tel: PHONE_TEL },
+  { display: PHONE_ALT_DISPLAY, tel: PHONE_ALT_TEL },
+] as const
 
 export const WHATSAPP_DISPLAY = "+91 95000 91428"
 export const WHATSAPP_URL = "https://wa.me/919500091428"

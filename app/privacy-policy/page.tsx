@@ -4,7 +4,7 @@ import React from "react"
 import { Phone, Shield, Lock, Eye, MapPin, Clock, Mail, Check } from "lucide-react"
 import Header from "@/components/elite-minima/Header"
 import Footer from "@/components/elite-minima/Footer"
-import { BRAND, ADDRESS_FULL, EMAIL, HOURS, PHONE_DISPLAY, PHONE_TEL } from "@/components/elite-minima/config"
+import { BRAND, ADDRESS_FULL, EMAIL, HOURS, PHONES } from "@/components/elite-minima/config"
 
 const COLLECTED = [
   "Full Name",
@@ -140,14 +140,16 @@ const PrivacyPolicy: React.FC = () => {
               </p>
 
               <ul className="space-y-3.5 rounded-2xl border border-[var(--e-line)] bg-[var(--e-canvas)] p-4 sm:p-5">
-                <li className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--e-green)] text-white">
-                    <Phone className="h-4 w-4" />
-                  </span>
-                  <a href={`tel:${PHONE_TEL}`} className="font-semibold text-[var(--e-ink)] hover:text-[var(--e-green-deep)]">
-                    {PHONE_DISPLAY}
-                  </a>
-                </li>
+                {PHONES.map((p) => (
+                  <li key={p.tel} className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--e-green)] text-white">
+                      <Phone className="h-4 w-4" />
+                    </span>
+                    <a href={`tel:${p.tel}`} className="font-semibold text-[var(--e-ink)] hover:text-[var(--e-green-deep)]">
+                      {p.display}
+                    </a>
+                  </li>
+                ))}
 
                 <li className="flex items-center gap-3">
                   <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--e-green)] text-white">

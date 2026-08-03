@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Star } from "lucide-react"
-import { BRAND_FULL, IMAGES, PHONE_DISPLAY, PHONE_TEL } from "@/components/elite-minima/config"
+import { BRAND_FULL, IMAGES, PHONES } from "@/components/elite-minima/config"
 
 type Status = { type: "success" | "error"; text: string } | null
 
@@ -208,9 +208,14 @@ export default function ClientFeedbackPage() {
 
         <p className="mt-4 text-center text-[0.8rem] leading-relaxed text-[var(--e-muted)]">
           Prefer to talk?{" "}
-          <a href={`tel:${PHONE_TEL}`} className="font-semibold text-[var(--e-green-deep)]">
-            {PHONE_DISPLAY}
-          </a>
+          {PHONES.map((p, i) => (
+            <span key={p.tel}>
+              {i > 0 && " or "}
+              <a href={`tel:${p.tel}`} className="font-semibold text-[var(--e-green-deep)]">
+                {p.display}
+              </a>
+            </span>
+          ))}
         </p>
       </div>
     </div>

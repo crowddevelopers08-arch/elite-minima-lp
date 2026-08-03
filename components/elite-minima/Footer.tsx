@@ -12,8 +12,7 @@ import {
   FACEBOOK_URL,
   IMAGES,
   INSTAGRAM_URL,
-  PHONE_DISPLAY,
-  PHONE_TEL,
+  PHONES,
   WHATSAPP_URL,
 } from "./config"
 
@@ -93,18 +92,22 @@ export default function Footer() {
         <div>
           <h4 className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--e-purple-light)]">Contact</h4>
           <ul className="mt-4 space-y-3.5 text-[0.9rem]">
-            <li>
-              <a
-                href={`tel:${PHONE_TEL}`}
-                onClick={() => track("call_click", { branch: "Elite Minima Clinic" })}
-                className="flex items-center gap-3 font-semibold text-white transition-colors hover:text-[var(--e-purple-light)]"
-              >
-                <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-white/10 text-[var(--e-purple-light)]">
-                  <LuPhone className="h-4 w-4" />
-                </span>
-                {PHONE_DISPLAY}
-              </a>
-            </li>
+            {/* Both clinic lines, one per row, each with its own chip so
+                neither reads as a stray continuation of the other. */}
+            {PHONES.map((p) => (
+              <li key={p.tel}>
+                <a
+                  href={`tel:${p.tel}`}
+                  onClick={() => track("call_click", { branch: "Elite Minima Clinic" })}
+                  className="flex items-center gap-3 font-semibold text-white transition-colors hover:text-[var(--e-purple-light)]"
+                >
+                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-white/10 text-[var(--e-purple-light)]">
+                    <LuPhone className="h-4 w-4" />
+                  </span>
+                  {p.display}
+                </a>
+              </li>
+            ))}
             <li>
               <a
                 href={`mailto:${EMAIL}`}
