@@ -18,12 +18,19 @@ import { useId } from "react"
  *  - the id is per-instance via useId, since a fixed id would collide once
  *    more than one heading is on the page.
  */
-export default function TitleUnderline({ className = "" }: { className?: string }) {
+/**
+ * `maxWidth` caps the stroke's drawn length in px. It rides on an inline style
+ * rather than a utility class because callers pass `className` through, and two
+ * competing width utilities resolve by stylesheet order, not attribute order —
+ * the override would win or lose at random.
+ */
+export default function TitleUnderline({ className = "", maxWidth = 288 }: { className?: string; maxWidth?: number }) {
   const gradientId = `title-underline-${useId()}`
 
   return (
     <svg
-      className={`title-underline block h-[8px] w-[min(288px,100%)] ${className}`}
+      style={{ width: `min(${maxWidth}px, 100%)` }}
+      className={`title-underline block h-[8px] ${className}`}
       width="288"
       height="8"
       viewBox="0 -1 288 8"

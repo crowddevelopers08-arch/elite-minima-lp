@@ -1,0 +1,173 @@
+"use client"
+
+import { useRef } from "react"
+import Image from "next/image"
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import Reveal from "../Reveal"
+import TitleUnderline from "../TitleUnderline"
+import { track } from "../track"
+import { ADDRESS_SHORT } from "../config"
+import { SPECIALISTS, type Specialist } from "./content"
+
+const BRANCH = "Elite Minima Clinic — General"
+
+/* Every specialist now carries their own portrait in SPECIALISTS, so the
+   per-name override map this used to need is gone. The initials plate below
+   stays as the fallback for anyone added later without a photo. */
+function initials(name: string) {
+  return name
+    .replace(/^Dr\.?\s*/i, "")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
+export default function GeneralDoctors() {
+  const scroller = useRef<HTMLDivElement>(null)
+
+  /* Scrolls by a viewport of the track rather than a fixed card width, so it
+     lands on a snap point at either breakpoint below lg. */
+  const nudge = (dir: -1 | 1) => {
+    const el = scroller.current
+    if (!el) return
+    el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: "smooth" })
+  }
+
+  return (
+    <section id="doctors" className="border-b border-[var(--e-line)] bg-[var(--e-canvas)] py-10 sm:py-12 lg:py-14">
+      {/* Wider than the 1180px the other sections use: three specialist cards
+          in one row need the room, and the centered header inside caps itself
+          at 760px so the extra width lands on the cards alone. */}
+      <div className="mx-auto w-full max-w-[1400px] px-5 sm:px-8">
+        <Reveal className="mx-auto max-w-[760px] text-center">
+          <p className="kicker justify-center">Meet Your Specialists</p>
+          <h2 className="mt-4">Specialist-Led Surgical Care From Consultation to Recovery</h2>
+          <TitleUnderline className="mx-auto mt-3" />
+          <p className="mt-4 text-[0.98rem] leading-relaxed text-[var(--e-muted)]">
+            At Elite-Minima – The Surgical Speciality Clinic, treatment is based on clinical evaluation rather than a
+            one-treatment-fits-all approach.
+          </p>
+          <p className="mt-2.5 text-[0.98rem] leading-relaxed text-[var(--e-muted)]">
+            Our specialists provide personalized evaluation and treatment planning across proctology, minimally invasive surgery,
+            circumcision, gynecomastia, aesthetic surgical care, surgical oncology, and women&rsquo;s health.
+          </p>
+        </Reveal>
+
+        {/* One row of three from lg. Below that the same row becomes a snap
+            carousel — three cards this tall stacked would be most of a page,
+            and a card at a third of a phone's width is unreadable. It bleeds
+            to the screen edge so the next card peeks in and reads as swipeable.
+            Native overflow scrolling, so touch drag works without a handler. */}
+        <div
+          ref={scroller}
+          /* pb-8: overflow-x also clips the y axis, so without it the card's
+             drop shadow gets sheared off along the track's bottom edge. */
+          className="-mx-5 mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 [scrollbar-width:none] sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+        >
+          {SPECIALISTS.map((s, i) => (
+            <Reveal key={s.name} index={i} className="w-[86%] flex-none snap-start sm:w-[58%] lg:w-auto">
+              <DoctorCard s={s} />
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Arrows only where the track actually scrolls. Hidden from assistive
+            tech: the cards are reachable by Tab regardless, so these would be
+            two controls that go nowhere new. */}
+        <div className="mt-1 flex items-center justify-center gap-3 lg:hidden" aria-hidden>
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => nudge(-1)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--e-line)] bg-white text-[var(--e-ink-soft)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => nudge(1)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--e-line)] bg-white text-[var(--e-ink-soft)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        <Reveal className="mt-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[0.85rem] font-medium text-[var(--e-muted)]">
+          <span>Personalized Care</span>
+          <span className="text-[var(--e-green)]">•</span>
+          <span>Advanced Treatment</span>
+          <span className="text-[var(--e-green)]">•</span>
+          <span>{ADDRESS_SHORT}</span>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/**
+ * One specialist as a self-contained card: portrait, credentials, expertise,
+ * CTA. Full height with the CTA pushed to the foot, so three cards with
+ * different bio lengths still line their buttons up along one edge.
+ */
+function DoctorCard({ s }: { s: Specialist }) {
+  const photo = s.photo
+
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_1px_2px_rgba(14,22,38,0.04),0_20px_45px_-30px_rgba(14,22,38,0.3)]">
+      {/* 4:3 rather than square or the original 4:5 — the frame is the card's
+          single biggest height contributor, and three of them share one row.
+          object-top so the 2:3 source crops from the shirt, not the head. */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--e-green-soft)]">
+        {photo ? (
+          <Image
+            src={photo}
+            alt={`${s.name}, ${s.title}`}
+            fill
+            sizes="(min-width: 1024px) 390px, 86vw"
+            className="object-cover object-top"
+          />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-3">
+            <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-[1.7rem] font-extrabold text-[var(--e-green-deep)]">
+              {initials(s.name)}
+            </span>
+            <span className="px-6 text-center text-[0.85rem] font-semibold text-[var(--e-green-deep)]">{s.name}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-[1.05rem] leading-snug text-[var(--e-ink)]">{s.name}</h3>
+        <p className="mt-1 text-[0.85rem] font-semibold text-[var(--e-green-deep)]">{s.title}</p>
+        {s.qualifications && <p className="mt-1.5 text-[0.76rem] leading-relaxed text-[var(--e-muted)]">{s.qualifications}</p>}
+        {s.body && (
+          <p className="mt-3 border-t border-[var(--e-line-soft)] pt-3 text-[0.85rem] leading-relaxed text-[var(--e-ink-soft)]">{s.body}</p>
+        )}
+
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {s.expertise.map((e) => (
+            <span
+              key={e}
+              className="inline-flex items-center rounded-full border border-[var(--e-line)] bg-[var(--e-canvas)] px-2.5 py-1 text-[0.72rem] font-medium text-[var(--e-ink-soft)]"
+            >
+              {e}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto pt-5">
+          <a
+            href="#book"
+            onClick={() => track("book_click", { branch: BRANCH, section: `doctor:${s.name}` })}
+            className="btn btn-primary group/btn w-full"
+          >
+            {s.cta}
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+          </a>
+        </div>
+      </div>
+    </article>
+  )
+}
