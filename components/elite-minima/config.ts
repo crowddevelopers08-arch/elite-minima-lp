@@ -82,6 +82,26 @@ export const IMAGES = {
   pilesDiagram: `${CDN}/v1785733388/piles_jfvzeb.jpg`,
   pilesModel: `${CDN}/v1785733387/images_dwygdd.jpg`,
   clinicianWithModel: `${CDN}/v1785733388/432110982_qvlkpb.jpg`,
+
+  /* ── General page (/general) ─────────────────────────────────────────────
+     Its own pathway images and specialist portraits. Uploaded later than the
+     set above, hence the different version segment — the two batches are
+     unrelated and neither version is shared. */
+  /** Theatre photograph on the "why choose us" section. */
+  surgicalTeam: `${CDN}/v1786100968/why_xzukid.png`,
+  /** Circumcision pathway. */
+  staplerCircumcision: `${CDN}/v1786100965/Stapler_gqf39o.png`,
+  laserCircumcision: `${CDN}/v1786100967/Lasercir_jbcqcq.png`,
+  /** Gynecomastia pathway. */
+  liposuction: `${CDN}/v1786100962/lipo_yxltnv.jpg`,
+  glandExcision: `${CDN}/v1786100963/gland_i0gdp0.png`,
+  chestContouring: `${CDN}/v1786100961/AdvancedChestContouring_lqaon2.png`,
+  /* The three specialist portraits are one matched set: same pale green studio
+     backdrop, same white coat. Keep any replacement to that setup or the row
+     stops reading as a set. */
+  drLohitSai: `${CDN}/v1786100959/drloki_abje1c.png`,
+  drMadan: `${CDN}/v1786100960/drmadan_lfz2nl.png`,
+  drVijayalakshmi: `${CDN}/v1786100962/drVijayalakshmi_mdfnk9.png`,
 } as const
 
 /** Hero media. The hero now shows a still image; swap this URL to change it. */

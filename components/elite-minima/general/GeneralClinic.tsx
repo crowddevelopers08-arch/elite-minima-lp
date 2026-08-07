@@ -6,6 +6,7 @@ import CountUp from "../CountUp"
 import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
+import { IMAGES } from "../config"
 import { EXPECTATIONS } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
@@ -56,7 +57,7 @@ export default function GeneralClinic() {
           <Reveal className="relative order-2 lg:col-span-5">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-[var(--e-ink)] ring-1 ring-inset ring-[var(--e-line)] shadow-[0_30px_60px_-34px_rgba(14,22,38,0.45)]">
               <Image
-                src="/why.png"
+                src={IMAGES.surgicalTeam}
                 alt="Surgical team operating in theatre at Elite-Minima – The Surgical Speciality Clinic"
                 fill
                 sizes="(min-width: 1024px) 42vw, 100vw"

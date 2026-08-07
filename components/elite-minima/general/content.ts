@@ -25,22 +25,22 @@ export const HERO_IMAGES: { src: string; alt: string; caption: string }[] = [
     caption: "Piles & Proctology",
   },
   {
-    src: "https://res.cloudinary.com/k4ojpvgo/image/upload/v1785733388/432110982_qvlkpb.jpg",
+    src: IMAGES.clinicianWithModel,
     alt: "Surgeon holding an anatomical model of the anal canal and pointing to a haemorrhoid",
     caption: "Specialist Consultation",
   },
   {
-    src: "/lipo.jpg",
+    src: IMAGES.liposuction,
     alt: "Liposuction treatment image representing gynecomastia correction",
     caption: "Gynecomastia Correction",
   },
   {
-    src: "/gland.png",
+    src: IMAGES.glandExcision,
     alt: "Surgeon marking a swelling on a patient's neck before gland excision",
     caption: "Lump & Gland Surgery",
   },
 ]
-// The Stapler.png device shot used to sit second here. It reads as hardware
+// The stapler device shot used to sit second here. It reads as hardware
 // rather than care — a bare instrument on a page whose hero is asking a nervous
 // visitor to book. It is still the Stapler Circumcision option card in PATHWAYS
 // below, where the surrounding copy gives it the context it needs.
@@ -160,14 +160,14 @@ export const PATHWAYS: Pathway[] = [
         name: "Stapler Circumcision",
         desc: "Uses a specialized circular stapling device for controlled and uniform foreskin removal.",
         category: "Device-Assisted",
-        img: "/Stapler.png",
+        img: IMAGES.staplerCircumcision,
         alt: "Circumcision treatment illustration for stapler circumcision",
       },
       {
         name: "Laser Circumcision",
         desc: "Uses surgical laser technology for precise foreskin removal while helping control bleeding during the procedure.",
         category: "Laser",
-        img: "/Lasercir.png",
+        img: IMAGES.laserCircumcision,
         alt: "Laser circumcision treatment illustration",
       },
     ],
@@ -196,21 +196,21 @@ export const PATHWAYS: Pathway[] = [
         name: "Liposuction",
         desc: "Targeted removal of excess fatty tissue to improve chest contour.",
         category: "Fat Removal",
-        img: "/lipo.jpg",
+        img: IMAGES.liposuction,
         alt: "Liposuction treatment image for gynecomastia correction",
       },
       {
         name: "Gland Excision",
         desc: "Removal of firm glandular tissue when clinically appropriate.",
         category: "Gland Removal",
-        img: "/gland.png",
+        img: IMAGES.glandExcision,
         alt: "Gland excision treatment image for gynecomastia correction",
       },
       {
         name: "Advanced Chest Contouring",
         desc: "Additional contouring techniques may be considered depending on chest anatomy and treatment requirements.",
         category: "Contouring",
-        img: "/AdvancedChestContouring.png",
+        img: IMAGES.chestContouring,
         alt: "Advanced gynecomastia contouring treatment image",
       },
     ],
@@ -283,10 +283,7 @@ export const SPECIALISTS: Specialist[] = [
       "Fistula Treatment",
       "Minimally Invasive Procedures",
     ],
-    /* All three portraits are one matched set: same pale green studio
-       backdrop, same white coat. Keep any replacement shot to that setup or
-       the row stops reading as a set. */
-    photo: "/drloki.png",
+    photo: IMAGES.drLohitSai,
     cta: "Consult Dr. Lohit Sai K",
   },
   {
@@ -302,7 +299,7 @@ export const SPECIALISTS: Specialist[] = [
       "Laser Lipoma Excision",
       "Aesthetic Surgery",
     ],
-    photo: "/drmadan.png",
+    photo: IMAGES.drMadan,
     cta: "Consult Dr. Madan K",
   },
   {
@@ -317,7 +314,7 @@ export const SPECIALISTS: Specialist[] = [
       "Palliative Care",
       "Women's Health",
     ],
-    photo: "/drVijayalakshmi.png",
+    photo: IMAGES.drVijayalakshmi,
     cta: "Consult Dr. Vijayalakshmi",
   },
 ]
