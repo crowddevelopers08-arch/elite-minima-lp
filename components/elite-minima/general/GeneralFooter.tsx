@@ -108,10 +108,6 @@ export default function GeneralFooter() {
 
       <div className="relative border-t border-white/10">
         <div className="mx-auto w-full max-w-[1180px] px-5 py-6 sm:px-8">
-          <p className="max-w-[92ch] text-[0.78rem] leading-relaxed text-white/45">
-            Treatment suitability, procedure choice, outcomes, and recovery vary based on the individual condition. A clinical consultation is
-            required to determine the appropriate treatment approach.
-          </p>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4 text-[0.78rem] text-white/50">
             <span>© 2026 {BRAND}. All rights reserved.</span>
             <a href="/privacy-policy" className="font-semibold text-white/80 transition-colors hover:text-white">

@@ -8,6 +8,7 @@ import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { EASE } from "../tokens"
 import { track } from "../track"
+import { stepOf, useUnder } from "../rail"
 import { PATHWAYS, type Pathway, type PathwayOption } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
@@ -259,30 +260,11 @@ export default function GeneralTreatments() {
 /** Dwell on a card before the rail advances, ms. */
 const CARD_MS = 3000
 
-/** Distance from one card to the next, gap included. */
-function stepOf(el: HTMLElement) {
-  const kids = Array.from(el.children) as HTMLElement[]
-  if (kids.length > 1) return kids[1].offsetLeft - kids[0].offsetLeft
-  return kids[0]?.offsetWidth || 1
-}
-
-/** True below Tailwind's `sm` — where the rail is a scroller rather than a grid. */
-function useIsPhone() {
-  const [phone, setPhone] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639.98px)")
-    const sync = () => setPhone(mq.matches)
-    sync()
-    mq.addEventListener("change", sync)
-    return () => mq.removeEventListener("change", sync)
-  }, [])
-  return phone
-}
-
 function OptionsRail({ options, onTake }: { options: PathwayOption[]; onTake: () => void }) {
   const reduced = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
-  const phone = useIsPhone()
+  /* Tailwind's `sm` — where the classes below turn the rail back into a grid. */
+  const phone = useUnder(640)
   const inView = useInView(ref, { amount: 0.4 })
   const [i, setI] = useState(0)
   /* One-way: a reader who has swiped or tapped a dot has chosen a card, and

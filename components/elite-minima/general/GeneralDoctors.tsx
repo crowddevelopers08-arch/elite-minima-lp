@@ -1,15 +1,22 @@
 "use client"
 
-import { useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import { useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
+import { stepOf, useUnder } from "../rail"
 import { ADDRESS_SHORT } from "../config"
 import { SPECIALISTS, type Specialist } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
+
+/** Dwell on a specialist before the track advances itself, ms. Longer than the
+    treatment rail's: a card here is a portrait, a name, credentials, a bio, a
+    row of expertise chips and a CTA. */
+const SLIDE_MS = 5500
 
 /* Every specialist now carries their own portrait in SPECIALISTS, so the
    per-name override map this used to need is gone. The initials plate below
@@ -25,19 +32,48 @@ function initials(name: string) {
 
 export default function GeneralDoctors() {
   const scroller = useRef<HTMLDivElement>(null)
+  const reduced = useReducedMotion()
+  /* Tailwind's `lg` — below it the row is a scroller, at it a 3-up grid. */
+  const narrow = useUnder(1024)
+  const inView = useInView(scroller, { amount: 0.35 })
+  /* One-way, as on the treatment rail: once the reader has swiped or pressed
+     an arrow they have chosen a specialist, and must not be slid off them. */
+  const [taken, setTaken] = useState(false)
 
-  /* Steps by one card, measured from the DOM (the gap is in the difference)
-     so it works at either breakpoint below lg without knowing the widths. A
-     fraction of the viewport was close enough while cards were 86% wide, but
-     with one full-width card per screen a short step can settle back onto the
-     card it started from. */
+  /* Steps by one card, measured from the DOM (the gap is in the difference) so
+     it works at either breakpoint below lg without knowing the widths, and
+     reads the live scroll position so a press landing mid-swipe steps from
+     where the track is rather than where it was. Wraps at both ends: the
+     autoplay below loops, and an arrow that dead-ends would contradict it. */
+  const go = useCallback(
+    (dir: -1 | 1) => {
+      const el = scroller.current
+      if (!el) return
+      const step = stepOf(el)
+      const at = Math.round(el.scrollLeft / step)
+      el.scrollTo({
+        left: ((at + dir + SPECIALISTS.length) % SPECIALISTS.length) * step,
+        behavior: reduced ? "auto" : "smooth",
+      })
+    },
+    [reduced],
+  )
+
   const nudge = (dir: -1 | 1) => {
-    const el = scroller.current
-    if (!el) return
-    const kids = Array.from(el.children) as HTMLElement[]
-    const step = kids.length > 1 ? kids[1].offsetLeft - kids[0].offsetLeft : el.clientWidth
-    el.scrollBy({ left: dir * step, behavior: "smooth" })
+    setTaken(true)
+    go(dir)
   }
+
+  /* Advances on its own while the track is on screen — three specialists side
+     by side on desktop are all seen at once, and the scroller owes the reader
+     the same. Not gated on reduced motion: moving to the next card is a change
+     of content, and it is the smooth scroll that is the motion, which is what
+     drops to an instant jump above. */
+  useEffect(() => {
+    if (!narrow || taken || !inView || SPECIALISTS.length < 2) return
+    const t = window.setInterval(() => go(1), SLIDE_MS)
+    return () => window.clearInterval(t)
+  }, [narrow, taken, inView, go])
 
   return (
     <section id="doctors" className="border-b border-[var(--e-line)] bg-[var(--e-canvas)] py-10 sm:py-12 lg:py-14">
@@ -68,6 +104,7 @@ export default function GeneralDoctors() {
             without a handler. */}
         <div
           ref={scroller}
+          onPointerDown={() => setTaken(true)}
           /* pb-8: overflow-x also clips the y axis, so without it the card's
              drop shadow gets sheared off along the track's bottom edge.
              scroll-px matches the track's own padding, so every card snaps to
