@@ -183,7 +183,9 @@ export default function GeneralLeadForm({ compact = false }: { compact?: boolean
       if (!res.ok) throw new Error(`Request failed with ${res.status}`)
 
       track("lead_submit", { branch: BRANCH, treatment: raw.treatment })
-      window.location.href = "/thank-you"
+      // This page's own confirmation, not the piles one — see
+      // app/general/thank-you/page.tsx.
+      window.location.href = "/general/thank-you"
     } catch {
       setSubmitting(false)
       alert(`That did not go through. Please call ${GENERAL_PHONE_DISPLAY} instead.`)
