@@ -6,8 +6,10 @@
 // Best-effort by design: callers should catch and record the failure without
 // blocking the visitor's submission.
 
+import { PILES_LEADS_FORM } from "./forms"
+
 /** Tab names — these must match the ones in eliteminima-apps-script.gs. */
-export const LEADS_TAB = "Elite Minima Piles Leads"
+export const LEADS_TAB = PILES_LEADS_FORM
 export const FEEDBACK_TAB = "Elite Minima Feedback"
 
 export interface SheetLead {
@@ -24,6 +26,8 @@ export interface SheetLead {
   medium?: string | null
   campaign?: string | null
   pageUrl?: string | null
+  /** Which form this came from — see lib/forms.ts. Doubles as the sheet tab. */
+  formName?: string | null
 }
 
 export interface SheetFeedback {
@@ -83,7 +87,10 @@ async function postToAppsScript(payload: Record<string, unknown>): Promise<Sheet
 export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
   return postToAppsScript({
     formType: "lead",
-    sheetTab: LEADS_TAB,
+    // Each form has its own tab. Unnamed submissions keep landing in the piles
+    // tab, which is where every lead went before there was a second form.
+    sheetTab: lead.formName || LEADS_TAB,
+    formName: lead.formName || LEADS_TAB,
     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
     name: lead.name,
     phone: lead.phone.replace(/\D/g, ""),

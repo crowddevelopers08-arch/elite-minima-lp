@@ -18,7 +18,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, email, address, area, duration, callDate, callTime, branch, source, medium, campaign, pageUrl } = body
+    const { name, phone, email, address, area, duration, callDate, callTime, branch, source, medium, campaign, pageUrl, formName } =
+      body
 
     if (!name || !phone) {
       return NextResponse.json({ error: 'Name and phone are required' }, { status: 400 })
@@ -38,6 +39,10 @@ export async function POST(request: NextRequest) {
       medium,
       campaign,
       pageUrl,
+      // Which form this came from (lib/forms.ts). TeleCRM files it under
+      // FormName and the Apps Script routes it to the matching tab; left unset
+      // both fall back to the piles form, which is where every lead used to go.
+      formName,
     }
 
     // Deliver to TeleCRM + Google Sheet in parallel; independent best-effort.

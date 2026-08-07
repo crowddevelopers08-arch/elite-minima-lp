@@ -20,9 +20,16 @@
    (`suggestions` / a "feedback" source) and otherwise falls back to Leads, so a
    hand-rolled or legacy POST is never silently dropped.
 
-   NOTE: the booking form collects name, phone, email, concern and a preferred
+   There are two lead forms, each with its own tab, chosen by `sheetTab`:
+     "Elite Minima Piles Leads"    — the piles landing page at /
+     "Elite Minima General Leads"  — the general page at /general
+   The names come from lib/forms.ts; an unrecognised one falls back to the piles
+   tab. Both tabs share one column layout.
+
+   NOTE: the booking forms collect name, phone, email, concern and a preferred
    callback date + time (separate native pickers). Address and Duration are kept
-   as columns because lib/sheets.ts still sends them — expect them blank.
+   as columns because lib/sheets.ts still sends them — Duration is now always
+   blank (the general form's symptom question was removed).
 
    ⚠️  If a "thereshape Leads" tab exists from the previous build, run
    migrateLegacyLeadsTab() once after pasting this code. It copies those rows
@@ -83,7 +90,7 @@ function doGet(e) {
   return ContentService
     .createTextOutput(JSON.stringify({
       status: 'Elite Minima API is live',
-      tabs: [LEADS_TAB, FEEDBACK_TAB],
+      tabs: LEAD_TABS.concat([FEEDBACK_TAB]),
       timestamp: new Date().toISOString()
     }))
     .setMimeType(ContentService.MimeType.JSON);
@@ -163,13 +170,31 @@ function _ensureHeaderRow(sheet, headers) {
 //  Tab names must match LEADS_TAB / FEEDBACK_TAB in lib/sheets.ts.
 // ─────────────────────────────────────────────────────────────────────────────
 
-var LEADS_TAB    = 'Elite Minima Piles Leads';
-var FEEDBACK_TAB = 'Elite Minima Feedback';
+var LEADS_TAB         = 'Elite Minima Piles Leads';
+var GENERAL_LEADS_TAB = 'Elite Minima General Leads';
+var FEEDBACK_TAB      = 'Elite Minima Feedback';
+
+// One tab per lead form. The names must match lib/forms.ts, which is what the
+// site sends as `sheetTab`. Both tabs share the layout below: the general form
+// asks for a treatment rather than a symptom, which lands in Concern just the
+// same, and leaves Duration blank as the piles form already does.
+var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB];
 
 var LEADS_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Concern',
                      'Preferred Date', 'Preferred Time', 'Address', 'Duration',
                      'Branch', 'Source', 'Medium', 'Campaign', 'Page URL'];
 var LEADS_WIDTHS  = [175, 160, 130, 210, 180, 130, 130, 200, 140, 160, 130, 120, 150, 300];
+
+// Which lead tab a submission belongs in. Anything unrecognised — a legacy
+// POST, a hand-rolled one — falls back to the piles tab, which is where every
+// lead went before there was a second form. Never silently dropped.
+function _leadTabFor(data) {
+  var wanted = String((data && (data.sheetTab || data.formName)) || '').trim().toLowerCase();
+  for (var i = 0; i < LEAD_TABS.length; i++) {
+    if (LEAD_TABS[i].toLowerCase() === wanted) return LEAD_TABS[i];
+  }
+  return LEADS_TAB;
+}
 
 var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Rating',
                         'Suggestions', 'Source', 'Page URL'];
@@ -179,27 +204,29 @@ var FEEDBACK_WIDTHS  = [175, 160, 130, 210, 80, 440, 210, 300];
 //  SHEET CREATORS  (with proper spreadsheet reference)
 // ─────────────────────────────────────────────────────────────────────────────
 
-function createLeadsSheet(ss) {
+// `tabName` defaults to the piles tab so existing calls read unchanged.
+function createLeadsSheet(ss, tabName) {
+  var tab = tabName || LEADS_TAB;
   try {
     if (!ss) ss = getSpreadsheet();
 
-    var existingSheet = ss.getSheetByName(LEADS_TAB);
+    var existingSheet = ss.getSheetByName(tab);
     if (existingSheet) {
-      Logger.log(LEADS_TAB + ' already exists');
+      Logger.log(tab + ' already exists');
       return existingSheet;
     }
 
-    var s = ss.insertSheet(LEADS_TAB);
+    var s = ss.insertSheet(tab);
     s.appendRow(LEADS_HEADERS);
     _styleHeader(s, LEADS_HEADERS.length, GREEN);
     _applyWidths(s, LEADS_WIDTHS);
     s.setRowHeight(1, 42);
     s.setFrozenRows(1);
     s.getRange(1, 1, 1, LEADS_HEADERS.length).createFilter();
-    Logger.log('Created ' + LEADS_TAB);
+    Logger.log('Created ' + tab);
     return s;
   } catch (e) {
-    Logger.log('Error creating ' + LEADS_TAB + ': ' + e.message);
+    Logger.log('Error creating ' + tab + ': ' + e.message);
     throw e;
   }
 }
@@ -281,7 +308,10 @@ function doPost(e) {
     }
 
     // ── 2. Booking leads (default) ───────────────────────────
-    sheet = ss.getSheetByName(LEADS_TAB) || createLeadsSheet(ss);
+    //    One tab per form: the piles landing page and the general page each
+    //    have their own, picked from `sheetTab`.
+    var leadTab = _leadTabFor(data);
+    sheet = ss.getSheetByName(leadTab) || createLeadsSheet(ss, leadTab);
     nextRow = sheet.getLastRow() + 1;
 
     sheet.appendRow([
@@ -306,8 +336,8 @@ function doPost(e) {
     sheet.getRange(nextRow, 6).setHorizontalAlignment('center'); // Preferred Date
     sheet.getRange(nextRow, 7).setHorizontalAlignment('center'); // Preferred Time
 
-    Logger.log('Lead saved to row: ' + nextRow);
-    return _json({ success: true, tab: LEADS_TAB, row: nextRow });
+    Logger.log('Lead saved to ' + leadTab + ' row: ' + nextRow);
+    return _json({ success: true, tab: leadTab, row: nextRow });
 
   } catch (err) {
     Logger.log('Error in doPost: ' + err.toString());
@@ -363,6 +393,27 @@ function testLeadDirect() {
   });
 }
 
+function testGeneralLead() {
+  // The /general form: a treatment rather than a symptom, and no Duration.
+  _mockPost({
+    formType: 'lead',
+    sheetTab: GENERAL_LEADS_TAB,
+    formName: GENERAL_LEADS_TAB,
+    name: 'General Page Test',
+    phone: '9812345670',
+    email: 'general@example.com',
+    area: 'Gynecomastia',
+    callDate: '2026-08-13',
+    callTime: '11:00 AM - 12:00 PM',
+    address: 'Anna Nagar',
+    branch: 'Elite Minima Clinic — General',
+    source: 'google',
+    medium: 'cpc',
+    campaign: 'general-search',
+    pageUrl: 'https://eliteminima.in/general'
+  });
+}
+
 function testFeedback() {
   _mockPost({
     formType: 'feedback',
@@ -390,6 +441,7 @@ function testFeedbackWithoutFormType() {
 function testAll() {
   testLead();
   testLeadDirect();
+  testGeneralLead();
   testFeedback();
   testFeedbackWithoutFormType();
   listSheets();
@@ -398,7 +450,7 @@ function testAll() {
 function testCreateSheets() {
   try {
     var ss = getSpreadsheet();
-    createLeadsSheet(ss);
+    LEAD_TABS.forEach(function (t) { createLeadsSheet(ss, t); });
     createFeedbackSheet(ss);
     Logger.log('Sheets created successfully');
     listSheets();
@@ -430,7 +482,7 @@ function setupSheets() {
     Logger.log('Setting up sheets in: ' + ss.getName());
     Logger.log('Spreadsheet URL: ' + ss.getUrl());
 
-    createLeadsSheet(ss);
+    LEAD_TABS.forEach(function (t) { createLeadsSheet(ss, t); });
     createFeedbackSheet(ss);
 
     // Make sure existing tabs pick up any new columns / headers.
@@ -445,13 +497,19 @@ function setupSheets() {
   }
 }
 
-function reformatLeadsSheet() {
+// Reformats every lead tab, or just the one named.
+function reformatLeadsSheet(tabName) {
+  if (!tabName) {
+    LEAD_TABS.forEach(function (t) { reformatLeadsSheet(t); });
+    return;
+  }
+
   try {
     var ss = getSpreadsheet();
-    var s = ss.getSheetByName(LEADS_TAB);
+    var s = ss.getSheetByName(tabName);
     if (!s) {
-      Logger.log(LEADS_TAB + ' not found. Creating...');
-      s = createLeadsSheet(ss);
+      Logger.log(tabName + ' not found. Creating...');
+      s = createLeadsSheet(ss, tabName);
       if (!s) return;
     }
 
@@ -472,9 +530,9 @@ function reformatLeadsSheet() {
       s.getRange(i, 6).setHorizontalAlignment('center');
       s.getRange(i, 7).setHorizontalAlignment('center');
     }
-    Logger.log(LEADS_TAB + ' reformatted. Rows: ' + last);
+    Logger.log(tabName + ' reformatted. Rows: ' + last);
   } catch (e) {
-    Logger.log('Error reformatting ' + LEADS_TAB + ': ' + e.message);
+    Logger.log('Error reformatting ' + tabName + ': ' + e.message);
   }
 }
 
@@ -605,7 +663,7 @@ function checkDeployment() {
 
     listSheets();
 
-    var required = [LEADS_TAB, FEEDBACK_TAB];
+    var required = LEAD_TABS.concat([FEEDBACK_TAB]);
     var missing = [];
     required.forEach(function (name) {
       var exists = ss.getSheetByName(name) !== null;
@@ -658,7 +716,7 @@ function fixSpreadsheetBinding() {
 
       PropertiesService.getScriptProperties().setProperty('SPREADSHEET_ID', ss.getId());
 
-      createLeadsSheet(ss);
+      LEAD_TABS.forEach(function (t) { createLeadsSheet(ss, t); });
       createFeedbackSheet(ss);
 
       // Apply the latest column layout to any pre-existing tabs.

@@ -25,20 +25,25 @@ export const HERO_IMAGES: { src: string; alt: string; caption: string }[] = [
     caption: "Piles & Proctology",
   },
   {
-    // Also on the Stapler Circumcision option card in PATHWAYS below — the two
-    // sections are far enough apart on the page that the repeat reads as a
-    // motif rather than a duplicate. Swap here first if a dedicated hero
-    // circumcision image is ever supplied.
-    src: "/Stapler.png",
-    alt: "Circumcision treatment illustration representing stapler and laser circumcision care",
-    caption: "Stapler & Laser Circumcision",
+    src: "https://res.cloudinary.com/k4ojpvgo/image/upload/v1785733388/432110982_qvlkpb.jpg",
+    alt: "Surgeon holding an anatomical model of the anal canal and pointing to a haemorrhoid",
+    caption: "Specialist Consultation",
   },
   {
     src: "/lipo.jpg",
     alt: "Liposuction treatment image representing gynecomastia correction",
     caption: "Gynecomastia Correction",
   },
+  {
+    src: "/gland.png",
+    alt: "Surgeon marking a swelling on a patient's neck before gland excision",
+    caption: "Lump & Gland Surgery",
+  },
 ]
+// The Stapler.png device shot used to sit second here. It reads as hardware
+// rather than care — a bare instrument on a page whose hero is asking a nervous
+// visitor to book. It is still the Stapler Circumcision option card in PATHWAYS
+// below, where the surrounding copy gives it the context it needs.
 
 /** Concern points under the hero video. Empty → the block is skipped entirely.
     Typed rather than `as const` so it still compiles with every row removed. */

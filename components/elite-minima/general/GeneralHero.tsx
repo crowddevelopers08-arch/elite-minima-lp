@@ -1,19 +1,23 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Phone, Check, ArrowRight } from "lucide-react"
 import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
 import { EASE } from "../tokens"
+import { useHold } from "../rail"
 import GeneralLeadForm from "./GeneralLeadForm"
 import { GENERAL_PHONE_TEL, HERO_CONCERNS, HERO_IMAGES } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
 
 /** Slide dwell time, ms. */
-const SLIDE_MS = 5000
+const SLIDE_MS = 3200
+
+/** Horizontal travel that counts as a swipe rather than a tap, px. */
+const SWIPE_PX = 40
 
 export default function GeneralHero() {
   return (
@@ -99,8 +103,15 @@ const PER_VIEW = 2
  * which is exactly a plain one-up carousel when a single slot is visible.
  *
  * The slots cross-fade in place rather than translating — each frame is only a
- * few hundred px wide, and sliding at that size reads as a jitter. Autoplay
- * stops on hover and on focus, and the dots double as manual controls.
+ * few hundred px wide, and sliding at that size reads as a jitter. That leaves
+ * nothing to drag, so a swipe is read off the touch events by hand: this is the
+ * one carousel on the page that is not a real scroller, and on a phone a
+ * picture that changes on its own is expected to answer a finger.
+ *
+ * Autoplay holds while a mouse is over it or focus is inside, and for a few
+ * seconds after a touch. The hover hold is limited to actual mice — a touch
+ * fires pointerenter too, and pairing it with a pointerleave that may never
+ * arrive is how a carousel ends up stopped for the rest of the visit.
  *
  * Advancing is deliberately not gated on reduced motion — changing which image
  * is shown is a content change, and it is the cross-fade that counts as motion.
@@ -110,22 +121,42 @@ function HeroCarousel() {
   const reduced = useReducedMotion()
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [held, hold] = useHold(4000)
   const count = HERO_IMAGES.length
+  const touch = useRef({ x: 0, y: 0 })
 
   const go = useCallback((next: number) => setI(((next % count) + count) % count), [count])
 
   useEffect(() => {
-    if (paused || count <= PER_VIEW) return
+    if (paused || held || count <= PER_VIEW) return
     const t = window.setInterval(() => setI((v) => (v + 1) % count), SLIDE_MS)
     return () => window.clearInterval(t)
-  }, [paused, count])
+  }, [paused, held, count])
+
+  /* Nothing is preventDefault-ed: the gesture is judged only once the finger is
+     up, so a vertical drag scrolls the page exactly as it would anywhere else,
+     and only a mostly-horizontal one is taken as a swipe. */
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    hold()
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touch.current.x
+    const dy = e.changedTouches[0].clientY - touch.current.y
+    hold()
+    if (Math.abs(dx) < SWIPE_PX || Math.abs(dx) < Math.abs(dy)) return
+    go(i + (dx < 0 ? 1 : -1))
+  }
 
   return (
     <div
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       role="region"
       aria-roledescription="carousel"
       aria-label="Treatments at Elite-Minima"
@@ -173,7 +204,10 @@ function HeroCarousel() {
           <button
             key={s.src}
             type="button"
-            onClick={() => go(d)}
+            onClick={() => {
+              hold()
+              go(d)
+            }}
             aria-label={`Show ${s.caption}`}
             aria-current={d === i}
             className={`h-1.5 rounded-full transition-all duration-300 ${

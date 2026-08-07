@@ -1,13 +1,13 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import Image from "next/image"
 import { useInView, useReducedMotion } from "framer-motion"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
-import { stepOf, useUnder } from "../rail"
+import { stepOf, useHold, useUnder } from "../rail"
 import { ADDRESS_SHORT } from "../config"
 import { SPECIALISTS, type Specialist } from "./content"
 
@@ -16,7 +16,7 @@ const BRANCH = "Elite Minima Clinic — General"
 /** Dwell on a specialist before the track advances itself, ms. Longer than the
     treatment rail's: a card here is a portrait, a name, credentials, a bio, a
     row of expertise chips and a CTA. */
-const SLIDE_MS = 5500
+const SLIDE_MS = 3800
 
 /* Every specialist now carries their own portrait in SPECIALISTS, so the
    per-name override map this used to need is gone. The initials plate below
@@ -36,9 +36,11 @@ export default function GeneralDoctors() {
   /* Tailwind's `lg` — below it the row is a scroller, at it a 3-up grid. */
   const narrow = useUnder(1024)
   const inView = useInView(scroller, { amount: 0.35 })
-  /* One-way, as on the treatment rail: once the reader has swiped or pressed
-     an arrow they have chosen a specialist, and must not be slid off them. */
-  const [taken, setTaken] = useState(false)
+  /* Held while the reader is working the track and for a few seconds after, as
+     on the treatment rail — long enough to read the specialist they landed on,
+     and self-releasing, so a finger brushing past on the way down the page
+     cannot leave the track stopped for the rest of the visit. */
+  const [taken, hold] = useHold(6000)
 
   /* Steps by one card, measured from the DOM (the gap is in the difference) so
      it works at either breakpoint below lg without knowing the widths, and
@@ -60,7 +62,7 @@ export default function GeneralDoctors() {
   )
 
   const nudge = (dir: -1 | 1) => {
-    setTaken(true)
+    hold()
     go(dir)
   }
 
@@ -104,7 +106,11 @@ export default function GeneralDoctors() {
             without a handler. */}
         <div
           ref={scroller}
-          onPointerDown={() => setTaken(true)}
+          onPointerDown={hold}
+          /* Lenis owns scrolling on this page; the touch-only opt-out keeps it
+             from swallowing a horizontal drag that starts inside the track,
+             while leaving the wheel smoothed as before. */
+          data-lenis-prevent-touch
           /* pb-8: overflow-x also clips the y axis, so without it the card's
              drop shadow gets sheared off along the track's bottom edge.
              scroll-px matches the track's own padding, so every card snaps to

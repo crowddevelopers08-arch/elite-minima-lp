@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 /**
  * Shared bits for the snap-scrolling card rails — the treatment options and the
@@ -45,4 +45,29 @@ export function useUnder(px: number) {
   }, [px])
 
   return under
+}
+
+/**
+ * Interaction hold: `true` from the moment the reader touches a rail until they
+ * have been still for `quietMs`. Returns the flag and the function that renews
+ * it — call that on every interaction.
+ *
+ * Rails used to stop for good on first touch. That is the wrong trade on a
+ * phone, where a stray finger while scrolling the page counts as a touch: it
+ * left carousels that had quietly gone dead and looked broken. Advancing under
+ * a live finger is worse, though, so it is a hold, not a switch.
+ */
+export function useHold(quietMs = 4000) {
+  const [held, setHeld] = useState(false)
+  const timer = useRef(0)
+
+  const hold = useCallback(() => {
+    setHeld(true)
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setHeld(false), quietMs)
+  }, [quietMs])
+
+  useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  return [held, hold] as const
 }

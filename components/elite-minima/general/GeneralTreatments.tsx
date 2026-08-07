@@ -8,7 +8,7 @@ import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { EASE } from "../tokens"
 import { track } from "../track"
-import { stepOf, useUnder } from "../rail"
+import { stepOf, useHold, useUnder } from "../rail"
 import { PATHWAYS, type Pathway, type PathwayOption } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
@@ -63,12 +63,16 @@ export default function GeneralTreatments() {
   const inView = useInView(tabsRef)
   const [held, setHeld] = useState(false)
   const [locked, setLocked] = useState(false)
+  /* Working the option cards holds the tabs too — see OptionsRail's onTake. A
+     hold rather than the tabs' permanent lock: a swipe on the cards is not the
+     deliberate "I want this pathway" that clicking a tab is. */
+  const [railHeld, holdTabs] = useHold(7000)
 
   /* Deliberately not gated on `reduced`: advancing the panel is a change of
      content, not motion. The animation that carries it — the sliding pill, the
      panel entrance, the card stagger — is what honours reduced motion, and each
      of those already checks `reduced` on its own. */
-  const rotating = inView && !held && !locked && PATHWAYS.length > 1
+  const rotating = inView && !held && !locked && !railHeld && PATHWAYS.length > 1
 
   useEffect(() => {
     if (!rotating) return
@@ -232,11 +236,7 @@ export default function GeneralTreatments() {
           <div className="order-2 min-w-0">
             <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[var(--e-green)]">{current.optionsLabel}</p>
 
-            {/* Taking hold of the rail stops the pathway rotation too: swiping
-                to a card is engagement with this pathway, and having the panel
-                swap out from under it a few seconds later would be worse than
-                the rotation is useful. */}
-            <OptionsRail options={current.options} onTake={() => setLocked(true)} />
+            <OptionsRail options={current.options} onTake={holdTabs} />
 
             {current.note && (
               <p className="mt-6 rounded-[16px] bg-[var(--e-green-soft)] px-4 py-3.5 text-[0.88rem] leading-relaxed text-[var(--e-green-deep)]">
@@ -258,7 +258,7 @@ export default function GeneralTreatments() {
    rail always starts on the first option of whichever pathway is showing. */
 
 /** Dwell on a card before the rail advances, ms. */
-const CARD_MS = 3000
+const CARD_MS = 2200
 
 function OptionsRail({ options, onTake }: { options: PathwayOption[]; onTake: () => void }) {
   const reduced = useReducedMotion()
@@ -267,13 +267,17 @@ function OptionsRail({ options, onTake }: { options: PathwayOption[]; onTake: ()
   const phone = useUnder(640)
   const inView = useInView(ref, { amount: 0.4 })
   const [i, setI] = useState(0)
-  /* One-way: a reader who has swiped or tapped a dot has chosen a card, and
-     must not be slid off it a moment later. */
-  const [taken, setTaken] = useState(false)
+  /* Held while the reader is working the rail, and for a few seconds after —
+     long enough to read the card they landed on, short enough that the rail is
+     moving again by the time anyone wonders whether it still does. */
+  const [taken, hold] = useHold(5000)
+
+  /* Every interaction holds the pathway tabs for their own span too: a reader
+     working the cards must not have the panel swapped out mid-sentence. */
   const take = useCallback(() => {
-    setTaken(true)
+    hold()
     onTake()
-  }, [onTake])
+  }, [hold, onTake])
 
   const goTo = useCallback(
     (n: number) => {
@@ -322,6 +326,10 @@ function OptionsRail({ options, onTake }: { options: PathwayOption[]; onTake: ()
         initial={reduced ? false : "hidden"}
         animate="show"
         onPointerDown={phone ? take : undefined}
+        /* Lenis owns scrolling on this page; the touch-only opt-out keeps it
+           from swallowing a horizontal drag that starts inside the rail, while
+           leaving the wheel — which has no business here — smoothed as before. */
+        data-lenis-prevent-touch
         onScroll={(e) => setI(Math.round(e.currentTarget.scrollLeft / stepOf(e.currentTarget)))}
       >
         {options.map((o) => (

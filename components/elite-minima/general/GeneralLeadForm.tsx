@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { track } from "../track"
 import { PHONES } from "../config"
+import { GENERAL_LEADS_FORM } from "@/lib/forms"
 import { GENERAL_PHONE_DISPLAY } from "./content"
 
 const LEAD_ENDPOINT = "/api/leads"
@@ -11,15 +12,6 @@ const LEAD_ENDPOINT = "/api/leads"
 const BRANCH = "Elite Minima Clinic — General"
 
 const TREATMENTS = ["Piles Treatment", "Circumcision", "Gynecomastia", "Not Sure / Other"] as const
-
-const SYMPTOMS = [
-  "Pain / Discomfort",
-  "Bleeding",
-  "Swelling / Lump",
-  "Tightness / Irritation",
-  "Cosmetic Concern",
-  "Other",
-] as const
 
 /* ── Callback window (clinic time, IST) ───────────────────────────────────
    Slots are held as minutes-since-midnight so "is this one in the past?" is a
@@ -162,19 +154,20 @@ export default function GeneralLeadForm({ compact = false }: { compact?: boolean
     setSubmitting(true)
     const raw = Object.fromEntries(new FormData(form).entries()) as Record<string, string>
 
-    // The lead API has no dedicated symptom column, so the two clinical answers
-    // ride the existing generic fields: `area` = what they want treated,
-    // `duration` = what they are experiencing.
+    // The lead API has no dedicated treatment column, so the clinical answer
+    // rides the existing generic `area` field — what they want treated.
     const payload = {
       name: raw.name,
       phone: raw.phone,
       email: raw.email,
       address: raw.address,
       area: raw.treatment,
-      duration: raw.symptom,
       callDate: raw.callDate, // ISO yyyy-mm-dd, so the sheet sorts it correctly
       callTime: raw.callTime, // 12-hour range with AM/PM, e.g. "3:00 PM - 4:00 PM"
       branch: BRANCH,
+      // Files these leads under their own TeleCRM FormName and their own tab of
+      // the sheet, apart from the piles landing page's.
+      formName: GENERAL_LEADS_FORM,
       source: raw.utm_source || "direct",
       medium: raw.utm_medium || "",
       campaign: raw.utm_campaign || "",
@@ -257,32 +250,20 @@ export default function GeneralLeadForm({ compact = false }: { compact?: boolean
             </Field>
           </div>
 
-          {/* items-end bottom-aligns the two controls: the questions are long
-              enough to wrap to different line counts in a half-width column,
-              which would otherwise leave the selects on different baselines. */}
-          <div className="grid grid-cols-1 gap-2.5 @min-[420px]:grid-cols-2 @min-[420px]:items-end">
-            <Field label="What treatment are you looking for?" htmlFor="gf-treatment">
-              <select id="gf-treatment" name="treatment" required defaultValue="" className={`${inputCls} min-w-0`}>
-                <option value="" disabled>
-                  Select a treatment
-                </option>
-                {TREATMENTS.map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
-            </Field>
-
-            <Field label="What are you experiencing?" htmlFor="gf-symptom">
-              <select id="gf-symptom" name="symptom" required defaultValue="" className={`${inputCls} min-w-0`}>
-                <option value="" disabled>
-                  Select what applies
-                </option>
-                {SYMPTOMS.map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </select>
-            </Field>
-          </div>
+          {/* Full width, alone on its row. It used to share the row with a
+              "what are you experiencing?" select, which asked for a symptom the
+              consultation establishes anyway — and asking a stranger to name
+              one before they will be called is a cost with no return. */}
+          <Field label="What treatment are you looking for?" htmlFor="gf-treatment">
+            <select id="gf-treatment" name="treatment" required defaultValue="" className={`${inputCls} min-w-0`}>
+              <option value="" disabled>
+                Select a treatment
+              </option>
+              {TREATMENTS.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
+            </select>
+          </Field>
 
           {/* Stacked until the card can hold two slot labels ("10:00 AM -
               11:00 AM") without wrapping — below that the two controls wrap to

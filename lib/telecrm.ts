@@ -17,6 +17,9 @@ export interface TeleCRMLead {
   medium?: string | null
   campaign?: string | null
   pageUrl?: string | null
+  /** Which form this came from — see lib/forms.ts. Lands in TeleCRM's FormName
+   *  so the two landing pages can be filtered apart in the same inbox. */
+  formName?: string | null
 }
 
 export interface TeleCRMResult {
@@ -38,6 +41,9 @@ export async function sendToTeleCRM(lead: TeleCRMLead): Promise<TeleCRMResult> {
 
   const sourceURL = lead.pageUrl || FALLBACK_PAGE
   const branch = lead.branch || "Elite Minima Clinic"
+  /* Unnamed submissions keep the label every lead carried before there was a
+     second form, so nothing already in the CRM changes meaning. */
+  const formName = lead.formName || "Elite Minima LP Leads"
 
   const payload = {
     fields: {
@@ -66,13 +72,14 @@ export async function sendToTeleCRM(lead: TeleCRMLead): Promise<TeleCRMResult> {
       Duration: lead.duration || "",
       Preferred_Call_Date: lead.callDate || "",
       Preferred_Call_Time: lead.callTime || "",
-      FormName: "Elite Minima LP Leads",
+      FormName: formName,
       Lead_Source: lead.source || "direct",
       Campaign: lead.campaign || "",
       Medium: lead.medium || "",
       Source: sourceURL,
     },
     actions: [
+      { type: "SYSTEM_NOTE", text: `Form: ${formName}` },
       { type: "SYSTEM_NOTE", text: `Branch: ${branch}` },
       { type: "SYSTEM_NOTE", text: `Email: ${lead.email || "Not specified"}` },
       { type: "SYSTEM_NOTE", text: `Address: ${lead.address || "Not specified"}` },
