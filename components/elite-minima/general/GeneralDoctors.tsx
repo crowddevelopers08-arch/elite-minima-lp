@@ -26,12 +26,17 @@ function initials(name: string) {
 export default function GeneralDoctors() {
   const scroller = useRef<HTMLDivElement>(null)
 
-  /* Scrolls by a viewport of the track rather than a fixed card width, so it
-     lands on a snap point at either breakpoint below lg. */
+  /* Steps by one card, measured from the DOM (the gap is in the difference)
+     so it works at either breakpoint below lg without knowing the widths. A
+     fraction of the viewport was close enough while cards were 86% wide, but
+     with one full-width card per screen a short step can settle back onto the
+     card it started from. */
   const nudge = (dir: -1 | 1) => {
     const el = scroller.current
     if (!el) return
-    el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: "smooth" })
+    const kids = Array.from(el.children) as HTMLElement[]
+    const step = kids.length > 1 ? kids[1].offsetLeft - kids[0].offsetLeft : el.clientWidth
+    el.scrollBy({ left: dir * step, behavior: "smooth" })
   }
 
   return (
@@ -56,17 +61,22 @@ export default function GeneralDoctors() {
 
         {/* One row of three from lg. Below that the same row becomes a snap
             carousel — three cards this tall stacked would be most of a page,
-            and a card at a third of a phone's width is unreadable. It bleeds
-            to the screen edge so the next card peeks in and reads as swipeable.
-            Native overflow scrolling, so touch drag works without a handler. */}
+            and a card at a third of a phone's width is unreadable. On a phone
+            one card fills the width outright; the arrows below are then the
+            thing that says the track continues, since there is no next-card
+            peek left to do it. Native overflow scrolling, so touch drag works
+            without a handler. */}
         <div
           ref={scroller}
           /* pb-8: overflow-x also clips the y axis, so without it the card's
-             drop shadow gets sheared off along the track's bottom edge. */
-          className="-mx-5 mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 [scrollbar-width:none] sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+             drop shadow gets sheared off along the track's bottom edge.
+             scroll-px matches the track's own padding, so every card snaps to
+             the same gutter the first one starts at instead of landing flush
+             against the screen edge. */
+          className="-mx-5 mt-12 flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 pb-8 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
         >
           {SPECIALISTS.map((s, i) => (
-            <Reveal key={s.name} index={i} className="w-[86%] flex-none snap-start sm:w-[58%] lg:w-auto">
+            <Reveal key={s.name} index={i} className="w-full flex-none snap-start sm:w-[58%] lg:w-auto">
               <DoctorCard s={s} />
             </Reveal>
           ))}
@@ -125,7 +135,7 @@ function DoctorCard({ s }: { s: Specialist }) {
             src={photo}
             alt={`${s.name}, ${s.title}`}
             fill
-            sizes="(min-width: 1024px) 390px, 86vw"
+            sizes="(min-width: 1024px) 390px, (min-width: 640px) 58vw, 92vw"
             className="object-cover object-top"
           />
         ) : (

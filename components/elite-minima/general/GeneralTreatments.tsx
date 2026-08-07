@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { motion, useInView, useReducedMotion, type Variants } from "framer-motion"
 import Image from "next/image"
-import { ArrowRight, Check, Scissors, Zap, Waves, Sparkles, CircleDot, type LucideIcon } from "lucide-react"
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Scissors, Zap, Waves, Sparkles, CircleDot, type LucideIcon } from "lucide-react"
 import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { EASE } from "../tokens"
@@ -106,7 +106,7 @@ export default function GeneralTreatments() {
           aria-label="Treatment pathways"
           onPointerEnter={() => setHeld(true)}
           onPointerLeave={() => setHeld(false)}
-          className="mx-auto mt-10 grid max-w-[720px] grid-cols-1 gap-2 rounded-[20px] border border-[var(--e-line)] bg-[var(--e-canvas)] p-2 sm:grid-cols-3"
+          className="mx-auto mt-10 grid max-w-[720px] grid-cols-3 gap-1.5 rounded-[20px] border border-[var(--e-line)] bg-[var(--e-canvas)] p-2 sm:gap-2"
         >
           {PATHWAYS.map((p) => {
             const on = p.id === active
@@ -123,7 +123,7 @@ export default function GeneralTreatments() {
                   setLocked(true)
                   track("treatment_tab", { branch: BRANCH, treatment: p.tab })
                 }}
-                className={`relative min-h-11 rounded-[14px] px-4 py-2.5 text-[0.9rem] font-semibold transition-colors duration-200 ${
+                className={`relative min-h-11 rounded-[12px] px-1 py-2 text-[0.72rem] font-semibold leading-tight transition-colors duration-200 sm:rounded-[14px] sm:px-4 sm:py-2.5 sm:text-[0.9rem] ${
                   on ? "text-white" : "text-[var(--e-muted)] hover:text-[var(--e-ink)]"
                 }`}
               >
@@ -131,7 +131,7 @@ export default function GeneralTreatments() {
                 {on && (
                   <motion.span
                     layoutId="general-treatment-pill"
-                    className="absolute inset-0 overflow-hidden rounded-[14px] bg-[var(--e-green)]"
+                    className="absolute inset-0 overflow-hidden rounded-[12px] bg-[var(--e-green)] sm:rounded-[14px]"
                     transition={reduced ? { duration: 0 } : { duration: 0.45, ease: EASE }}
                     aria-hidden
                   >
@@ -163,66 +163,79 @@ export default function GeneralTreatments() {
           role="tabpanel"
           id={`panel-${current.id}`}
           aria-labelledby={`tab-${current.id}`}
-          className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-12"
+          className="mt-10 flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,340px)_1fr] lg:gap-12"
         >
           {/* Left rail — what the pathway is, who it is for, and the CTA. It
               sticks from lg up so that framing stays beside the options while
-              they scroll; top-24 clears the sticky header (pt-4 + h-16). */}
-          <motion.div
-            className="min-w-0 lg:sticky lg:top-24 lg:self-start"
-            initial={reduced ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            <h3 className="text-[clamp(1.2rem,1.05rem+0.65vw,1.6rem)] text-[var(--e-ink)]">{current.title}</h3>
-            <p className="mt-3 text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink-soft)]">{current.lead}</p>
-            {current.body.map((b) => (
-              <p key={b} className="mt-2.5 text-[0.92rem] leading-relaxed text-[var(--e-muted)]">
-                {b}
-              </p>
-            ))}
+              they scroll; top-24 clears the sticky header (pt-4 + h-16).
 
-            {/* Single column here — the rail is ~340px, too narrow to split */}
-            <div className="mt-7 border-t border-[var(--e-line)] pt-6">
-              <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[var(--e-purple-deep)]">Common concerns</p>
-              <ul className="mt-4 grid gap-2.5">
-                {current.concerns.map((c) => (
-                  <li key={c} className="flex items-start gap-2.5 text-[0.9rem] leading-snug text-[var(--e-ink-soft)]">
-                    <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)]">
-                      <Check className="h-3 w-3" strokeWidth={3} />
-                    </span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <a
-              href="#book"
-              onClick={() => track("book_click", { branch: BRANCH, section: `treatments:${current.id}` })}
-              className="btn btn-primary group/btn mt-7 w-full"
+              Below lg the rail is split in two and the options slot between the
+              halves: on a phone the pathway copy, the concerns list and the CTA
+              stacked together pushed the actual treatments most of a screen
+              down, so the reader met the objection handling before the offer.
+              `contents` drops the wrapper out of the mobile flex so the two
+              halves can be ordered around the options; at lg it is a box again
+              and the order classes stop applying. */}
+          <div className="contents min-w-0 lg:sticky lg:top-24 lg:block lg:self-start">
+            <motion.div
+              className="order-1 min-w-0"
+              initial={reduced ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
             >
-              {current.cta}
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
-            </a>
-          </motion.div>
+              <h3 className="text-[clamp(1.2rem,1.05rem+0.65vw,1.6rem)] text-[var(--e-ink)]">{current.title}</h3>
+              <p className="mt-3 text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink-soft)]">{current.lead}</p>
+              {current.body.map((b) => (
+                <p key={b} className="mt-2.5 text-[0.92rem] leading-relaxed text-[var(--e-muted)]">
+                  {b}
+                </p>
+              ))}
+            </motion.div>
+
+            <motion.div
+              className="order-3 min-w-0"
+              initial={reduced ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              {/* Single column here — the rail is ~340px, too narrow to split.
+                  The top margin is lg-only; on mobile the flex gap spaces it. */}
+              <div className="border-t border-[var(--e-line)] pt-6 lg:mt-7">
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[var(--e-purple-deep)]">Common concerns</p>
+                <ul className="mt-4 grid gap-2.5">
+                  {current.concerns.map((c) => (
+                    <li key={c} className="flex items-start gap-2.5 text-[0.9rem] leading-snug text-[var(--e-ink-soft)]">
+                      <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)]">
+                        <Check className="h-3 w-3" strokeWidth={3} />
+                      </span>
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <a
+                href="#book"
+                onClick={() => track("book_click", { branch: BRANCH, section: `treatments:${current.id}` })}
+                className="btn btn-primary group/btn mt-7 w-full"
+              >
+                {current.cta}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+              </a>
+            </motion.div>
+          </div>
 
           {/* Options hold at 2-up from sm rather than widening to 4, so the
               two-option pathways fill their row exactly as the four-option one
               does instead of trailing a half-empty grid. */}
-          <div className="min-w-0">
+          <div className="order-2 min-w-0">
             <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[var(--e-green)]">{current.optionsLabel}</p>
 
-            <motion.div
-              className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2"
-              variants={GRID}
-              initial={reduced ? false : "hidden"}
-              animate="show"
-            >
-              {current.options.map((o) => (
-                <OptionCard key={o.name} option={o} />
-              ))}
-            </motion.div>
+            {/* Taking hold of the rail stops the pathway rotation too: swiping
+                to a card is engagement with this pathway, and having the panel
+                swap out from under it a few seconds later would be worse than
+                the rotation is useful. */}
+            <OptionsRail options={current.options} onTake={() => setLocked(true)} />
 
             {current.note && (
               <p className="mt-6 rounded-[16px] bg-[var(--e-green-soft)] px-4 py-3.5 text-[0.88rem] leading-relaxed text-[var(--e-green-deep)]">
@@ -233,6 +246,157 @@ export default function GeneralTreatments() {
         </div>
       </div>
     </section>
+  )
+}
+
+/* ── Options rail ──────────────────────────────────────────────────────────
+   A 2-up grid from sm. Below it, one full-width card at a time in a snapping
+   scroller that advances itself — four stacked cards is a long scroll past
+   options that may not apply, and a phone is too narrow to show two side by
+   side and still read either. Remounted per pathway by the panel's key, so the
+   rail always starts on the first option of whichever pathway is showing. */
+
+/** Dwell on a card before the rail advances, ms. */
+const CARD_MS = 3000
+
+/** Distance from one card to the next, gap included. */
+function stepOf(el: HTMLElement) {
+  const kids = Array.from(el.children) as HTMLElement[]
+  if (kids.length > 1) return kids[1].offsetLeft - kids[0].offsetLeft
+  return kids[0]?.offsetWidth || 1
+}
+
+/** True below Tailwind's `sm` — where the rail is a scroller rather than a grid. */
+function useIsPhone() {
+  const [phone, setPhone] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639.98px)")
+    const sync = () => setPhone(mq.matches)
+    sync()
+    mq.addEventListener("change", sync)
+    return () => mq.removeEventListener("change", sync)
+  }, [])
+  return phone
+}
+
+function OptionsRail({ options, onTake }: { options: PathwayOption[]; onTake: () => void }) {
+  const reduced = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const phone = useIsPhone()
+  const inView = useInView(ref, { amount: 0.4 })
+  const [i, setI] = useState(0)
+  /* One-way: a reader who has swiped or tapped a dot has chosen a card, and
+     must not be slid off it a moment later. */
+  const [taken, setTaken] = useState(false)
+  const take = useCallback(() => {
+    setTaken(true)
+    onTake()
+  }, [onTake])
+
+  const goTo = useCallback(
+    (n: number) => {
+      const el = ref.current
+      if (el) el.scrollTo({ left: n * stepOf(el), behavior: reduced ? "auto" : "smooth" })
+    },
+    [reduced],
+  )
+
+  /* Reads the live scroll position rather than trusting `i`: a tap landing
+     mid-swipe or mid-autoplay would otherwise step from where the rail was,
+     not from where it is, and jump the reader backwards. */
+  const nudge = useCallback(
+    (dir: 1 | -1) => {
+      const el = ref.current
+      if (!el) return
+      take()
+      const at = Math.round(el.scrollLeft / stepOf(el))
+      goTo((at + dir + options.length) % options.length)
+    },
+    [goTo, take, options.length],
+  )
+
+  useEffect(() => {
+    if (!phone || taken || !inView || options.length < 2) return
+    const t = window.setInterval(() => {
+      const el = ref.current
+      if (!el) return
+      const step = stepOf(el)
+      el.scrollTo({
+        left: ((Math.round(el.scrollLeft / step) + 1) % options.length) * step,
+        behavior: reduced ? "auto" : "smooth",
+      })
+    }, CARD_MS)
+    return () => window.clearInterval(t)
+  }, [phone, taken, inView, options.length, reduced])
+
+  return (
+    <>
+      {/* Bleeds into the shell's px-5 gutter so the card can run the full width
+          of the phone with the gutter as its own inset. */}
+      <motion.div
+        ref={ref}
+        className="swipe-row -mx-5 -mb-4 mt-4 flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 pb-4 sm:mx-0 sm:mb-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0"
+        variants={GRID}
+        initial={reduced ? false : "hidden"}
+        animate="show"
+        onPointerDown={phone ? take : undefined}
+        onScroll={(e) => setI(Math.round(e.currentTarget.scrollLeft / stepOf(e.currentTarget)))}
+      >
+        {options.map((o) => (
+          <OptionCard key={o.name} option={o} />
+        ))}
+      </motion.div>
+
+      {/* Phone only, and only worth drawing for more than one card. With a
+          full-width card there is no next-card peek to say the row continues,
+          so these carry the count and the position — and are the way through
+          the rail for anyone not swiping. Arrows wrap rather than disable at
+          the ends: the rail itself loops, and a dead button on first sight
+          would read as the carousel being broken. */}
+      {options.length > 1 && (
+        <div className="mt-4 flex items-center justify-center gap-3 sm:hidden">
+          <RailButton label="Previous option" onClick={() => nudge(-1)}>
+            <ChevronLeft className="h-4 w-4" />
+          </RailButton>
+
+          <div className="flex items-center gap-1.5">
+            {options.map((o, d) => (
+              <button
+                key={o.name}
+                type="button"
+                onClick={() => {
+                  take()
+                  goTo(d)
+                }}
+                aria-label={`Show ${o.name}`}
+                aria-current={d === i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  d === i ? "w-6 bg-[var(--e-green)]" : "w-1.5 bg-[var(--e-line)]"
+                }`}
+              />
+            ))}
+          </div>
+
+          <RailButton label="Next option" onClick={() => nudge(1)}>
+            <ChevronRight className="h-4 w-4" />
+          </RailButton>
+        </div>
+      )}
+    </>
+  )
+}
+
+/** Round arrow control for the phone rail. 40px, so it clears the tap target. */
+function RailButton({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-[var(--e-line)] bg-white text-[var(--e-ink-soft)] transition-colors duration-200 active:bg-[var(--e-green-soft)] active:text-[var(--e-green-deep)]"
+    >
+      {children}
+    </button>
   )
 }
 
@@ -247,7 +411,7 @@ function OptionCard({ option }: { option: PathwayOption }) {
   return (
     <motion.article
       variants={CARD}
-      className="group h-full overflow-hidden rounded-[20px] bg-white"
+      className="group h-full shrink-0 basis-full snap-start overflow-hidden rounded-[20px] bg-white sm:basis-auto"
       onPointerEnter={() => setHot(true)}
       onPointerLeave={() => setHot(false)}
       initial={false}

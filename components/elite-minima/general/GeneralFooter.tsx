@@ -19,14 +19,6 @@ const EXPLORE = [
   { label: "Contact", href: "#book" },
 ]
 
-const TREATMENTS = [
-  "Piles & Proctology",
-  "Circumcision",
-  "Gynecomastia & Male Breast Reduction",
-  "Laser & Minimally Invasive Procedures",
-  "Liposuction & Chest Contouring",
-]
-
 const SOCIALS = [
   { Icon: FaInstagram, href: INSTAGRAM_URL, label: "Instagram" },
   { Icon: FaFacebookF, href: FACEBOOK_URL, label: "Facebook" },
@@ -50,16 +42,7 @@ export default function GeneralFooter() {
           </p>
           {/* Folded in from the dropped fourth column — the specialities still
               need to be on the page, but they don't warrant a column of links. */}
-          <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.82rem] text-white/50">
-            {TREATMENTS.map((t, i) => (
-              <span key={t} className="inline-flex items-center gap-2">
-                {i > 0 && <span className="text-[var(--e-purple-light)]">•</span>}
-                <a href="#treatments" className="transition-colors hover:text-white">
-                  {t}
-                </a>
-              </span>
-            ))}
-          </p>
+     
 
           <div className="mt-6 flex gap-2.5">
             {SOCIALS.map(({ Icon, href, label }) => (

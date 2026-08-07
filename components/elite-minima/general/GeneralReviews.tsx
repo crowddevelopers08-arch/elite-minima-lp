@@ -67,42 +67,53 @@ export default function GeneralReviews() {
   return (
     <section id="reviews" className="overflow-hidden border-b border-[var(--e-line)] bg-white py-10 sm:py-12 lg:py-14">
       <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-8">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-12">
-          <Reveal className="lg:max-w-[420px]">
-            <p className="kicker">Patient Reviews</p>
-            <h2 className="mt-4">Trusted Surgical Care. Real Patient Experiences.</h2>
-            <TitleUnderline className="mt-3" />
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-[var(--e-muted)]">
-              Every patient&apos;s condition and treatment journey is different. Hear from patients who chose Elite-Minima for specialist
-              consultation, treatment, and follow-up care.
-            </p>
+        {/* Two columns from `lg` up; a single ordered stack below it. On phones
+            the rail is pulled up between the intro copy and the proof line — the
+            reviews are what the section is selling, and leaving them under the
+            stats and the CTA buried them a full screen down. `contents` lets the
+            intro and the proof block sit directly in the mobile flex so the rail
+            can order itself between them, then the wrapper becomes a normal
+            block again at `lg` and the two halves rejoin the left column. */}
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:items-center lg:gap-12">
+          <div className="contents lg:block lg:max-w-[420px]">
+            <Reveal className="order-1">
+              <p className="kicker">Patient Reviews</p>
+              <h2 className="mt-4">Trusted Surgical Care. Real Patient Experiences.</h2>
+              <TitleUnderline className="mt-3" />
+              <p className="mt-3 text-[0.98rem] leading-relaxed text-[var(--e-muted)]">
+                Every patient&apos;s condition and treatment journey is different. Hear from patients who chose Elite-Minima for specialist
+                consultation, treatment, and follow-up care.
+              </p>
+            </Reveal>
 
-            <p className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.85rem] font-semibold text-[var(--e-ink-soft)]">
-              {PROOF.map((p, i) => (
-                <span key={p} className="inline-flex items-center gap-2.5">
-                  {i > 0 && <span className="text-[var(--e-green)]">•</span>}
-                  {p}
-                </span>
-              ))}
-            </p>
-            <p className="mt-2 text-[0.8rem] leading-relaxed text-[var(--e-muted)]">
-              Individual experiences, treatment requirements, and recovery may vary.
-            </p>
+            <Reveal className="order-3 lg:mt-5">
+              <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.85rem] font-semibold text-[var(--e-ink-soft)]">
+                {PROOF.map((p, i) => (
+                  <span key={p} className="inline-flex items-center gap-2.5">
+                    {i > 0 && <span className="text-[var(--e-green)]">•</span>}
+                    {p}
+                  </span>
+                ))}
+              </p>
+              <p className="mt-2 text-[0.8rem] leading-relaxed text-[var(--e-muted)]">
+                Individual experiences, treatment requirements, and recovery may vary.
+              </p>
 
-            <a
-              href="#book"
-              onClick={() => track("book_click", { branch: BRANCH, section: "reviews" })}
-              className="btn btn-primary group/btn mt-6"
-            >
-              Book Your Consultation
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
-            </a>
-          </Reveal>
+              <a
+                href="#book"
+                onClick={() => track("book_click", { branch: BRANCH, section: "reviews" })}
+                className="btn btn-primary group/btn mt-6"
+              >
+                Book Your Consultation
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
+              </a>
+            </Reveal>
+          </div>
 
           {/* Cards drift right → left, forever. Bleeds past the shell gutter so
               the rail reads as continuing off-screen rather than stopping at a
               margin. */}
-          <Reveal className="marquee-rail marquee-fade -mr-5 min-w-0 sm:-mr-8">
+          <Reveal className="marquee-rail marquee-fade order-2 -mr-5 min-w-0 sm:-mr-8">
             <div className="marquee py-1 [--marquee-duration:38s]">
               <Track />
               <Track duplicate />

@@ -482,6 +482,31 @@
   }
 }
 
+/* hand-swiped card row. Phone-only, matching the `sm:` breakpoint where the
+   utilities on the row turn it back into a grid — above that there is nothing
+   to scroll and these rules would only fight the grid.
+
+   The scrollbar is hidden because the row is thumbed, and the bar only ever
+   showed up as a grey line under the cards; the partly visible next card is the
+   affordance instead. Keyboard and screen readers still reach every card — this
+   is real overflow, not a transform, so focus scrolls it into view.
+
+   overflow-y is pinned to hidden because a lone `overflow-x: auto` computes the
+   other axis to auto too, and the cards' entrance animation lifts them out of
+   the box on the way in. The row's bottom padding (cancelled by a matching
+   negative margin) is what keeps that clip off the card shadows. */
+@media (max-width: 639.98px) {
+  .elite .swipe-row {
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .elite .swipe-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* staggered hero entrance */
 .elite .rise {
   opacity: 0;

@@ -79,16 +79,24 @@ export default function GeneralHero() {
   )
 }
 
-/** Frames visible at once. */
+/** Frames rendered at once — the second is hidden below `sm`, see below. */
 const PER_VIEW = 2
 
 /**
- * Hero carousel — two pathway images at a time, advancing on its own.
+ * Hero carousel — two pathway images at a time, one at a time on phones,
+ * advancing on its own.
  *
  * A sliding window rather than a paged track: with three images and two slots,
  * paging would leave a half-empty second page, so instead each slot holds
  * `HERO_IMAGES[(i + slot) % count]` and the window steps one image per tick.
  * Every image therefore gets a turn in both positions.
+ *
+ * Narrow screens show only slot 0: two frames side by side at phone width are
+ * too small to read, and stacking them would push the form and the CTAs far
+ * below the fold. The second slot is dropped with CSS rather than by measuring
+ * the viewport so the server and the first client render agree — it is lazy, so
+ * while hidden it costs no download. The window still steps one image per tick,
+ * which is exactly a plain one-up carousel when a single slot is visible.
  *
  * The slots cross-fade in place rather than translating — each frame is only a
  * few hundred px wide, and sliding at that size reads as a jitter. Autoplay
@@ -122,13 +130,15 @@ function HeroCarousel() {
       aria-roledescription="carousel"
       aria-label="Treatments at Elite-Minima"
     >
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {Array.from({ length: PER_VIEW }, (_, slot) => {
           const s = HERO_IMAGES[(i + slot) % count]
           return (
             <div
               key={slot}
-              className="relative h-[190px] overflow-hidden rounded-[20px] bg-[var(--e-line-soft)] shadow-[0_18px_50px_-32px_rgba(14,22,38,0.45)] sm:h-[235px] sm:rounded-[22px] lg:h-[258px]"
+              className={`relative h-[220px] overflow-hidden rounded-[20px] bg-[var(--e-line-soft)] shadow-[0_18px_50px_-32px_rgba(14,22,38,0.45)] sm:h-[235px] sm:rounded-[22px] lg:h-[258px] ${
+                slot === 0 ? "" : "hidden sm:block"
+              }`}
             >
               <AnimatePresence initial={false} mode="sync">
                 <motion.div
@@ -143,7 +153,7 @@ function HeroCarousel() {
                     src={s.src}
                     alt={s.alt}
                     fill
-                    sizes="(min-width: 1024px) 28vw, 50vw"
+                    sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw"
                     priority={slot === 0}
                     className="object-cover object-center"
                   />

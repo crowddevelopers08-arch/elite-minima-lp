@@ -29,7 +29,7 @@ export const HERO_IMAGES: { src: string; alt: string; caption: string }[] = [
     // sections are far enough apart on the page that the repeat reads as a
     // motif rather than a duplicate. Swap here first if a dedicated hero
     // circumcision image is ever supplied.
-    src: "/circum-cure.jpg",
+    src: "/Stapler.png",
     alt: "Circumcision treatment illustration representing stapler and laser circumcision care",
     caption: "Stapler & Laser Circumcision",
   },
@@ -155,14 +155,14 @@ export const PATHWAYS: Pathway[] = [
         name: "Stapler Circumcision",
         desc: "Uses a specialized circular stapling device for controlled and uniform foreskin removal.",
         category: "Device-Assisted",
-        img: "/circum-cure.jpg",
+        img: "/Stapler.png",
         alt: "Circumcision treatment illustration for stapler circumcision",
       },
       {
         name: "Laser Circumcision",
         desc: "Uses surgical laser technology for precise foreskin removal while helping control bleeding during the procedure.",
         category: "Laser",
-        img: "/Laser.webp",
+        img: "/Lasercir.png",
         alt: "Laser circumcision treatment illustration",
       },
     ],
@@ -282,7 +282,7 @@ export const SPECIALISTS: Specialist[] = [
        backdrop, same white coat. Keep any replacement shot to that setup or
        the row stops reading as a set. */
     photo: "/drloki.png",
-    cta: "Book Consultation",
+    cta: "Consult Dr. Lohit Sai K",
   },
   {
     name: "Dr. Madan K",
