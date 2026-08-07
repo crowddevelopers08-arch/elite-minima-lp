@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import { ArrowRight, Phone } from "lucide-react"
 import { track } from "../track"
 import { EASE } from "../tokens"
-import { GENERAL_PHONE_DISPLAY, GENERAL_PHONE_TEL } from "./content"
+import { PHONES } from "../config"
 
 const BRANCH = "Elite Minima Clinic — General"
 
@@ -74,14 +74,17 @@ export default function GeneralFinalCta() {
             Book Consultation
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
           </a>
-          <a
-            href={`tel:${GENERAL_PHONE_TEL}`}
-            onClick={() => track("call_click", { branch: BRANCH, section: "final-cta" })}
-            className="btn w-full border-white/40 text-white hover:border-white hover:bg-white/10 sm:w-auto"
-          >
-            <Phone className="h-4 w-4" />
-            Call {GENERAL_PHONE_DISPLAY}
-          </a>
+          {PHONES.map((p) => (
+            <a
+              key={p.tel}
+              href={`tel:${p.tel}`}
+              onClick={() => track("call_click", { branch: BRANCH, section: "final-cta" })}
+              className="btn w-full border-white/40 text-white hover:border-white hover:bg-white/10 sm:w-auto"
+            >
+              <Phone className="h-4 w-4" />
+              Call {p.display}
+            </a>
+          ))}
         </div>
       </motion.div>
     </section>

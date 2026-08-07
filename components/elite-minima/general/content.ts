@@ -7,8 +7,9 @@
 
 import { IMAGES } from "../config"
 
-/** The number the general page's call CTAs dial, per the approved copy. */
-export { PHONE_ALT_DISPLAY as GENERAL_PHONE_DISPLAY, PHONE_ALT_TEL as GENERAL_PHONE_TEL } from "../config"
+/** The number the general page's call CTAs dial. Keep it aligned with the
+    clinic's primary line used on the piles page. */
+export { PHONE_DISPLAY as GENERAL_PHONE_DISPLAY, PHONE_TEL as GENERAL_PHONE_TEL } from "../config"
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 

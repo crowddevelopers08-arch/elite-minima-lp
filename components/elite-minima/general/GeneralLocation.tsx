@@ -7,8 +7,8 @@ import Reveal from "../Reveal"
 import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
 import { EASE } from "../tokens"
-import { ADDRESS_FULL, MAP_DIRECTIONS_URL, MAP_QUERY } from "../config"
-import { CONSULT_WINDOW, GENERAL_PHONE_DISPLAY, GENERAL_PHONE_TEL } from "./content"
+import { ADDRESS_FULL, MAP_DIRECTIONS_URL, MAP_QUERY, PHONES } from "../config"
+import { CONSULT_WINDOW } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
 
@@ -101,13 +101,16 @@ export default function GeneralLocation() {
             viewport={VIEW}
           >
             <Cell icon={Phone} label="Call" reduced={!!reduced}>
-              <a
-                href={`tel:${GENERAL_PHONE_TEL}`}
-                onClick={() => track("call_click", { branch: BRANCH, section: "location" })}
-                className="block text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
-              >
-                {GENERAL_PHONE_DISPLAY}
-              </a>
+              {PHONES.map((p) => (
+                <a
+                  key={p.tel}
+                  href={`tel:${p.tel}`}
+                  onClick={() => track("call_click", { branch: BRANCH, section: "location" })}
+                  className="block text-[0.95rem] font-semibold leading-relaxed text-[var(--e-ink)] transition-colors duration-200 hover:text-[var(--e-green-deep)]"
+                >
+                  {p.display}
+                </a>
+              ))}
             </Cell>
 
             <Cell icon={MapPin} label="Address" offset={0.4} reduced={!!reduced}>

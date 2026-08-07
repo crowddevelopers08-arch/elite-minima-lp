@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { track } from "../track"
-import { PHONES } from "../config"
+import { PHONE_ALT_DISPLAY, PHONES } from "../config"
 import { GENERAL_LEADS_FORM } from "@/lib/forms"
 import { GENERAL_PHONE_DISPLAY } from "./content"
 
@@ -188,7 +188,7 @@ export default function GeneralLeadForm({ compact = false }: { compact?: boolean
       window.location.href = "/general/thank-you"
     } catch {
       setSubmitting(false)
-      alert(`That did not go through. Please call ${GENERAL_PHONE_DISPLAY} instead.`)
+      alert(`That did not go through. Please call ${GENERAL_PHONE_DISPLAY} or ${PHONE_ALT_DISPLAY} instead.`)
     }
   }
 

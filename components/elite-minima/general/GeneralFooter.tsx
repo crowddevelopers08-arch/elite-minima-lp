@@ -4,8 +4,7 @@ import Image from "next/image"
 import { LuPhone, LuMail, LuMapPin } from "react-icons/lu"
 import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa"
 import { track } from "../track"
-import { ADDRESS_FULL, BRAND, BRAND_FULL, EMAIL, FACEBOOK_URL, IMAGES, INSTAGRAM_URL, WHATSAPP_URL } from "../config"
-import { GENERAL_PHONE_DISPLAY, GENERAL_PHONE_TEL } from "./content"
+import { ADDRESS_FULL, BRAND, BRAND_FULL, EMAIL, FACEBOOK_URL, IMAGES, INSTAGRAM_URL, PHONES, WHATSAPP_URL } from "../config"
 
 const BRANCH = "Elite Minima Clinic — General"
 
@@ -77,16 +76,23 @@ export default function GeneralFooter() {
           <h4 className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-[var(--e-purple-light)]">Reach</h4>
           <ul className="mt-4 space-y-3.5 text-[0.9rem]">
             <li>
-              <a
-                href={`tel:${GENERAL_PHONE_TEL}`}
-                onClick={() => track("call_click", { branch: BRANCH, section: "footer" })}
-                className="flex items-center gap-3 font-semibold text-white transition-colors hover:text-[var(--e-purple-light)]"
-              >
+              <div className="flex items-start gap-3">
                 <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-white/10 text-[var(--e-purple-light)]">
                   <LuPhone className="h-4 w-4" />
                 </span>
-                {GENERAL_PHONE_DISPLAY}
-              </a>
+                <div className="flex flex-col gap-1.5">
+                  {PHONES.map((p) => (
+                    <a
+                      key={p.tel}
+                      href={`tel:${p.tel}`}
+                      onClick={() => track("call_click", { branch: BRANCH, section: "footer" })}
+                      className="font-semibold text-white transition-colors hover:text-[var(--e-purple-light)]"
+                    >
+                      {p.display}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </li>
             <li>
               <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 text-white/70 transition-colors hover:text-[var(--e-purple-light)]">
