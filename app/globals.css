@@ -581,3 +581,282 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   ELITE MINIMA — Gynecomastia landing page  (/gynecomastia)
+   Scoped design system under .gyn. Deliberately shares NOTHING
+   with .elite above except the brand hues: where .elite is a
+   white, pill-shaped, soft-shadowed SaaS system, this one is a
+   dark editorial one — near-black surfaces cut by bone-white
+   bands, square corners, hairline rules, outlined numerals and
+   a condensed uppercase display face (Oswald) over Lato body.
+   Two pages already use .elite; a third wearing it would have
+   been the same page with different words.
+   ============================================================ */
+.gyn {
+  /* Dark half — the page's ground. */
+  --g-base: #080c14;      /* near-black navy, one step under .elite's ink */
+  --g-surface: #0e1524;   /* raised band inside the dark */
+  --g-raised: #141d2e;    /* cards / inputs on the dark */
+  --g-line: #1e2839;      /* hairline on dark */
+  --g-line-strong: #2c3853;
+  --g-text: #f4f6fa;
+  --g-dim: #9aa6bc;       /* 8.8:1 on --g-base — AA body on dark */
+
+  /* Bone half — the light bands that interrupt the dark. Warm, not white, so
+     it never reads as the same paper the other two pages are printed on. */
+  --g-bone: #f1f0ec;
+  --g-bone-2: #e7e5df;
+  --g-bone-line: #d6d3c9;
+  --g-ink: #0b1017;
+  --g-ink-dim: #4e5665;   /* 7.4:1 on bone */
+
+  /* Brand hues, re-mixed for a dark ground. Green stays the action colour;
+     the logo's #17743C is unreadable on near-black, so the lifted tint leads
+     and the original is kept for text on the bone bands. */
+  --g-accent: #3fbf77;
+  --g-accent-soft: #7bd6a3;
+  --g-accent-deep: #17743c;
+  --g-violet: #b9a7e8;
+  --g-violet-deep: #513e98;
+
+  --font-gyn-display: var(--font-oswald), var(--font-lato), sans-serif;
+
+  background: var(--g-base);
+  color: var(--g-text);
+  font-family: var(--font-lato), sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Display face. Condensed, uppercase and tightly leaded — the single loudest
+   difference from .elite, whose headings are Lato sentence case. */
+.gyn h1,
+.gyn h2,
+.gyn h3,
+.gyn h4,
+.gyn .g-display {
+  font-family: var(--font-gyn-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  line-height: 1.04;
+  color: inherit;
+}
+.gyn h1 {
+  font-size: clamp(2.3rem, 1.3rem + 4vw, 4.4rem);
+}
+.gyn h2 {
+  font-size: clamp(1.8rem, 1.2rem + 2.4vw, 3.05rem);
+}
+.gyn h3 {
+  font-size: clamp(1.08rem, 0.98rem + 0.5vw, 1.4rem);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+.gyn h4 {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+
+.gyn :focus-visible {
+  outline: 2px solid var(--g-accent);
+  outline-offset: 3px;
+  border-radius: 0;
+}
+.gyn ::selection {
+  background: var(--g-accent);
+  color: #04140a;
+}
+
+/* Same anchor-landing contract as .elite — SmoothScroll reads this back off the
+   target, so the value has to live on the element, not in the script. */
+.gyn section[id],
+.gyn #book {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ── Eyebrow ──────────────────────────────────────────────────────────────
+   A numbered index rather than .elite's gradient dash: "03 / Treatment". */
+.gyn .g-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--g-accent);
+}
+.gyn .g-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.gyn .g-eyebrow--ink {
+  color: var(--g-accent-deep);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────
+   Square, tracked, uppercase. No radius, no drop shadow: the state change is
+   a 1px border and a fill, which is the whole vocabulary of this page. */
+.gyn .g-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 15px 26px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s ease;
+}
+.gyn .g-btn-solid {
+  background: var(--g-accent);
+  color: #04140a;
+}
+.gyn .g-btn-solid:hover {
+  background: var(--g-accent-soft);
+  transform: translateY(-2px);
+}
+.gyn .g-btn-line {
+  border-color: var(--g-line-strong);
+  color: var(--g-text);
+}
+.gyn .g-btn-line:hover {
+  border-color: var(--g-accent);
+  color: var(--g-accent);
+  transform: translateY(-2px);
+}
+/* Same two buttons, inverted for the bone bands. */
+.gyn .g-btn-ink {
+  background: var(--g-ink);
+  color: var(--g-bone);
+}
+.gyn .g-btn-ink:hover {
+  background: var(--g-accent-deep);
+  transform: translateY(-2px);
+}
+.gyn .g-btn-ink-line {
+  border-color: var(--g-bone-line);
+  color: var(--g-ink);
+}
+.gyn .g-btn-ink-line:hover {
+  border-color: var(--g-ink);
+  transform: translateY(-2px);
+}
+.gyn .g-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+/* ── Outlined numeral ─────────────────────────────────────────────────────
+   The section/step index, drawn as an outline so a very large number can sit
+   behind copy without competing with it. */
+.gyn .g-numeral {
+  font-family: var(--font-gyn-display);
+  font-weight: 700;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--g-line-strong);
+}
+.gyn .g-numeral--ink {
+  -webkit-text-stroke-color: var(--g-bone-line);
+}
+.gyn .g-numeral--on {
+  color: var(--g-accent);
+  -webkit-text-stroke-color: var(--g-accent);
+}
+
+/* ── Underlined form fields ───────────────────────────────────────────────
+   No boxes. Both other forms on the site are rounded filled inputs; here the
+   field is a baseline the value sits on. */
+.gyn .g-form {
+  color-scheme: dark;
+}
+.gyn .g-field {
+  width: 100%;
+  min-height: 46px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--g-line-strong);
+  border-radius: 0;
+  padding: 10px 2px;
+  font-size: 0.95rem;
+  color: var(--g-text);
+  transition: border-color 0.2s ease;
+}
+.gyn .g-field::placeholder {
+  color: #6b7689;
+}
+.gyn .g-field:focus {
+  outline: none;
+  border-bottom-color: var(--g-accent);
+}
+.gyn .g-field option {
+  background: var(--g-raised);
+  color: var(--g-text);
+}
+
+/* Hairline grid overlay — the page's only texture. Squares, to match the
+   geometry, where .elite uses a dot field. */
+.gyn .g-grid-tex {
+  background-image: linear-gradient(var(--g-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--g-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Phone-only card row, same contract as .elite's .swipe-row. */
+@media (max-width: 639.98px) {
+  .gyn .g-swipe {
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .gyn .g-swipe::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Staggered entrance for the hero, mirroring .elite's .rise/.dN pairing so the
+   markup reads the same way even though nothing else here does. */
+.gyn .g-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: gyn-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes gyn-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.gyn .g-d1 { animation-delay: 0.06s; }
+.gyn .g-d2 { animation-delay: 0.16s; }
+.gyn .g-d3 { animation-delay: 0.26s; }
+.gyn .g-d4 { animation-delay: 0.36s; }
+.gyn .g-d5 { animation-delay: 0.46s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gyn .g-rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .gyn * {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -17,3 +17,6 @@ export const PILES_LEADS_FORM = "Elite Minima Piles Leads"
 
 /** The general page form (/general) — piles, circumcision and gynecomastia. */
 export const GENERAL_LEADS_FORM = "Elite Minima General Leads"
+
+/** The gynecomastia page form (/gynecomastia) — male breast reduction only. */
+export const GYNECOMASTIA_LEADS_FORM = "Elite Minima Gynecomastia Leads"

@@ -20,11 +20,12 @@
    (`suggestions` / a "feedback" source) and otherwise falls back to Leads, so a
    hand-rolled or legacy POST is never silently dropped.
 
-   There are two lead forms, each with its own tab, chosen by `sheetTab`:
-     "Elite Minima Piles Leads"    — the piles landing page at /
-     "Elite Minima General Leads"  — the general page at /general
+   There are three lead forms, each with its own tab, chosen by `sheetTab`:
+     "Elite Minima Piles Leads"         — the piles landing page at /
+     "Elite Minima General Leads"       — the general page at /general
+     "Elite Minima Gynecomastia Leads"  — the page at /gynecomastia
    The names come from lib/forms.ts; an unrecognised one falls back to the piles
-   tab. Both tabs share one column layout.
+   tab. All three tabs share one column layout.
 
    NOTE: the booking forms collect name, phone, email, concern and a preferred
    callback date + time (separate native pickers). Address and Duration are kept
@@ -172,13 +173,15 @@ function _ensureHeaderRow(sheet, headers) {
 
 var LEADS_TAB         = 'Elite Minima Piles Leads';
 var GENERAL_LEADS_TAB = 'Elite Minima General Leads';
+var GYN_LEADS_TAB     = 'Elite Minima Gynecomastia Leads';
 var FEEDBACK_TAB      = 'Elite Minima Feedback';
 
 // One tab per lead form. The names must match lib/forms.ts, which is what the
-// site sends as `sheetTab`. Both tabs share the layout below: the general form
-// asks for a treatment rather than a symptom, which lands in Concern just the
-// same, and leaves Duration blank as the piles form already does.
-var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB];
+// site sends as `sheetTab`. Every tab shares the layout below: the general and
+// gynecomastia forms ask for a treatment rather than a symptom, which lands in
+// Concern just the same, and leave Duration blank as the piles form already
+// does.
+var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB, GYN_LEADS_TAB];
 
 var LEADS_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Concern',
                      'Preferred Date', 'Preferred Time', 'Address', 'Duration',
