@@ -417,6 +417,30 @@ function testGeneralLead() {
   });
 }
 
+function testGynLead() {
+  // The /gynecomastia form: name, phone, email, address, the concern picked
+  // from the dropdown, and an hour-long callback slot. No Duration — that
+  // question does not exist on this form.
+  _mockPost({
+    formType: 'lead',
+    sheetTab: GYN_LEADS_TAB,
+    formName: GYN_LEADS_TAB,
+    name: 'Gynecomastia Page Test',
+    phone: '9845612370',
+    email: 'gyneco@example.com',
+    area: 'Puffy or enlarged chest',
+    callDate: '2026-08-15',
+    callTime: '5:00 PM - 6:00 PM',
+    address: 'Mogappair',
+    duration: '',
+    branch: 'Elite Minima Clinic — Gynecomastia',
+    source: 'google',
+    medium: 'cpc',
+    campaign: 'gynecomastia-search',
+    pageUrl: 'https://eliteminima.in/gynecomastia'
+  });
+}
+
 function testFeedback() {
   _mockPost({
     formType: 'feedback',
@@ -445,6 +469,7 @@ function testAll() {
   testLead();
   testLeadDirect();
   testGeneralLead();
+  testGynLead();
   testFeedback();
   testFeedbackWithoutFormType();
   listSheets();
