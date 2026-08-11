@@ -1,9 +1,15 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Image from "next/image"
+import { motion, useReducedMotion } from "framer-motion"
 import { ArrowDown, Check, Phone, Play } from "lucide-react"
 import { track } from "../track"
+import { EASE } from "../tokens"
 import { GYN_BRANCH, GYN_PHONE_TEL, HERO, HERO_CONCERNS, HERO_MEDIA, HERO_SURGEON } from "./content"
+
+/** How long each hero slide holds before the frame cross-fades to the next. */
+const SLIDE_MS = 5000
 
 /**
  * Hero — media-led, form-free.
@@ -30,15 +36,50 @@ export default function GynHero() {
         style={{ background: "radial-gradient(circle, rgba(63,191,119,0.28), transparent 68%)" }}
       />
 
-      <div className="relative mx-auto grid w-full max-w-[1320px] gap-10 px-5 py-10 sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14 lg:py-10">
-        {/* ── Copy ─────────────────────────────────────────────────────── */}
-        <div className="min-w-0">
+      {/* Three blocks in one grid rather than two columns of stacked copy.
+          On phones they simply follow each other, which is what puts the
+          media between the lead and the concerns; from lg the copy halves are
+          placed back into column one and the media spans both their rows.
+          Splitting it this way keeps one HeroMedia in the tree — the
+          alternative, a mobile copy and a desktop copy, would run two
+          carousels and two timers to show one image. */}
+      <div className="relative mx-auto grid w-full max-w-[1320px] px-5 pb-10 pt-4 sm:px-8 sm:pb-10 sm:pt-8 lg:grid-cols-[1.05fr_0.95fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-14 lg:py-10">
+        {/* ── Copy, above the media on mobile ──────────────────────────── */}
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <p className="g-rise g-d1 g-eyebrow">Male Breast Reduction</p>
 
-          <h1 className="g-rise g-d2 mt-5 max-w-[16ch]">{HERO.title}</h1>
+          <h1 className="g-rise g-d2 mt-5 max-w-[18ch]">{HERO.title}</h1>
 
           <p className="g-rise g-d3 mt-6 max-w-[62ch] text-[0.98rem] leading-relaxed text-[var(--g-dim)]">{HERO.lead}</p>
+        </div>
 
+        {/* ── Media + surgeon plate ────────────────────────────────────── */}
+        <div className="g-rise g-d3 mt-8 min-w-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mt-0 lg:self-center">
+          <HeroMedia />
+
+          {/* The surgeon is named on the media, not in a card of his own —
+              the film and the face are one credential. */}
+          <div className="flex items-center gap-4 border border-t-0 border-[var(--g-line)] bg-[var(--g-surface)] p-4">
+            <span className="relative h-14 w-14 flex-none overflow-hidden bg-[var(--g-raised)]">
+              {/* object-center, not object-top: the crop is done upstream in
+                  the URL and is already centred on the face. */}
+              <Image
+                src={HERO_SURGEON.photo}
+                alt={`${HERO_SURGEON.name} — ${HERO_SURGEON.title}`}
+                fill
+                sizes="56px"
+                className="object-cover object-center"
+              />
+            </span>
+            <div className="min-w-0">
+              <p className="g-display text-[1.05rem] leading-none text-[var(--g-text)]">{HERO_SURGEON.name}</p>
+              <p className="mt-1.5 text-[0.78rem] leading-snug text-[var(--g-dim)]">{HERO_SURGEON.title}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Copy, below the media on mobile ──────────────────────────── */}
+        <div className="min-w-0 lg:col-start-1 lg:row-start-2">
           <div className="g-rise g-d4 mt-8">
             <p className="text-[0.68rem] font-bold uppercase tracking-[0.24em] text-[var(--g-text)]">Common concerns we treat</p>
             {/* Hairline rows, two columns from sm. A tinted chip per concern
@@ -76,29 +117,6 @@ export default function GynHero() {
             </a>
           </div>
         </div>
-
-        {/* ── Media + surgeon plate ────────────────────────────────────── */}
-        <div className="g-rise g-d3 min-w-0">
-          <HeroMedia />
-
-          {/* The surgeon is named on the media, not in a card of his own —
-              the film and the face are one credential. */}
-          <div className="flex items-center gap-4 border border-t-0 border-[var(--g-line)] bg-[var(--g-surface)] p-4">
-            <span className="relative h-14 w-14 flex-none overflow-hidden bg-[var(--g-raised)]">
-              <Image
-                src={HERO_SURGEON.photo}
-                alt={`${HERO_SURGEON.name} — ${HERO_SURGEON.title}`}
-                fill
-                sizes="56px"
-                className="object-cover object-top"
-              />
-            </span>
-            <div className="min-w-0">
-              <p className="g-display text-[1.05rem] leading-none text-[var(--g-text)]">{HERO_SURGEON.name}</p>
-              <p className="mt-1.5 text-[0.78rem] leading-snug text-[var(--g-dim)]">{HERO_SURGEON.title}</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )
@@ -107,38 +125,109 @@ export default function GynHero() {
 /**
  * The hero frame.
  *
- * A real `<video>` when one is configured in content.ts, and the poster still
+ * A real `<video>` when one is configured in content.ts, and the slides
  * otherwise — the clinic has no chest-contouring film yet, and a play button
  * over an image that cannot play is worse than no button. Dropping a URL into
  * HERO_MEDIA.video is the only change needed to turn this into a player.
+ *
+ * With more than one slide the still becomes a cross-fade carousel. Every
+ * slide is mounted at once and only opacity moves, so the browser has each
+ * image decoded before its turn and the frame never flashes empty mid-fade —
+ * two images is cheap enough to afford that, and it keeps the corner ticks and
+ * the caption chip layered over a frame that never changes size.
  */
 function HeroMedia() {
-  const { video, poster, alt } = HERO_MEDIA
+  const { video, slides } = HERO_MEDIA
+  const reduced = useReducedMotion()
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  const many = !video && slides.length > 1
+
+  // No timer under prefers-reduced-motion: the dots below still work, so the
+  // other slides stay reachable — they just never arrive on their own.
+  useEffect(() => {
+    if (!many || paused || reduced) return
+    const id = window.setInterval(() => setIndex((n) => (n + 1) % slides.length), SLIDE_MS)
+    return () => window.clearInterval(id)
+  }, [many, paused, reduced, slides.length])
+
+  const active = slides[index] ?? slides[0]
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden border border-[var(--g-line)] bg-[var(--g-raised)]">
+    // Taller than the 4:3 it started as, and taller again from lg, where the
+    // frame sits beside a copy column running to roughly the viewport height —
+    // at 4:3 it finished well short of it and the row read as top-heavy.
+    <div className="relative aspect-[5/4] w-full overflow-hidden border border-[var(--g-line)] bg-[var(--g-raised)] sm:aspect-[9/8] lg:aspect-square">
       {video ? (
         <video
           className="h-full w-full object-cover"
           src={video}
-          poster={poster}
+          poster={slides[0].src}
           controls
           playsInline
           preload="metadata"
-          aria-label={alt}
+          aria-label={slides[0].alt}
         />
       ) : (
-        <>
-          <Image src={poster} alt={alt} fill sizes="(min-width: 1024px) 46vw, 100vw" priority className="object-cover object-center" />
+        <div
+          className="absolute inset-0"
+          onPointerEnter={() => setPaused(true)}
+          onPointerLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
+          {...(many ? { role: "group", "aria-roledescription": "carousel", "aria-label": "Clinic images" } : {})}
+        >
+          {slides.map((s, i) => (
+            <motion.div
+              key={s.src}
+              className="absolute inset-0"
+              initial={false}
+              animate={{ opacity: i === index ? 1 : 0 }}
+              transition={{ duration: reduced ? 0 : 0.9, ease: EASE }}
+              // Off-screen slides are decorative until they come round, and
+              // announcing all of them at once would read as one run-on image.
+              aria-hidden={i !== index}
+            >
+              <Image
+                src={s.src}
+                alt={s.alt}
+                fill
+                sizes="(min-width: 1024px) 46vw, 100vw"
+                priority={i === 0}
+                className="object-cover object-center"
+              />
+            </motion.div>
+          ))}
+
           <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,20,0.05),rgba(8,12,20,0.72))]" />
           <span
             aria-hidden
             className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2.5 border border-white/25 bg-[rgba(8,12,20,0.6)] px-3 py-2 text-[0.66rem] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-[6px]"
           >
             <Play className="h-3 w-3 fill-current" />
-            Chest contouring
+            {active.caption}
           </span>
-        </>
+
+          {/* Bars rather than dots — square ends, in keeping with a page that
+              has no rounded corner anywhere. */}
+          {many && (
+            <div className="absolute bottom-4 right-4 flex items-center gap-2">
+              {slides.map((s, i) => (
+                <button
+                  key={s.src}
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  aria-label={`Show ${s.caption}`}
+                  aria-current={i === index}
+                  className={`h-[3px] transition-all duration-500 ${
+                    i === index ? "w-7 bg-[var(--g-accent)]" : "w-4 bg-white/45 hover:bg-white/75"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Corner ticks — the viewfinder motif this page uses wherever an image

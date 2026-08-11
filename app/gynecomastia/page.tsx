@@ -37,10 +37,11 @@ export const metadata: Metadata = {
  * buttons, soft shadows, Lato throughout — and a third page in it would have
  * been the same page with different words. This one runs on `.gyn` instead
  * (see globals.css): near-black surfaces cut by bone-white bands, square
- * corners, hairline rules, outlined numerals and a condensed uppercase display
- * face. Its sections live in components/elite-minima/gynecomastia/ and share
- * nothing with the other two beyond the brand primitives — the motion helpers,
- * CountUp, the clinic config and the lead API.
+ * corners, hairline rules, outlined numerals and uppercase headings — set in
+ * Lato, the site's only typeface. Its sections live in
+ * components/elite-minima/gynecomastia/ and share nothing with the other two
+ * beyond the brand primitives — the motion helpers, CountUp, the clinic config
+ * and the lead API.
  */
 export default function GynecomastiaPage() {
   return (

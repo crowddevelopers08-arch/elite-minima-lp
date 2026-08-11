@@ -28,7 +28,7 @@ export default function GynOptions() {
 
   return (
     <section id="treatment" className="bg-[var(--g-bone)] text-[var(--g-ink)]">
-      <div className="mx-auto w-full max-w-[1320px] px-5 py-16 sm:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <Reveal className="max-w-[54ch]">
           <p className="g-eyebrow g-eyebrow--ink">Treatment Options</p>
           <h2 className="mt-5">Gynecomastia Treatment Options</h2>
@@ -37,7 +37,7 @@ export default function GynOptions() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+        <div className="mt-8 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] sm:mt-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           {/* ── The list ─────────────────────────────────────────────── */}
           <div className="bg-[var(--g-bone)]">
             <ul>

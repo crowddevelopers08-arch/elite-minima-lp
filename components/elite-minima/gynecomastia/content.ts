@@ -5,7 +5,7 @@
 // Everything below is this page's own editorial content, kept out of the
 // components so a copy edit never means touching layout.
 
-import { IMAGES } from "../config"
+import { cldTransform, IMAGES } from "../config"
 
 /** Branch tag on every lead, analytics event and CRM row from this page, so
     gynecomastia traffic is separable from / and /general. */
@@ -22,25 +22,51 @@ export const HERO = {
   secondaryCta: "Talk to Our Team",
 } as const
 
+export interface GynHeroSlide {
+  src: string
+  alt: string
+  /** Label in the frame's bottom-left chip while this slide is showing. */
+  caption: string
+}
+
 /**
  * Hero media.
  *
- * `video` is the file the frame plays. Leave it empty and the poster is shown
- * as a still instead — that is the current state, since the clinic has not
- * supplied a chest-contouring film yet. Drop a URL in and the same frame
- * becomes a real player with no other change.
+ * `video` is the file the frame plays. Leave it empty and `slides` are shown
+ * instead — that is the current state, since the clinic has not supplied a
+ * chest-contouring film yet. Drop a URL in and the same frame becomes a real
+ * player with no other change; the first slide doubles as its poster.
+ *
+ * Two or more slides turn the frame into a cross-fading carousel. One slide is
+ * a plain still — no controls are drawn and no timer runs — so removing the
+ * animation later means deleting an entry, not editing GynHero.
  */
-export const HERO_MEDIA: { video: string; poster: string; alt: string } = {
+export const HERO_MEDIA: { video: string; slides: GynHeroSlide[] } = {
   video: "",
-  poster: IMAGES.chestContouring,
-  alt: "Advanced male chest contouring — gynecomastia correction at Elite-Minima",
+  slides: [
+    {
+      src: IMAGES.chestContouring,
+      alt: "Advanced male chest contouring — gynecomastia correction at Elite-Minima",
+      caption: "Chest contouring",
+    },
+    {
+      src: IMAGES.surgicalTeam,
+      alt: "The Elite-Minima surgical team in theatre",
+      caption: "Our surgical team",
+    },
+  ],
 }
 
-/** Named under the hero media, so the face on the page is the surgeon's. */
+/** Named under the hero media, so the face on the page is the surgeon's.
+ *
+ *  The portrait is a 1536px studio shot and the plate draws it at 56px. Served
+ *  raw it is downscaled by the browser in a single step — visibly soft — and
+ *  cropped square from the top, which frames a forehead. Cloudinary does the
+ *  resize instead, at 2× for retina, with the crop held on the face. */
 export const HERO_SURGEON = {
   name: "Dr. Madan K",
   title: "Aesthetic, Plastic & Reconstructive Surgeon",
-  photo: IMAGES.drMadan,
+  photo: cldTransform(IMAGES.drMadan, "c_fill,g_face,w_224,h_224,q_auto"),
 } as const
 
 export const HERO_CONCERNS = [
@@ -162,19 +188,31 @@ export interface GynOption {
    * option is laid out identically and one card can't end up wearing a
    * full-bleed still while its neighbours wear a pair.
    *
-   * ⚠️ The library holds three gynecomastia assets (liposuction, gland
-   * excision, chest contouring) and four options, so pairs necessarily reuse
-   * them: each option shows its own procedure first and the contour it is
-   * working toward second. Upload more and give each option its own pair.
+   * ⚠️ Gland excision and the combined option draw on a three-shot CDN set and
+   * so reuse it between them; liposuction and contouring each have their own
+   * dedicated pair. Upload more to give the other two the same.
    */
   images: [GynImage, GynImage]
 }
 
-/* The three shots, named once so a swapped upload is a one-line change rather
-   than a hunt through the pairs below. */
+/* Named once so a swapped file is a one-line change rather than a hunt through
+   the pairs below.
+
+   Two sources, deliberately. The CDN set is the site library in config.ts,
+   shared with /general — leave it alone. The /public set is specific to this
+   page: four files supplied for the liposuction and contouring options only.
+
+   The /public shots are surgical-planning photographs rather than male chests,
+   so their alt text describes the markings actually pictured instead of naming
+   a procedure the photo does not show. */
 const LIPO: GynImage = { src: IMAGES.liposuction, alt: "Liposuction for gynecomastia correction" }
 const GLAND: GynImage = { src: IMAGES.glandExcision, alt: "Gland excision for gynecomastia correction" }
 const CONTOUR: GynImage = { src: IMAGES.chestContouring, alt: "Advanced chest contouring for gynecomastia" }
+
+const LIPO_ONE: GynImage = { src: "/Liposuction.jpg", alt: "Liposuction planning markings drawn on the flank" }
+const LIPO_TWO: GynImage = { src: "/Liposuctiontwo.webp", alt: "Liposuction planning markings drawn on the abdomen" }
+const CONTOUR_BODY: GynImage = { src: "/contouring.jpg", alt: "Body contouring markings drawn before surgery" }
+const CONTOUR_FACE: GynImage = { src: "/Face-contouring.jpg", alt: "Facial contouring markings drawn before surgery" }
 
 export const OPTIONS: GynOption[] = [
   {
@@ -182,7 +220,7 @@ export const OPTIONS: GynOption[] = [
     name: "Liposuction",
     category: "Fat Removal",
     desc: "Used when excess fatty tissue is a major contributor to chest fullness. Targeted fat removal helps improve chest contour and definition.",
-    images: [LIPO, CONTOUR],
+    images: [LIPO_ONE, LIPO_TWO],
   },
   {
     id: "gland-excision",
@@ -203,7 +241,7 @@ export const OPTIONS: GynOption[] = [
     name: "Advanced Contouring",
     category: "Chest Shaping",
     desc: "Where appropriate, additional contouring techniques may be used to improve chest shape and skin appearance.",
-    images: [CONTOUR, LIPO],
+    images: [CONTOUR_BODY, CONTOUR_FACE],
   },
 ]
 
@@ -310,6 +348,3 @@ export const FOOTER_SERVICES = [
   "Liposuction",
   "Body Contouring",
 ] as const
-
-export const DISCLAIMER =
-  "Treatment recommendations, recovery timelines, outcomes, and suitability vary between individuals. A consultation and clinical evaluation are required before treatment."

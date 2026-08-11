@@ -17,7 +17,7 @@ import { CONSULT_WINDOW, GYN_BRANCH } from "./content"
 export default function GynLocation() {
   return (
     <section id="visit" className="bg-[var(--g-bone)] text-[var(--g-ink)]">
-      <div className="mx-auto w-full max-w-[1320px] px-5 py-16 sm:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <Reveal className="max-w-[52ch]">
           <p className="g-eyebrow g-eyebrow--ink">Location</p>
           <h2 className="mt-5">Visit Elite-Minima, Anna Nagar</h2>
@@ -27,7 +27,7 @@ export default function GynLocation() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <div className="mt-8 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] sm:mt-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           {/* ── Details ──────────────────────────────────────────────── */}
           <div className="flex flex-col justify-between bg-[var(--g-bone)] p-7 sm:p-9">
             <dl className="space-y-7">

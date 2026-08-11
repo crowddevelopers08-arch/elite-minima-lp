@@ -16,7 +16,7 @@ import {
   PHONES,
   WHATSAPP_URL,
 } from "../config"
-import { DISCLAIMER, FOOTER_LINKS, FOOTER_SERVICES, GYN_BRANCH } from "./content"
+import { FOOTER_LINKS, FOOTER_SERVICES, GYN_BRANCH } from "./content"
 
 const SOCIALS = [
   { Icon: FaInstagram, href: INSTAGRAM_URL, label: "Instagram" },
@@ -39,7 +39,7 @@ export default function GynFooter() {
           ))}
         </ul>
 
-        <div className="grid gap-10 py-12 lg:grid-cols-[1.5fr_1fr_1.3fr] lg:gap-16">
+        <div className="grid gap-8 py-9 sm:gap-10 sm:py-12 lg:grid-cols-[1.5fr_1fr_1.3fr] lg:gap-16">
           <div className="max-w-[38ch]">
             {/* Printed for white paper — on this ground it keeps its own plate
                 rather than being knocked out. */}
@@ -110,8 +110,7 @@ export default function GynFooter() {
           </div>
         </div>
 
-        <div className="border-t border-[var(--g-line)] py-7">
-          <p className="max-w-[92ch] text-[0.78rem] leading-relaxed text-[var(--g-dim)]">{DISCLAIMER}</p>
+        <div className="border-t border-[var(--g-line)] py-5 sm:py-7">
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-[0.76rem]">
             {/* Literal, as on the other two footers: a client-rendered year can
                 disagree with the server's across a timezone boundary and trip

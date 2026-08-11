@@ -589,9 +589,9 @@
    white, pill-shaped, soft-shadowed SaaS system, this one is a
    dark editorial one — near-black surfaces cut by bone-white
    bands, square corners, hairline rules, outlined numerals and
-   a condensed uppercase display face (Oswald) over Lato body.
-   Two pages already use .elite; a third wearing it would have
-   been the same page with different words.
+   uppercase headings. Typeface is Lato, the site's only face,
+   same as .elite. Two pages already use .elite; a third wearing
+   it would have been the same page with different words.
    ============================================================ */
 .gyn {
   /* Dark half — the page's ground. */
@@ -620,7 +620,7 @@
   --g-violet: #b9a7e8;
   --g-violet-deep: #513e98;
 
-  --font-gyn-display: var(--font-oswald), var(--font-lato), sans-serif;
+  --font-gyn-display: var(--font-lato), sans-serif;
 
   background: var(--g-base);
   color: var(--g-text);
@@ -631,30 +631,32 @@
   overflow-x: clip;
 }
 
-/* Display face. Condensed, uppercase and tightly leaded — the single loudest
-   difference from .elite, whose headings are Lato sentence case. */
+/* Display face. Lato, like the rest of the site — uppercase and tightly leaded
+   is what separates these headings from .elite's sentence case, not the face.
+   Sizes run below the old condensed setting: Lato is a normal-width face, so
+   the same font-size sets roughly a third wider on the line. */
 .gyn h1,
 .gyn h2,
 .gyn h3,
 .gyn h4,
 .gyn .g-display {
   font-family: var(--font-gyn-display);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.005em;
-  line-height: 1.04;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
   color: inherit;
 }
 .gyn h1 {
-  font-size: clamp(2.3rem, 1.3rem + 4vw, 4.4rem);
+  font-size: clamp(1.85rem, 1.15rem + 2.8vw, 3.2rem);
 }
 .gyn h2 {
-  font-size: clamp(1.8rem, 1.2rem + 2.4vw, 3.05rem);
+  font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.35rem);
 }
 .gyn h3 {
-  font-size: clamp(1.08rem, 0.98rem + 0.5vw, 1.4rem);
-  letter-spacing: 0.02em;
-  line-height: 1.15;
+  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.25rem);
+  letter-spacing: 0.015em;
+  line-height: 1.2;
 }
 .gyn h4 {
   font-size: 0.95rem;

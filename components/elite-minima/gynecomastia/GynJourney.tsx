@@ -29,7 +29,7 @@ export default function GynJourney() {
         style={{ maskImage: "radial-gradient(70% 60% at 50% 0%,#000,transparent)", WebkitMaskImage: "radial-gradient(70% 60% at 50% 0%,#000,transparent)" }}
       />
 
-      <div className="relative mx-auto w-full max-w-[1320px] px-5 py-16 sm:px-8 lg:py-20">
+      <div className="relative mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <Reveal className="max-w-[62ch]">
           <p className="g-eyebrow">Your Treatment Journey</p>
           <h2 className="mt-5">From Consultation to Recovery — Know What to Expect</h2>

@@ -67,7 +67,7 @@ export default function GynReviews() {
 
   return (
     <section id="reviews" className="bg-[var(--g-bone)] text-[var(--g-ink)]">
-      <div className="mx-auto w-full max-w-[1320px] px-5 py-16 sm:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <Reveal className="max-w-[46ch]">
             <p className="g-eyebrow g-eyebrow--ink">Patient Reviews</p>
@@ -88,7 +88,7 @@ export default function GynReviews() {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative mt-12">
+        <div className="relative mt-8 sm:mt-12">
           {/* Carousel Navigation Buttons */}
           <button
             onClick={() => scroll('left')}

@@ -24,7 +24,7 @@ const ASSURANCES = [
 export default function GynBooking() {
   return (
     <section id="book" className="relative border-y border-[var(--g-line)] bg-[var(--g-surface)]">
-      <div className="mx-auto grid w-full max-w-[1320px] gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:py-16">
+      <div className="mx-auto grid w-full max-w-[1320px] gap-8 px-5 py-10 sm:gap-10 sm:px-8 sm:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:py-16">
         <Reveal>
           <p className="g-eyebrow">Book</p>
           <h2 className="mt-5 max-w-[14ch]">Start with a specialist evaluation</h2>

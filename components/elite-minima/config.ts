@@ -61,8 +61,11 @@ export const MAP_DIRECTIONS_URL =
   encodeURIComponent("Elite Minima Clinic, 5th Avenue, Anna Nagar, Chennai 600040")
 
 /* ── Image assets ──────────────────────────────────────────────────────────
-   Every image on the site is served from Cloudinary — nothing is read out of
-   /public. To swap an asset, upload it and update the URL here.             */
+   Everything listed here is served from Cloudinary; to swap one, upload it and
+   update the URL below. The one exception on the site is the gynecomastia
+   treatment-options panel, whose liposuction and contouring options read four
+   files straight out of /public — see the constants above OPTIONS in
+   gynecomastia/content.ts.                                                 */
 const CDN = "https://res.cloudinary.com/k4ojpvgo/image/upload"
 
 export const IMAGES = {
@@ -103,6 +106,24 @@ export const IMAGES = {
   drMadan: `${CDN}/v1786100960/drmadan_lfz2nl.png`,
   drVijayalakshmi: `${CDN}/v1786100962/drVijayalakshmi_mdfnk9.png`,
 } as const
+
+/**
+ * Insert a Cloudinary delivery transform into one of the URLs above.
+ *
+ * next/image runs `unoptimized` (see next.config.mjs), so the browser is handed
+ * whatever URL it is given — a 1536px portrait dropped into a 56px avatar gets
+ * downscaled 27× in one step and comes out soft. Handing the resize to
+ * Cloudinary instead returns an image at the size it will actually be drawn,
+ * and gravity keeps the crop where it belongs.
+ *
+ *   cldTransform(IMAGES.drMadan, "c_fill,g_face,w_224,h_224,q_auto")
+ *
+ * Ask for roughly twice the CSS size so the result still holds up on a 2×
+ * screen. Non-Cloudinary URLs pass through untouched.
+ */
+export function cldTransform(url: string, transform: string): string {
+  return url.replace("/image/upload/", `/image/upload/${transform}/`)
+}
 
 /** Hero media. The hero now shows a still image; swap this URL to change it. */
 export const HERO_IMAGE = IMAGES.hero

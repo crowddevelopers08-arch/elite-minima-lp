@@ -22,7 +22,7 @@ export default function GynOutcomes() {
         style={{ background: "radial-gradient(circle, rgba(81,62,152,0.4), transparent 70%)" }}
       />
 
-      <div className="relative mx-auto grid w-full max-w-[1320px] gap-12 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:py-20">
+      <div className="relative mx-auto grid w-full max-w-[1320px] gap-10 px-5 py-10 sm:gap-12 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:py-20">
         {/* ── Improvements ─────────────────────────────────────────────── */}
         <div className="min-w-0">
           <Reveal>
