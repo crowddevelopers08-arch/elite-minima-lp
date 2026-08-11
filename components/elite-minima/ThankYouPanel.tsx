@@ -62,6 +62,7 @@ export default function ThankYouPanel({ phones, homeHref, homeLabel = "Back to h
             <a
               key={p.tel}
               href={`tel:${p.tel}`}
+              onClick={() => track("call_click", { branch, section: "thank-you" })}
               className={`btn w-full whitespace-nowrap ${i === 0 ? "btn-primary" : "btn-ghost"}`}
             >
               <Phone className="h-4 w-4 flex-none" />

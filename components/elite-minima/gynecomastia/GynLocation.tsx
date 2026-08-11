@@ -4,7 +4,7 @@ import { Clock, MapPin, Navigation, Phone } from "lucide-react"
 import { Reveal } from "../motion"
 import { track } from "../track"
 import { ADDRESS_FULL, ADDRESS_SHORT, HOURS, MAP_DIRECTIONS_URL, MAP_QUERY, PHONES } from "../config"
-import { CONSULT_WINDOW, GYN_BRANCH } from "./content"
+import { GYN_BRANCH } from "./content"
 
 /**
  * Visiting.
@@ -55,7 +55,7 @@ export default function GynLocation() {
                     <span className="text-[var(--g-ink-dim)]"> · {h.time}</span>
                   </p>
                 ))}
-                <p className="mt-1 text-[0.85rem] text-[var(--g-ink-dim)]">Consultations {CONSULT_WINDOW}, by appointment</p>
+                <p className="mt-1 text-[0.85rem] text-[var(--g-ink-dim)]">Consultations by appointment</p>
               </Row>
             </dl>
 

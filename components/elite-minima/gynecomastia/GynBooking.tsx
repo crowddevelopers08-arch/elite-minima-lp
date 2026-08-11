@@ -5,12 +5,12 @@ import { Reveal } from "../motion"
 import { track } from "../track"
 import { PHONES } from "../config"
 import GynLeadForm from "./GynLeadForm"
-import { CONSULT_WINDOW, GYN_BRANCH } from "./content"
+import { GYN_BRANCH } from "./content"
 
 const ASSURANCES = [
-  { icon: UserRound, text: "Evaluated by Dr. Madan K, not a call-centre script" },
-  { icon: CalendarClock, text: `Callbacks within the clinic window, ${CONSULT_WINDOW}` },
-  { icon: ShieldCheck, text: "Private consultation — nothing is shared onward" },
+  { icon: UserRound, text: "Evaluated by Dr. Madan K" },
+  { icon: CalendarClock, text: "Callbacks within clinic hours" },
+  { icon: ShieldCheck, text: "Private consultation" },
 ] as const
 
 /**

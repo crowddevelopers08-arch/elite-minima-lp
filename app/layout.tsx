@@ -15,9 +15,13 @@ const lato = Lato({
   display: "swap",
 })
 
-const TITLE = "Elite Minima — Advanced Piles Treatment | Laser & Minimally Invasive Care"
+// Site-wide defaults, so they describe the clinic rather than one condition:
+// the front door at `/` is the multi-speciality page now, and the pages that
+// do speak to a single condition (`/piles`, `/gynecomastia`) carry their own
+// title, description and OG block.
+const TITLE = "Elite-Minima — Piles, Circumcision & Gynecomastia Treatment in Anna Nagar, Chennai"
 const DESCRIPTION =
-  "Elite Minima — The Surgical Speciality Clinic offers advanced piles treatment in Anna Nagar, Chennai: laser and minimally invasive options with personalized, specialist-led care. Book your consultation."
+  "Elite-Minima – The Surgical Speciality Clinic offers specialist-led surgical and minimally invasive care for piles, circumcision and gynecomastia in Anna Nagar, Chennai. Book a private consultation."
 
 // icon.png / apple-icon.png / opengraph-image.png / twitter-image.png live in
 // this directory and are picked up by the App Router's file conventions.
@@ -65,6 +69,54 @@ export default function RootLayout({
           }}
         />
         {/* End Google Tag Manager */}
+
+        {/* Google tag (gtag.js) — Google Ads AW-18361786197.
+            The GTM container above is a separate product and does not define a
+            global `gtag`, so the base tag has to be loaded here or the two
+            snippets under it throw on the first call. Both write to the same
+            `dataLayer` array GTM created, which is the supported arrangement.
+
+            ⚠️ If the GTM container is ever given a Google Ads conversion tag
+            for this same account, the call conversion will be counted twice —
+            once from here and once from there. Keep the Ads tags on one side. */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18361786197" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-18361786197');
+
+              // Call reporting: swaps the number shown on the page for a Google
+              // forwarding number when the visitor arrived from an ad.
+              gtag('config', 'AW-18361786197/kLV7CPXm1N8cENW-yrNE', {
+                'phone_conversion_number': '9500091428'
+              });
+
+              // Click-to-call conversion, verbatim from the Ads UI. Exposed on
+              // window so an inline onclick="return gtag_report_conversion(...)"
+              // works; the React phone links reach the same conversion through
+              // track('call_click') instead — see components/elite-minima/track.ts.
+              function gtag_report_conversion(url) {
+                var callback = function () {
+                  if (typeof(url) != 'undefined') {
+                    window.location = url;
+                  }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-18361786197/g1x2CPjm1N8cENW-yrNE',
+                    'value': 1.0,
+                    'currency': 'INR',
+                    'event_callback': callback
+                });
+                return false;
+              }
+              window.gtag_report_conversion = gtag_report_conversion;
+            `,
+          }}
+        />
+        {/* End Google tag (gtag.js) */}
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}

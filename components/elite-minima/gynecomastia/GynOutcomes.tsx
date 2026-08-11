@@ -22,18 +22,29 @@ export default function GynOutcomes() {
         style={{ background: "radial-gradient(circle, rgba(81,62,152,0.4), transparent 70%)" }}
       />
 
+      {/* `items-stretch` is the grid default, so both columns are already the
+          same height — what was missing is content that fills it. The left
+          column's list grows into whatever the (taller) right column sets, and
+          the right column's stack pushes its CTA to the bottom, so the two
+          finish on the same line instead of one trailing off into dead space.
+          The right column's old 4.5rem top offset is gone with it: nudging one
+          column down only made the mismatch at the bottom worse. */}
       <div className="relative mx-auto grid w-full max-w-[1320px] gap-10 px-5 py-10 sm:gap-12 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:py-20">
         {/* ── Improvements ─────────────────────────────────────────────── */}
-        <div className="min-w-0">
+        <div className="flex min-w-0 flex-col">
           <Reveal>
             <p className="g-eyebrow">Outcomes</p>
             <h2 className="mt-5 max-w-[18ch]">What Can Gynecomastia Surgery Improve?</h2>
           </Reveal>
 
-          <Stagger gap={0.06} className="mt-9">
+          {/* Each row takes an equal share of the leftover height, so the
+              hairlines stay evenly spaced and the last one lands level with
+              the bottom of the panel opposite. `min-h` keeps them from
+              collapsing below their natural height on short screens. */}
+          <Stagger gap={0.06} className="mt-9 flex flex-1 flex-col">
             {IMPROVEMENTS.map((im) => (
-              <StaggerItem key={im}>
-                <div className="group flex items-center gap-4 border-b border-[var(--g-line)] py-4 transition-colors duration-300 hover:border-[var(--g-accent)]">
+              <StaggerItem key={im} className="flex min-h-[3.5rem] flex-1 flex-col">
+                <div className="group flex flex-1 items-center gap-4 border-b border-[var(--g-line)] py-4 transition-colors duration-300 hover:border-[var(--g-accent)]">
                   <span className="flex h-6 w-6 flex-none items-center justify-center border border-[var(--g-line-strong)] text-[var(--g-accent)] transition-colors duration-300 group-hover:border-[var(--g-accent)] group-hover:bg-[var(--g-accent)] group-hover:text-[#04140a]">
                     <Check className="h-3 w-3" strokeWidth={3} aria-hidden />
                   </span>
@@ -45,7 +56,7 @@ export default function GynOutcomes() {
         </div>
 
         {/* ── Scars + recovery ─────────────────────────────────────────── */}
-        <div className="min-w-0 lg:pt-[4.5rem]">
+        <div className="flex min-w-0 flex-col">
           <div className="space-y-px bg-[var(--g-line)]">
             {ANSWERS.map((a) => (
               <Reveal key={a.q}>
@@ -82,11 +93,15 @@ export default function GynOutcomes() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.1}>
+          {/* `mt-auto` rather than a fixed margin: on a wide screen the column
+              opposite is the taller one and this sits at its natural spacing,
+              but if the balance ever tips the button takes up the slack and
+              stays on the bottom line instead of floating mid-column. */}
+          <Reveal delay={0.1} className="mt-auto pt-8">
             <a
               href="#book"
               onClick={() => track("book_click", { branch: GYN_BRANCH, section: "outcomes" })}
-              className="g-btn g-btn-solid group/btn mt-8 w-full sm:w-auto"
+              className="g-btn g-btn-solid group/btn w-full sm:w-auto"
             >
               Check your treatment options
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />

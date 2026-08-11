@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 
 import SmoothScroll from "@/components/elite-minima/SmoothScroll"
-import GynTopStrip from "@/components/elite-minima/gynecomastia/GynTopStrip"
 import GynHeader from "@/components/elite-minima/gynecomastia/GynHeader"
 import GynHero from "@/components/elite-minima/gynecomastia/GynHero"
 import GynBooking from "@/components/elite-minima/gynecomastia/GynBooking"
@@ -48,7 +47,6 @@ export default function GynecomastiaPage() {
     <div className="gyn pb-[60px] lg:pb-0">
       {/* Lenis owns scroll position, so no `scroll-smooth` class here. */}
       <SmoothScroll />
-      <GynTopStrip />
       <GynHeader />
       <main>
         {/* 1 · Hook + the surgeon's face */}

@@ -37,7 +37,7 @@ export default function GeneralThankYouPage() {
   return (
     <div className="elite flex min-h-screen flex-col bg-[var(--e-canvas)]">
       <header className="px-5 pt-5 sm:px-8">
-        <a href="/general" className="mx-auto flex w-full max-w-[1180px] items-center" aria-label={`${BRAND_FULL} — back to the home page`}>
+        <a href="/" className="mx-auto flex w-full max-w-[1180px] items-center" aria-label={`${BRAND_FULL} — back to the home page`}>
           <Image src={IMAGES.logoLockup} alt={BRAND_FULL} width={776} height={180} priority className="h-9 w-auto sm:h-10" />
         </a>
       </header>
@@ -45,7 +45,7 @@ export default function GeneralThankYouPage() {
       <main className="ribbon-wash relative flex flex-1 items-center justify-center overflow-hidden px-5 py-12 sm:py-16">
         <ThankYouPanel
           phones={PHONES}
-          homeHref="/general"
+          homeHref="/"
           homeLabel="Back to Elite-Minima"
           branch="Elite Minima Clinic — General"
         />

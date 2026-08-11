@@ -32,7 +32,7 @@ export default function GynJourney() {
       <div className="relative mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <Reveal className="max-w-[62ch]">
           <p className="g-eyebrow">Your Treatment Journey</p>
-          <h2 className="mt-5">From Consultation to Recovery — Know What to Expect</h2>
+          <h2 className="mt-5">From Consultation to Recovery — What to Expect</h2>
           <p className="mt-5 text-[0.98rem] leading-relaxed text-[var(--g-dim)]">
             Every chest is different. Your treatment begins with understanding the cause and extent of the enlargement before recommending a
             surgical approach.
@@ -90,8 +90,9 @@ function StepCell({
 
       <p className="g-numeral text-[2.6rem] transition-colors duration-300 group-hover:[-webkit-text-stroke-color:var(--g-accent)]">{step.n}</p>
 
+      {/* Heading only — the descriptions were dropped from the cells. `desc` is
+          still on each JOURNEY entry, so putting them back is one line. */}
       <h3 className="mt-5 text-[var(--g-text)]">{step.title}</h3>
-      <p className="mt-3 text-[0.88rem] leading-relaxed text-[var(--g-dim)]">{step.desc}</p>
     </motion.div>
   )
 }

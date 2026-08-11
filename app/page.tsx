@@ -1,56 +1,57 @@
 import type { Metadata } from "next"
 
 import SmoothScroll from "@/components/elite-minima/SmoothScroll"
-import ScrollProgress from "@/components/elite-minima/ScrollProgress"
-import RunningBar from "@/components/elite-minima/RunningBar"
-import Header from "@/components/elite-minima/Header"
-import Hero from "@/components/elite-minima/Hero"
-import Reviews from "@/components/elite-minima/Reviews"
-import TreatmentJourney from "@/components/elite-minima/TreatmentJourney"
-import TreatmentOptions from "@/components/elite-minima/TreatmentOptions"
-import Doctor from "@/components/elite-minima/Doctor"
-import Clinic from "@/components/elite-minima/Clinic"
-import Faq from "@/components/elite-minima/Faq"
-import MapSection from "@/components/elite-minima/MapSection"
-import Footer from "@/components/elite-minima/Footer"
-import StickyCta from "@/components/elite-minima/StickyCta"
+import GeneralRunningBar from "@/components/elite-minima/general/GeneralRunningBar"
+import GeneralHeader from "@/components/elite-minima/general/GeneralHeader"
+import GeneralHero from "@/components/elite-minima/general/GeneralHero"
+import GeneralReviews from "@/components/elite-minima/general/GeneralReviews"
+import GeneralTreatments from "@/components/elite-minima/general/GeneralTreatments"
+import GeneralJourney from "@/components/elite-minima/general/GeneralJourney"
+import GeneralDoctors from "@/components/elite-minima/general/GeneralDoctors"
+import GeneralClinic from "@/components/elite-minima/general/GeneralClinic"
+import GeneralLocation from "@/components/elite-minima/general/GeneralLocation"
+import GeneralFinalCta from "@/components/elite-minima/general/GeneralFinalCta"
+import GeneralFooter from "@/components/elite-minima/general/GeneralFooter"
+import GeneralStickyCta from "@/components/elite-minima/general/GeneralStickyCta"
 
 export const metadata: Metadata = {
-  title: "Elite Minima — Advanced Piles Treatment | Laser & Minimally Invasive Care",
+  title: "Elite-Minima — Piles, Circumcision & Gynecomastia Treatment in Anna Nagar, Chennai",
   description:
-    "Elite Minima — The Surgical Speciality Clinic offers advanced piles treatment in Anna Nagar, Chennai: laser and minimally invasive options with personalized, specialist-led care. Book your consultation.",
+    "Elite-Minima – The Surgical Speciality Clinic offers specialist-led surgical and minimally invasive care for piles, circumcision and gynecomastia in Anna Nagar, Chennai. Book a private consultation.",
 }
 
+/**
+ * The home page — the general (multi-speciality) landing page.
+ *
+ * It routes a visitor to one of three treatment pathways rather than speaking
+ * to a single condition, which is why it is the front door: the two
+ * condition-specific pages, `/piles` and `/gynecomastia`, are where a visitor
+ * arrives from an ad that already knows what they came for.
+ *
+ * `/general` is the address this page used to live at and now redirects here,
+ * so existing links and campaigns still land on it. Its sections live in
+ * components/elite-minima/general/ and share nothing with the piles page
+ * beyond the brand primitives (Reveal, TitleUnderline, CountUp, config).
+ */
 export default function HomePage() {
   return (
     <div className="elite pb-[72px] lg:pb-0">
       {/* Lenis owns scroll position, so no `scroll-smooth` class here. */}
       <SmoothScroll />
-      {/* <ScrollProgress /> */}
-      {/* 1 · Running bar */}
-      <RunningBar />
-      <Header />
+      <GeneralRunningBar />
+      <GeneralHeader />
       <main>
-        {/* 2 · Hook + primary CTA */}
-        <Hero />
-        {/* 2 · Social proof */}
-        <Reviews />
-        {/* 3 · How it works */}
-        <TreatmentJourney />
-        {/* 3 · Treatment options */}
-        <TreatmentOptions />
-        {/* 4 · Authority — meet the specialist */}
-        <Doctor />
-        {/* 5 · Clinic */}
-        <Clinic />
-        {/* Objection handling */}
-        <Faq />
-        {/* 6 · Map */}
-        <MapSection />
+        <GeneralHero />
+        <GeneralReviews />
+        <GeneralTreatments />
+        <GeneralJourney />
+        <GeneralDoctors />
+        <GeneralClinic />
+        <GeneralLocation />
+        <GeneralFinalCta />
       </main>
-      {/* 7 · Footer */}
-      <Footer />
-      <StickyCta />
+      <GeneralFooter />
+      <GeneralStickyCta />
     </div>
   )
 }

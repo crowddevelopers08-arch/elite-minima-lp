@@ -329,8 +329,6 @@ export const SERVICE_AREAS = [
   "Korattur",
 ] as const
 
-export const CONSULT_WINDOW = "4:00 PM – 8:00 PM"
-
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 
 export const FOOTER_LINKS = [

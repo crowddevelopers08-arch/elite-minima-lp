@@ -48,7 +48,9 @@ export default function GynHero() {
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <p className="g-rise g-d1 g-eyebrow">Male Breast Reduction</p>
 
-          <h1 className="g-rise g-d2 mt-5 max-w-[18ch]">{HERO.title}</h1>
+          <h1 className="g-rise g-d2 mt-5 max-w-[18ch]">
+            <MarkedFirstWord text={HERO.title} />
+          </h1>
 
           <p className="g-rise g-d3 mt-6 max-w-[62ch] text-[0.98rem] leading-relaxed text-[var(--g-dim)]">{HERO.lead}</p>
         </div>
@@ -123,6 +125,23 @@ export default function GynHero() {
 }
 
 /**
+ * The headline, with its first word highlighted.
+ *
+ * Only the first word is marked — "Gynecomastia" is what the page is about.
+ * The highlight itself is `.g-mark` in globals.css.
+ */
+function MarkedFirstWord({ text }: { text: string }) {
+  const [word, ...rest] = text.split(" ")
+
+  return (
+    <>
+      <span className="g-mark">{word}</span>
+      {rest.length > 0 && ` ${rest.join(" ")}`}
+    </>
+  )
+}
+
+/**
  * The hero frame.
  *
  * A real `<video>` when one is configured in content.ts, and the slides
@@ -157,8 +176,9 @@ function HeroMedia() {
   return (
     // Taller than the 4:3 it started as, and taller again from lg, where the
     // frame sits beside a copy column running to roughly the viewport height —
-    // at 4:3 it finished well short of it and the row read as top-heavy.
-    <div className="relative aspect-[5/4] w-full overflow-hidden border border-[var(--g-line)] bg-[var(--g-raised)] sm:aspect-[9/8] lg:aspect-square">
+    // at 4:3 it finished well short of it and the row read as top-heavy. Square
+    // overshot the other way, so lg sits just under it.
+    <div className="relative aspect-[9/7] w-full overflow-hidden border border-[var(--g-line)] bg-[var(--g-raised)] sm:aspect-[6/5] lg:aspect-[10/9]">
       {video ? (
         <video
           className="h-full w-full object-cover"

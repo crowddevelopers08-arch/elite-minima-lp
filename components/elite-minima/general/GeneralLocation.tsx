@@ -8,7 +8,6 @@ import TitleUnderline from "../TitleUnderline"
 import { track } from "../track"
 import { EASE } from "../tokens"
 import { ADDRESS_FULL, MAP_DIRECTIONS_URL, MAP_QUERY, PHONES } from "../config"
-import { CONSULT_WINDOW } from "./content"
 
 const BRANCH = "Elite Minima Clinic — General"
 
@@ -117,9 +116,8 @@ export default function GeneralLocation() {
               <p className="max-w-[30ch] text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">{ADDRESS_FULL}</p>
             </Cell>
 
-            <Cell icon={Clock} label="Consultation timing" offset={0.8} reduced={!!reduced}>
-              <p className="text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">{CONSULT_WINDOW}</p>
-              <p className="text-[0.82rem] leading-relaxed text-[var(--e-muted)]">By appointment</p>
+            <Cell icon={Clock} label="Consultation" offset={0.8} reduced={!!reduced}>
+              <p className="text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">By appointment</p>
             </Cell>
           </motion.div>
         </motion.div>

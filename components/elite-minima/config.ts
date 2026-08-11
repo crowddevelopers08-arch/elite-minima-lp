@@ -32,12 +32,11 @@ export const ADDRESS_SHORT = "Anna Nagar, Chennai"
 export const ADDRESS_FULL =
   "Ground Floor, New No. 47/1, Old No. Z-165, MIG Flat 64A, Block 64, 5th Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
 
-/** Clinic hours. Consultations run in the evening slot, by appointment. */
+/** Clinic hours. Consultations are by appointment within them. */
 export const HOURS = [
   { days: "Monday – Saturday", time: "11:00 AM – 8:00 PM" },
   { days: "Sunday", time: "By appointment" },
 ] as const
-export const CONSULT_HOURS = "Consultations 4:00 PM – 8:00 PM, by appointment"
 
 /** Proctology specialist for this page. */
 export const DOCTOR = {

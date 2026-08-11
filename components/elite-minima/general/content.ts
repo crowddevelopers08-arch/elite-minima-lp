@@ -354,8 +354,6 @@ export const SERVICE_AREAS = [
   "Korattur",
 ] as const
 
-export const CONSULT_WINDOW = "4:00 PM – 8:00 PM"
-
 /* ── Patient reviews ─────────────────────────────────────────────────────────
    Review cards shown in the marquee on the general landing page. */
 

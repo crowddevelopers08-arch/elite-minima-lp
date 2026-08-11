@@ -851,6 +851,78 @@
 .gyn .g-d4 { animation-delay: 0.36s; }
 .gyn .g-d5 { animation-delay: 0.46s; }
 
+/* ── Marquee ──────────────────────────────────────────────────────────────
+   A row that scrolls itself, forever. The track holds the same set of cards
+   twice and slides exactly one set's width, so the moment it wraps back to 0
+   the second set is sitting where the first one was and the seam is invisible.
+
+   That only holds if half the track is exactly one set: the gap between cards
+   is a margin on each card rather than a `gap` on the track, because a track
+   gap adds one extra gap between the two sets and nothing else, which puts the
+   loop out by half of it and shows as a small jump every lap.
+
+   Both edges are faded with a mask rather than covered by a gradient overlay,
+   so it keeps working whatever the band behind it is painted. Hover or tab
+   into the row and it holds still; under `prefers-reduced-motion` the blanket
+   rule at the end of this file stops it outright, so the row becomes a plain
+   horizontal scroller and the cards past the fold stay reachable. */
+.gyn .g-marquee {
+  --g-marquee-fade: clamp(1.25rem, 7vw, 7rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--g-marquee-fade),
+    #000 calc(100% - var(--g-marquee-fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--g-marquee-fade),
+    #000 calc(100% - var(--g-marquee-fade)),
+    transparent
+  );
+}
+.gyn .g-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: gyn-marquee var(--g-marquee-duration, 48s) linear infinite;
+}
+.gyn .g-marquee:hover .g-marquee-track,
+.gyn .g-marquee:focus-within .g-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes gyn-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gyn .g-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ── Marked word ──────────────────────────────────────────────────────────
+   One word of the hero headline, highlighted. The pair is the same one
+   `.gyn ::selection` uses, so it reads as that word being marked rather than
+   as a new colour arriving in the palette.
+
+   `box-decoration-break: clone` so the padding is drawn on both halves if the
+   mark ever wraps a line, instead of only on the ends of the run. */
+.gyn .g-mark {
+  background-color: var(--g-accent);
+  color: #04140a;
+  padding: 0 0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gyn .g-rise {
     opacity: 1;
