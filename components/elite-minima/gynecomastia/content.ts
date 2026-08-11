@@ -96,7 +96,7 @@ export interface GynReview {
 export const REVIEWS: GynReview[] = [
   {
     quote:
-      "I had been putting this off for years because I did not know who to ask. The consultation was private and straightforward — the doctor explained what was causing it and what the procedure would involve before anything was decided.",
+      "I had been putting this off for years because I did not know who to ask. The consultation was private and straightforward the doctor explained what was causing it and what the procedure would involve before anything was decided.",
     name: "Pradeep M",
     place: "Mogappair",
     tag: "Liposuction + Gland Excision",
@@ -110,7 +110,7 @@ export const REVIEWS: GynReview[] = [
   },
   {
     quote:
-      "Recovery was explained in detail — the compression garment, what I could lift and when, and when I could get back to the gym. Knowing the timeline in advance took most of the anxiety out of it.",
+      "Recovery was explained in detail the compression garment, what I could lift and when, and when I could get back to the gym. Knowing the timeline in advance took most of the anxiety out of it.",
     name: "Sathish K",
     place: "Kilpauk",
     tag: "Liposuction",

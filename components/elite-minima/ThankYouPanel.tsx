@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { CheckCircle2, Phone, ArrowLeft, PhoneCall, CalendarCheck, Stethoscope } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import { track } from "./track"
-import { HOURS, WHATSAPP_URL } from "./config"
+import { WHATSAPP_URL } from "./config"
 
 /** What actually happens next, so the wait after submitting feels accounted for. */
 const NEXT_STEPS = [
@@ -80,22 +80,6 @@ export default function ThankYouPanel({ phones, homeHref, homeLabel = "Back to h
           </a>
         </div>
 
-        {/* Days and times in their own columns, meeting at the centre. Centred
-            as whole lines they read as two ragged strings of different lengths;
-            aligned on the divider they read as a table, which is what they are. */}
-        <div className="mt-7 border-t border-[var(--e-line-soft)] pt-5">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[var(--e-purple-deep)]">Clinic hours</p>
-          {/* No row gap: the rule between the columns is the dd's left border,
-              and a gap would break it into two floating segments. */}
-          <dl className="mx-auto mt-2.5 grid w-fit grid-cols-[auto_auto] items-baseline gap-x-3 text-[0.88rem]">
-            {HOURS.map((h) => (
-              <div key={h.days} className="contents">
-                <dt className="py-0.5 text-right font-semibold text-[var(--e-ink-soft)]">{h.days}</dt>
-                <dd className="border-l border-[var(--e-line)] py-0.5 pl-3 text-left text-[var(--e-muted)]">{h.time}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
       </div>
 
       <ol className="mt-5 grid gap-3 sm:grid-cols-3">

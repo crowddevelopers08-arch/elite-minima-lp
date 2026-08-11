@@ -111,8 +111,10 @@ export default function MapSection() {
               <p className="max-w-[30ch] text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">{ADDRESS_FULL}</p>
             </Cell>
 
-            <Cell icon={Clock} label="Hours" reduced={!!reduced}>
-              <p className="text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">Mon – Sun, 10:00 AM – 8:00 PM</p>
+            {/* Opening hours are not published on the site any more — the cell
+                says how to be seen instead of when the door is open. */}
+            <Cell icon={Clock} label="Consultations" reduced={!!reduced}>
+              <p className="text-[0.88rem] leading-relaxed text-[var(--e-ink-soft)]">By appointment</p>
             </Cell>
           </motion.div>
         </motion.div>

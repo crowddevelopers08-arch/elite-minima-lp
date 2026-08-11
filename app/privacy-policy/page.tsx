@@ -1,10 +1,10 @@
 "use client"
 
 import React from "react"
-import { Phone, Shield, Lock, Eye, MapPin, Clock, Mail, Check } from "lucide-react"
+import { Phone, Shield, Lock, Eye, MapPin, Mail, Check } from "lucide-react"
 import Header from "@/components/elite-minima/Header"
 import Footer from "@/components/elite-minima/Footer"
-import { BRAND, ADDRESS_FULL, EMAIL, HOURS, PHONES } from "@/components/elite-minima/config"
+import { BRAND, ADDRESS_FULL, EMAIL, PHONES } from "@/components/elite-minima/config"
 
 const COLLECTED = [
   "Full Name",
@@ -165,13 +165,6 @@ const PrivacyPolicy: React.FC = () => {
                     <MapPin className="h-4 w-4" />
                   </span>
                   <span>{ADDRESS_FULL}</span>
-                </li>
-
-                <li className="flex items-start gap-3">
-                  <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--e-green)] text-white">
-                    <Clock className="h-4 w-4" />
-                  </span>
-                  <span>{HOURS.map((h) => `${h.days}: ${h.time}`).join(" · ")}</span>
                 </li>
               </ul>
             </div>

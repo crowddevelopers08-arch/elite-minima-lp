@@ -3,7 +3,7 @@
 import { Clock, MapPin, Navigation, Phone } from "lucide-react"
 import { Reveal } from "../motion"
 import { track } from "../track"
-import { ADDRESS_FULL, ADDRESS_SHORT, HOURS, MAP_DIRECTIONS_URL, MAP_QUERY, PHONES } from "../config"
+import { ADDRESS_FULL, ADDRESS_SHORT, MAP_DIRECTIONS_URL, MAP_QUERY, PHONES } from "../config"
 import { GYN_BRANCH } from "./content"
 
 /**
@@ -48,14 +48,11 @@ export default function GynLocation() {
                 ))}
               </Row>
 
-              <Row icon={Clock} label="Timings">
-                {HOURS.map((h) => (
-                  <p key={h.days} className="text-[0.9rem] leading-relaxed text-[var(--g-ink)]">
-                    <span className="font-bold">{h.days}</span>
-                    <span className="text-[var(--g-ink-dim)]"> · {h.time}</span>
-                  </p>
-                ))}
-                <p className="mt-1 text-[0.85rem] text-[var(--g-ink-dim)]">Consultations by appointment</p>
+              {/* No day-and-time table: the clinic's hours are not published
+                  on the site any more. What a visitor needs from this row is
+                  that they cannot simply walk in. */}
+              <Row icon={Clock} label="Consultations">
+                <p className="text-[0.9rem] leading-relaxed text-[var(--g-ink)]">By appointment</p>
               </Row>
             </dl>
 

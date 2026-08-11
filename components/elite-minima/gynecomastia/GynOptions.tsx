@@ -33,7 +33,7 @@ export default function GynOptions() {
           <p className="g-eyebrow g-eyebrow--ink">Treatment Options</p>
           <h2 className="mt-5">Gynecomastia Treatment Options</h2>
           <p className="mt-5 text-[0.95rem] leading-relaxed text-[var(--g-ink-dim)]">
-            Which approach suits you depends on what the enlargement is made of — fat, glandular tissue, or both.
+            Which approach suits you depends on what the enlargement is made of fat, glandular tissue, or both.
           </p>
         </Reveal>
 

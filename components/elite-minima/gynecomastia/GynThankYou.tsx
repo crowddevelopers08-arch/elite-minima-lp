@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { ArrowLeft, CalendarCheck, Check, Phone, PhoneCall, Stethoscope } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 import { track } from "../track"
-import { HOURS, PHONES, WHATSAPP_URL } from "../config"
+import { PHONES, WHATSAPP_URL } from "../config"
 import { GYN_BRANCH } from "./content"
 
 /** What actually happens next, so the wait after submitting is accounted for. */
@@ -63,17 +63,6 @@ export default function GynThankYou() {
           </a>
         </div>
 
-        <div className="mt-9 border-t border-[var(--g-line)] pt-6">
-          <p className="text-[0.64rem] font-bold uppercase tracking-[0.24em] text-[var(--g-dim)]">Clinic hours</p>
-          <dl className="mt-3 space-y-1">
-            {HOURS.map((h) => (
-              <div key={h.days} className="flex flex-wrap gap-x-3 text-[0.9rem]">
-                <dt className="font-bold text-[var(--g-text)]">{h.days}</dt>
-                <dd className="text-[var(--g-dim)]">{h.time}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
       </div>
 
       <ol className="mt-px grid gap-px bg-[var(--g-line)] sm:grid-cols-3">
