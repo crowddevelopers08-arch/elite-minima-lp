@@ -20,3 +20,6 @@ export const GENERAL_LEADS_FORM = "Elite Minima General Leads"
 
 /** The gynecomastia page form (/gynecomastia) — male breast reduction only. */
 export const GYNECOMASTIA_LEADS_FORM = "Elite Minima Gynecomastia Leads"
+
+/** The dedicated circumcision page form (/circumcision). */
+export const CIRCUMCISION_LEADS_FORM = "Elite Minima Circumcision Leads"
