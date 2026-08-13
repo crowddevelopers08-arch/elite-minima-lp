@@ -482,65 +482,447 @@
   }
 }
 
-/* ── Circumcision /circumcision ─────────────────────────────────────────── */
-.circumcision { --c-ink:#394B79; --c-deep:#17743C; --c-mint:#EEE9F7; --c-paper:#ffffff; --c-coral:#513E98; --c-line:#dcd7eb; color:var(--c-ink); background:var(--c-paper); font-family:var(--font-lato), Arial, sans-serif; overflow:hidden; }
-.circumcision * { box-sizing:border-box; }
-.c-wrap { width:min(1160px, calc(100% - 40px)); margin-inline:auto; }
-.circumcision h1,.circumcision h2,.circumcision h3,.circumcision h4,.c-brand { font-family:Georgia, serif; letter-spacing:-.045em; }
-.circumcision h1 { max-width:10ch; margin:18px 0; font-size:clamp(3rem, 6.8vw, 6.7rem); font-weight:400; line-height:.94; }
-.circumcision h1 em { color:var(--c-coral); font-style:italic; }
-.circumcision h2 { max-width:15ch; margin:12px 0; font-size:clamp(2.25rem, 4vw, 4.15rem); font-weight:400; line-height:1; }
-.circumcision h3 { margin:0; font-size:clamp(1.55rem, 2.4vw, 2.25rem); font-weight:400; line-height:1.05; }
-.circumcision p { line-height:1.65; }
-.c-kicker { color:#447069; font-size:.7rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase; }
-.c-lead { max-width:50ch; font-size:clamp(1.05rem, 1.8vw, 1.32rem); }
-.circumcision header { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:78px; padding:0 max(20px, calc((100% - 1160px)/2)); border-bottom:1px solid var(--c-line); background:rgba(255,255,255,.92); backdrop-filter:blur(12px); position:sticky; top:0; z-index:20; }
-.c-brand { display:inline-flex; align-items:center; text-decoration:none; }.c-brand img { width:auto; height:35px; }
-.circumcision nav { display:flex; gap:22px; }.circumcision nav a { color:var(--c-ink); font-size:.78rem; text-decoration:none; }.circumcision nav a:hover { color:var(--c-coral); }
-.circumcision button,.c-button { border:0; background:var(--c-deep); color:#fff; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:14px 19px; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-align:center; text-decoration:none; text-transform:uppercase; transition:transform .2s, background .2s; }.circumcision button:hover,.c-button:hover { background:var(--c-coral); transform:translateY(-2px); }
-.c-hero { background:radial-gradient(circle at 10% 10%, var(--c-mint) 0, transparent 31%), var(--c-paper); padding:clamp(45px,7vw,90px) 0; }.c-hero-grid { display:grid; grid-template-columns:minmax(0,1.18fr) minmax(350px,.82fr); gap:clamp(35px,7vw,100px); align-items:start; }
-.c-video { max-width:570px; margin:30px 0; padding:26px; border:1px dashed #aaa0c5; background:#f7f5fc; }.c-video span { color:var(--c-coral); font-size:.68rem; font-weight:bold; letter-spacing:.13em; text-transform:uppercase; }.c-video p { max-width:43ch; margin:10px 0 0; font-size:.9rem; }
-.c-concerns,.c-check-list,.c-clinic-points,.c-option-grid ul { list-style:none; padding:0; }.c-concerns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; max-width:660px; }.c-concerns li,.c-check-list li,.c-clinic-points li,.c-option-grid li { display:flex; gap:9px; align-items:flex-start; font-size:.92rem; }.c-tick { flex:none; width:16px; margin-top:3px; color:var(--c-coral); stroke-width:3; }.c-assurance { max-width:62ch; border-top:1px solid var(--c-line); margin-top:28px; padding-top:18px; color:#4d6964; font-size:.8rem; }.c-assurance b { color:var(--c-coral); padding:0 4px; }
-.c-book { background:var(--c-deep); color:white; box-shadow:18px 18px 0 var(--c-mint); }.c-form { background:var(--c-deep); }.c-form label { display:block; }.c-form label span { display:block; margin-bottom:7px; color:#e7defb; font-size:.67rem; font-weight:bold; letter-spacing:.12em; text-transform:uppercase; }.c-form input,.c-form select { width:100%; border:1px solid #7eb18e; border-radius:0; background:#126332; color:#fff; padding:12px; outline:none; }.c-form input:focus,.c-form select:focus { border-color:#c2adee; }.c-form .c-button { width:100%; background:var(--c-coral); }
-.c-reviews { padding:clamp(60px,9vw,120px) 0; background:var(--c-mint); text-align:center; }.c-reviews h2,.c-reviews .c-intro { margin-inline:auto; }.c-intro { max-width:62ch; margin-top:18px; }.c-review-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:43px 0 18px; text-align:left; }.c-review-grid article { min-height:205px; padding:27px; background:var(--c-paper); }.c-review-grid article div { color:var(--c-coral); letter-spacing:.08em; }.c-review-grid article p { margin-top:32px; font-family:Georgia,serif; font-size:1.14rem; line-height:1.35; }.c-note { color:#5c7870; font-size:.78rem; }
-.c-journey { padding:clamp(60px,9vw,120px) 0; }.c-steps { display:grid; grid-template-columns:repeat(5,1fr); margin-top:45px; border-top:1px solid var(--c-line); }.c-steps article { min-height:280px; padding:22px 17px 12px; border-right:1px solid var(--c-line); }.c-steps article:first-child { padding-left:0; }.c-steps article:last-child { border:0; }.c-steps span { color:var(--c-coral); font-family:Georgia,serif; font-size:1.4rem; }.c-steps h3 { margin-top:50px; font-size:1.25rem; }.c-steps p { font-size:.86rem; }
-.c-options { padding:clamp(60px,9vw,120px) 0; background:var(--c-deep); color:#f5f2e9; }.c-options .c-kicker { color:#9ec9bb; }.c-option-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; margin-top:43px; background:#41615d; }.c-option-grid article { position:relative; min-height:375px; padding:44px; background:#12383a; }.c-option-no { color:#89b8a8; font-family:Georgia,serif; font-size:1.3rem; }.c-option-grid h3 { margin:50px 0 14px; }.c-option-grid p { max-width:46ch; color:#c9ded5; font-size:.92rem; }.c-option-grid ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 15px; margin-top:25px; }.c-option-grid li { color:#e7eee9; font-size:.8rem; }.c-choice,.c-question { display:flex; align-items:center; justify-content:space-between; gap:25px; margin-top:22px; padding:28px; background:#e6f0e9; color:var(--c-ink); }.c-choice h3,.c-question h3 { font-size:1.5rem; }.c-choice p,.c-question p { margin-bottom:0; font-size:.88rem; }
-.c-doctor { padding:clamp(60px,9vw,120px) 0; }.c-doctor-grid { display:grid; grid-template-columns:.75fr 1.25fr; gap:clamp(35px,8vw,110px); align-items:center; }.c-portrait { min-height:440px; display:grid; place-content:center; border:1px solid var(--c-line); background:linear-gradient(145deg,#b8d4c5,#e4eee6); color:#507c70; font-family:Georgia,serif; font-size:1.2rem; line-height:1.2; text-align:center; }.c-doctor h3 { margin-top:30px; }.c-role { color:#5b7771; font-size:.85rem; }.c-doctor h4,.c-clinic h3 { margin-top:27px; font-family:Georgia,serif; font-size:1.25rem; }.c-check-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px 18px; margin:18px 0 28px; }
-.c-clinic { padding:clamp(60px,9vw,120px) 0; background:#f7f5fc; }.c-strong { color:var(--c-coral); font-family:Georgia,serif; font-size:1.35rem; }.c-clinic-points { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:25px 0 0; }.c-facility { display:grid; place-items:center; min-height:220px; margin-top:35px; border:1px dashed #b8add5; background:var(--c-mint); color:var(--c-coral); font-size:.72rem; font-weight:700; letter-spacing:.14em; text-align:center; text-transform:uppercase; }.c-question { margin-top:45px; background:var(--c-deep); color:white; }.c-question p { color:#e7defb; }.c-question .c-button { background:var(--c-coral); }
-.c-visit { padding:clamp(60px,9vw,120px) 0; }.c-visit-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:50px; }.c-visit-grid > div > p { max-width:55ch; }.c-address { display:flex; gap:12px; padding:20px 0; border-top:1px solid var(--c-line); border-bottom:1px solid var(--c-line); margin:25px 0; }.c-address svg,.c-phone svg { flex:none; color:var(--c-coral); }.c-address p { margin:0; font-size:.9rem; }.c-phone { display:flex; gap:10px; color:var(--c-ink); font-weight:bold; text-decoration:none; }.c-actions { display:flex; gap:12px; margin-top:27px; }.c-button-alt { border:1px solid var(--c-ink); background:transparent; color:var(--c-ink); }.c-button-alt:hover { background:var(--c-ink); color:white; }.c-map { min-height:440px; background:#dce6df; }.c-map iframe { width:100%; height:100%; min-height:440px; border:0; }
-.circumcision footer { padding:55px 0 0; background:var(--c-deep); color:#d5e3dc; }.circumcision footer .c-wrap { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:35px; }.circumcision footer .c-brand { color:white; }.circumcision footer p { font-size:.85rem; }.circumcision footer .c-button { margin-top:15px; }.c-copy { margin:45px 0 0; padding:20px; border-top:1px solid #345855; color:#8ead9f; text-align:center; font-size:.72rem !important; }
-@media (max-width:800px) { .circumcision header nav { display:none; }.c-hero-grid,.c-doctor-grid,.c-visit-grid { grid-template-columns:1fr; }.c-book { max-width:620px; }.c-review-grid,.c-option-grid { grid-template-columns:1fr; }.c-steps { grid-template-columns:1fr; }.c-steps article,.c-steps article:first-child { min-height:0; padding:20px 0; border-bottom:1px solid var(--c-line); border-right:0; }.c-steps h3 { margin-top:17px; }.c-clinic-points { grid-template-columns:repeat(2,1fr); }.c-portrait { min-height:300px; }.circumcision footer .c-wrap { grid-template-columns:1fr; } }
-@media (max-width:520px) { .c-wrap { width:min(100% - 30px,1160px); }.circumcision header { min-height:66px; }.circumcision header > button { padding:11px; font-size:.61rem; }.c-concerns,.c-check-list,.c-clinic-points,.c-option-grid ul { grid-template-columns:1fr; }.c-option-grid article { padding:28px; }.c-choice,.c-question,.c-actions { align-items:stretch; flex-direction:column; }.c-choice .c-button,.c-question .c-button,.c-actions .c-button { width:100%; }.c-review-grid { margin-top:30px; }.c-visit-grid { gap:30px; } }
+/* ============================================================
+   ELITE MINIMA — Circumcision landing page  (/circumcision)
 
-/* Circumcision: its own high-contrast clinic treatment, using the Elite-Minima
-   green, purple and lavender palette rather than the other landing pages' UI. */
-.circumcision { background:#fff; }
-.circumcision h1,.circumcision h2,.circumcision h3,.circumcision h4 { font-family:var(--font-lato),Arial,sans-serif; font-weight:900; letter-spacing:-.055em; }
-.circumcision h1 { font-size:clamp(3.35rem,6.4vw,6.4rem); line-height:.92; }
-.circumcision h1 em { color:#17743C; font-style:normal; }
-.circumcision h2 { max-width:16ch; font-size:clamp(2.2rem,4.2vw,4.5rem); line-height:.97; }
-.circumcision header { min-height:88px; box-shadow:0 1px 0 rgba(57,75,121,.12); }
-.circumcision header .c-brand img { height:42px; }
-.circumcision header > button { border-radius:999px; padding:15px 24px; box-shadow:0 8px 18px rgba(23,116,60,.18); }
-.c-hero { position:relative; padding:clamp(56px,8vw,112px) 0; background:linear-gradient(130deg,#fff 0%,#fff 47%,#f4f0fc 47%,#f4f0fc 100%); }
-.c-hero::after { content:""; position:absolute; right:-120px; top:50px; width:420px; height:420px; border:58px solid rgba(81,62,152,.075); border-radius:50%; pointer-events:none; }
-.c-hero-grid { position:relative; z-index:1; grid-template-columns:minmax(0,1.12fr) minmax(380px,.88fr); gap:clamp(40px,7vw,110px); }
-.c-lead { color:#394B79; font-size:clamp(1.08rem,1.6vw,1.3rem); font-weight:700; line-height:1.55; }
-.c-video { position:relative; min-height:178px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; border:0; border-radius:20px; padding:25px; background:linear-gradient(135deg,#513E98,#394B79); color:#fff; box-shadow:0 20px 35px rgba(57,75,121,.16); }
-.c-video::before { content:""; position:absolute; inset:0; opacity:.2; background:radial-gradient(circle at 80% 25%,#fff 0 3px,transparent 4px) 0 0/22px 22px; }
-.c-video span,.c-video p,.c-play { position:relative; }.c-video span { color:#fff; }.c-video p { max-width:48ch; font-size:.92rem; }.c-play { position:absolute; top:22px; right:22px; display:grid; place-items:center; width:54px; height:54px; border:1px solid rgba(255,255,255,.75); border-radius:50%; font-size:1rem; }
-.c-concerns { margin-top:28px; gap:12px; }.c-concerns li { padding:12px 14px; border:1px solid #e4deef; border-radius:12px; background:#fff; box-shadow:0 4px 15px rgba(57,75,121,.05); font-weight:700; }.c-tick { color:#17743C; }
-.c-assurance { border:0; color:#513E98; font-weight:900; }
-.c-book { align-self:center; overflow:hidden; border-radius:22px; box-shadow:0 24px 50px rgba(23,116,60,.26); }.c-form { padding:32px; background:linear-gradient(155deg,#17743C,#105d2f); }.c-form input,.c-form select { border-color:rgba(255,255,255,.38); border-radius:9px; background:rgba(0,0,0,.13); }.c-form .c-button { border-radius:10px; background:#fff; color:#17743C; }.c-form .c-button:hover { background:#eee9f7; }
-.c-reviews { position:relative; padding:clamp(80px,10vw,130px) 0; background:#513E98; color:#fff; }.c-reviews h2 { margin-inline:auto; text-align:center; }.c-reviews .c-intro { color:#eee9f7; text-align:center; }.c-review-grid { gap:22px; }.c-review-grid article { position:relative; min-height:230px; border-radius:18px; padding:30px; background:#fff; box-shadow:0 18px 30px rgba(24,10,72,.2); }.c-review-grid article::before { content:"“"; position:absolute; right:20px; top:4px; color:#eee9f7; font:900 7rem/1 Georgia,serif; }.c-review-grid article p { position:relative; color:#394B79; }.c-note { color:#e6def7; }.c-reviews .c-button { border-radius:999px; background:#17743C; }
-.c-journey { padding:clamp(80px,10vw,130px) 0; background:#fff; }.c-steps { border:0; gap:16px; }.c-steps article,.c-steps article:first-child { min-height:310px; padding:27px 22px; border:1px solid #e7e1f0; border-radius:16px; background:#fff; box-shadow:0 10px 25px rgba(57,75,121,.06); transition:transform .2s,box-shadow .2s; }.c-steps article:hover { transform:translateY(-8px); box-shadow:0 18px 35px rgba(57,75,121,.13); }.c-steps article:nth-child(odd) { background:#f8f6fc; }.c-steps span { display:inline-grid; place-items:center; width:46px; height:46px; border-radius:50%; background:#eee9f7; color:#513E98; font-family:var(--font-lato); font-weight:900; font-size:.85rem; }.c-steps h3 { margin-top:42px; color:#17743C; font-size:1.35rem; }
-.c-options { padding:clamp(80px,10vw,130px) 0; background:linear-gradient(135deg,#123e29,#17743C); }.c-options h2 { color:#fff; }.c-option-grid { gap:22px; margin-top:40px; background:transparent; }.c-option-grid article { min-height:370px; border-radius:18px; padding:40px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.24); backdrop-filter:blur(9px); }.c-option-grid h3 { margin:0 0 18px; color:#fff; }.c-option-grid p,.c-option-grid li { color:#e8f4ec; }.c-option-grid ul { margin-top:30px; }.c-option-grid .c-tick { color:#d5aef4; }.c-choice { margin-top:30px; border-radius:18px; background:#fff; }.c-choice .c-button { border-radius:999px; }
-.c-doctor { padding:clamp(80px,10vw,130px) 0; background:#f7f5fc; }.c-doctor-grid { align-items:stretch; }.c-portrait { position:relative; min-height:550px; overflow:hidden; border:0; border-radius:22px; background:#e2d9f2; box-shadow:22px 22px 0 #d8f0e2; }.c-portrait img { object-fit:cover; object-position:center; }.c-doctor-grid > div:last-child { padding:clamp(10px,3vw,45px) 0; }.c-doctor h3 { color:#17743C; }.c-role { color:#513E98; font-weight:900; }.c-doctor h4 { color:#513E98; }.c-check-list li { padding:10px 0; border-bottom:1px solid #ded7ec; font-weight:700; }.c-doctor .c-button { margin-top:12px; border-radius:999px; }
-.c-clinic { padding:clamp(80px,10vw,130px) 0; background:#fff; }.c-strong { max-width:45ch; }.c-clinic-points { margin-top:30px; }.c-clinic-points li { padding:16px; border-radius:12px; background:#f7f5fc; font-weight:900; }.c-facility { display:grid; grid-template-columns:1.25fr 1fr; grid-template-rows:220px 220px; gap:12px; min-height:452px; overflow:hidden; border:0; border-radius:20px; background:transparent; }.c-facility > div { position:relative; overflow:hidden; }.c-facility > div:first-child { grid-row:span 2; }.c-facility img { object-fit:cover; transition:transform .4s; }.c-facility > div:hover img { transform:scale(1.05); }.c-question { border-radius:20px; padding:38px; }.c-question .c-button { border-radius:999px; }
-.c-visit { padding:clamp(80px,10vw,130px) 0; background:#eee9f7; }.c-address { border-color:#cfc5e3; }.c-map { overflow:hidden; border-radius:20px; box-shadow:0 20px 35px rgba(57,75,121,.14); }.c-actions .c-button { border-radius:999px; }.c-button-alt { background:transparent; border-color:#394B79; color:#394B79; }
-.circumcision footer { background:#394B79; }.circumcision footer .c-brand img { height:38px; background:#fff; border-radius:6px; padding:5px; }.circumcision footer .c-button { border-radius:999px; background:#17743C; }.c-copy { border-color:rgba(255,255,255,.15); color:#ddd7ed; }
-@media (max-width:800px) { .c-hero { background:linear-gradient(#fff 0 48%,#f4f0fc 48%); }.c-hero-grid { grid-template-columns:1fr; }.c-book { width:100%; }.c-steps { gap:12px; }.c-steps article,.c-steps article:first-child { min-height:0; }.c-facility { grid-template-columns:1fr 1fr; grid-template-rows:230px 160px; }.c-facility > div:first-child { grid-column:span 2; grid-row:auto; } }
-@media (max-width:520px) { .circumcision header .c-brand img { height:30px; }.circumcision header > button { padding:12px 14px; font-size:.58rem; }.c-video { min-height:205px; }.c-concerns li { font-size:.85rem; }.c-form { padding:25px; }.c-review-grid article { min-height:180px; }.c-facility { grid-template-columns:1fr; grid-template-rows:180px 180px 180px; }.c-facility > div:first-child { grid-column:auto; } }
+   Scoped design system under .circ. Built from .gyn further down
+   this file rather than beside it: the gynecomastia page's dark
+   editorial treatment — near-black ground cut by bone-white
+   bands, square corners, hairline rules, outlined numerals,
+   underlined form fields, uppercase headings — suits a private
+   men's-health page better than .elite's white SaaS paper, and
+   this page is the second one to want it.
+
+   Sharing the treatment is deliberate; being mistaken for the
+   same page is not. Four things move:
+
+     ground   .gyn sits on a cool near-black navy (#080c14).
+              This sits on a plum ink mixed from the logo's
+              purple, so the two read as different rooms.
+     accent   .gyn leads with the lifted green everywhere. Here
+              violet leads — eyebrows, numerals, the marked word,
+              the rules — and green is kept for actions only,
+              which is the brand's own division of the two.
+     texture  .gyn overlays a 64px square grid. This overlays
+              diagonal hairlines at the same weight.
+     index    every band is numbered 01–07 in an outlined
+              numeral, so the seven sections of the content deck
+              are legible as a sequence while scrolling.
+
+   Type is Lato, the site's only face, as everywhere else.
+   ============================================================ */
+
+/* The rules below sit inside Tailwind's cascade layers, not outside them.
+   Unlayered CSS beats every layered rule regardless of specificity, so an
+   unlayered `.circ h2 { color }` would win against `text-white` and any other
+   utility aimed at a heading. In `base` and `components`, utilities override
+   these the normal way. */
+
+@layer base {
+  .circ {
+    /* Dark half — the page's ground. A plum ink, not a navy: mixed toward the
+       logo's #513E98 so it is visibly not the gynecomastia page. */
+    --c-base: #0b0a16;
+    --c-surface: #131127;   /* raised band inside the dark */
+    --c-raised: #1b1832;    /* cards and inputs on the dark */
+    --c-line: #241f3d;      /* hairline on dark */
+    --c-line-strong: #372f5c;
+    --c-text: #f5f3fb;
+    --c-dim: #a49dbd;       /* 8.1:1 on --c-base — AA body on dark */
+
+    /* Bone half — the light bands that interrupt the dark. Warm, so it never
+       reads as the same paper /piles and / are printed on. */
+    --c-bone: #f2f0ec;
+    --c-bone-2: #e8e5df;
+    --c-bone-line: #d5d1c8;
+    --c-ink: #100d1c;
+    --c-ink-dim: #55506a;   /* 7.2:1 on bone */
+
+    /* Violet leads. The logo's #513E98 is unreadable on near-black, so the
+       lifted tint carries the dark bands and the original carries the bone. */
+    --c-violet: #b9a7e8;
+    --c-violet-soft: #d3c7f2;
+    --c-violet-deep: #513e98;
+
+    /* Green is the action colour and nothing else — no eyebrows, no rules.
+       That split is what keeps this page off .gyn's green-everywhere look. */
+    --c-green: #3fbf77;
+    --c-green-soft: #7bd6a3;
+    --c-green-deep: #17743c;
+
+    background: var(--c-base);
+    color: var(--c-text);
+    font-family: var(--font-lato), sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    /* clip, not hidden: `hidden` on a scroll container would break the sticky
+       header. Everything wide on this page scrolls inside its own row. */
+    overflow-x: clip;
+  }
+
+  /* Uppercase and tightly leaded is what separates these headings from
+     .elite's sentence case — the face is Lato either way. `color: inherit`
+     so a heading on a bone band takes the band's ink without a second rule. */
+  .circ h1,
+  .circ h2,
+  .circ h3,
+  .circ h4,
+  .circ .c-display {
+    font-family: var(--font-lato), sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    color: inherit;
+  }
+  .circ h1 {
+    font-size: clamp(1.9rem, 1.15rem + 3vw, 3.4rem);
+  }
+  .circ h2 {
+    font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.4rem);
+  }
+  .circ h3 {
+    font-size: clamp(1rem, 0.94rem + 0.35vw, 1.25rem);
+    letter-spacing: 0.015em;
+    line-height: 1.2;
+  }
+  .circ h4 {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+  }
+
+  .circ :focus-visible {
+    outline: 2px solid var(--c-violet);
+    outline-offset: 3px;
+    border-radius: 0;
+  }
+  .circ ::selection {
+    background: var(--c-violet);
+    color: #14092b;
+  }
+
+  /* Anchor landing offset. The header is sticky, so anything jumped to from
+     the nav has to clear it. SmoothScroll.tsx reads this value back off the
+     target, which covers the paths Lenis never sees — a hash URL opened
+     directly, a reduced-motion visit, and the no-JS fallback. */
+  .circ section[id],
+  .circ #book {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer components {
+  /* ── Eyebrow ────────────────────────────────────────────────────────────
+     The band's index and its name: "01 ─── Hero". .gyn prints a bare rule
+     before its label; the numeral is this page's addition, and it is what
+     makes the deck's seven sections countable on the way down.
+     `--c-eyebrow-color` lets the bone bands re-tint without a second rule. */
+  .circ .c-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: var(--c-eyebrow-color, var(--c-violet));
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .circ .c-eyebrow::after {
+    content: "";
+    width: 26px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .circ .c-eyebrow-n {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
+  }
+  /* On the bone bands the lifted violet washes out. */
+  .circ .c-eyebrow--ink {
+    --c-eyebrow-color: var(--c-violet-deep);
+  }
+
+  /* ── Buttons ────────────────────────────────────────────────────────────
+     Square, tracked, uppercase — .gyn's silhouette. What differs is which
+     colour fills them: green, always, because that is the brand's action
+     colour and the violet is spoken for. */
+  .circ .c-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    /* 44px minimum touch target, every breakpoint. */
+    min-height: 46px;
+    padding: 14px 26px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+  .circ .c-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+  }
+  .circ .c-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  .circ .c-btn-solid {
+    background: var(--c-green);
+    color: #04140a;
+  }
+  .circ .c-btn-solid:not(:disabled):hover {
+    background: var(--c-green-soft);
+  }
+  .circ .c-btn-line {
+    border-color: var(--c-line-strong);
+    color: var(--c-text);
+  }
+  .circ .c-btn-line:not(:disabled):hover {
+    border-color: var(--c-violet);
+    color: var(--c-violet);
+  }
+  /* The same two, inverted for the bone bands. */
+  .circ .c-btn-ink {
+    background: var(--c-ink);
+    color: var(--c-bone);
+  }
+  .circ .c-btn-ink:not(:disabled):hover {
+    background: var(--c-violet-deep);
+  }
+  .circ .c-btn-ink-line {
+    border-color: var(--c-bone-line);
+    color: var(--c-ink);
+  }
+  .circ .c-btn-ink-line:not(:disabled):hover {
+    border-color: var(--c-ink);
+  }
+
+  /* ── Outlined numeral ───────────────────────────────────────────────────
+     The section and step index, drawn as an outline so a very large number
+     can sit near copy without competing with it. */
+  .circ .c-numeral {
+    font-family: var(--font-lato), sans-serif;
+    font-weight: 700;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--c-line-strong);
+  }
+  .circ .c-numeral--ink {
+    -webkit-text-stroke-color: var(--c-bone-line);
+  }
+  .circ .c-numeral--on {
+    color: var(--c-violet);
+    -webkit-text-stroke-color: var(--c-violet);
+  }
+
+  /* ── Underlined form fields ─────────────────────────────────────────────
+     No boxes. The field is a baseline the value sits on — .gyn's treatment,
+     kept, because a boxed input would drag the page back toward .elite. */
+  .circ .c-form {
+    color-scheme: dark;
+  }
+  .circ .c-field {
+    width: 100%;
+    min-width: 0;
+    /* 44px target, and `appearance:none` because iOS Safari sizes a bare
+       select from its own content and ignores width:100%. */
+    min-height: 46px;
+    padding: 10px 2px;
+    border: 0;
+    border-bottom: 1px solid var(--c-line-strong);
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    appearance: none;
+    transition: border-color 0.2s ease;
+  }
+  .circ .c-field::placeholder {
+    color: #79738f;
+  }
+  .circ .c-field:focus {
+    outline: none;
+    border-bottom-color: var(--c-violet);
+  }
+  .circ .c-field option {
+    background: var(--c-raised);
+    color: var(--c-text);
+  }
+  /* `:user-invalid`, not `:invalid` — the latter matches a required field that
+     has simply not been filled in yet, so every empty field would be flagged
+     before the visitor had typed anything. It is also the only form that
+     behaves on a <select>, where `:placeholder-shown` never matches. */
+  .circ .c-field:user-invalid {
+    border-bottom-color: #e2646a;
+  }
+  /* The select's own arrow, drawn here so it survives appearance:none. */
+  .circ .c-select {
+    padding-right: 26px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--c-dim) 50%),
+      linear-gradient(135deg, var(--c-dim) 50%, transparent 50%);
+    background-position: calc(100% - 11px) calc(50% + 1px), calc(100% - 6px) calc(50% + 1px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .circ .c-label {
+    display: block;
+    color: var(--c-dim);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  /* ── Texture ────────────────────────────────────────────────────────────
+     Diagonal hairlines where .gyn rules a square grid. Same weight, same
+     restraint, different signature — it is the fastest way to tell the two
+     dark pages apart in a screenshot. */
+  .circ .c-tex {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--c-line) 0 1px,
+      transparent 1px 22px
+    );
+  }
+
+  /* ── Marquee ────────────────────────────────────────────────────────────
+     A row that scrolls itself, forever — the gynecomastia page's review
+     carousel, kept, because it is the right control for a set of quotes: there
+     is no "current" one to point a dot at.
+
+     The track holds the same set of cards twice and slides exactly one set's
+     width, so the moment it wraps back to 0 the second set is sitting where
+     the first was and the seam is invisible.
+
+     That only holds if half the track is exactly one set: the gap between
+     cards is a margin on each card rather than a `gap` on the track, because a
+     track gap adds one extra gap between the two sets and nothing else, which
+     puts the loop out by half of it and shows as a small jump every lap.
+
+     Both edges are faded with a mask rather than covered by a gradient
+     overlay, so it keeps working whatever the band behind it is painted. Hover
+     or tab into the row and it holds still; under `prefers-reduced-motion` the
+     animation is stopped and the row becomes a plain horizontal scroller, so
+     the cards past the fold stay reachable. */
+  .circ .c-marquee {
+    --c-marquee-fade: clamp(1.25rem, 7vw, 7rem);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--c-marquee-fade),
+      #000 calc(100% - var(--c-marquee-fade)),
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--c-marquee-fade),
+      #000 calc(100% - var(--c-marquee-fade)),
+      transparent
+    );
+  }
+  .circ .c-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: circ-marquee var(--c-marquee-duration, 56s) linear infinite;
+  }
+  .circ .c-marquee:hover .c-marquee-track,
+  .circ .c-marquee:focus-within .c-marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* ── Marked word ────────────────────────────────────────────────────────
+     One word of the hero headline, highlighted. The pair is the same one
+     `::selection` uses, so it reads as that word being marked rather than as
+     a new colour arriving in the palette.
+
+     `box-decoration-break: clone` so the padding is drawn on both halves if
+     the mark wraps a line, instead of only on the ends of the run. */
+  .circ .c-mark {
+    background-color: var(--c-violet);
+    color: #14092b;
+    padding: 0 0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+
+/* Staggered entrance for the hero, mirroring .gyn's g-rise/g-dN pairing.
+   Deliberately CSS rather than an in-view observer: the hero is on screen at
+   load, and anything gated on an IntersectionObserver band can be scrolled
+   past without ever entering it — a page opened at a hash, or reloaded with a
+   restored scroll position, does exactly that and leaves the content stuck at
+   opacity 0. Nothing here waits on the viewport. */
+.circ .c-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: circ-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes circ-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes circ-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.circ .c-d1 { animation-delay: 0.06s; }
+.circ .c-d2 { animation-delay: 0.16s; }
+.circ .c-d3 { animation-delay: 0.26s; }
+.circ .c-d4 { animation-delay: 0.36s; }
+.circ .c-d5 { animation-delay: 0.46s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .circ .c-rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  /* The blanket rule below stops the marquee animating. Without these two the
+     row would then be a frozen strip with its overflow still hidden, so the
+     cards past the first screenful would be unreachable — it becomes a plain
+     horizontal scroller instead. */
+  .circ .c-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .circ .c-marquee-track {
+    animation: none;
+  }
+  .circ *,
+  .circ *::before,
+  .circ *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .circ .c-btn:not(:disabled):hover {
+    transform: none;
+  }
+}
 
 /* hand-swiped card row. Phone-only, matching the `sm:` breakpoint where the
    utilities on the row turn it back into a grid — above that there is nothing

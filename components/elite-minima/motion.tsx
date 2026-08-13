@@ -36,6 +36,44 @@ export function Reveal({
   )
 }
 
+/**
+ * Fade + rise on mount, not on scroll.
+ *
+ * For content that is already on screen when the page loads — a hero, above
+ * all. `Reveal` below is gated on an IntersectionObserver band that excludes
+ * the top and bottom 12% of the viewport, which is right for a section the
+ * reader scrolls down to and wrong for one they land on: if the viewport ever
+ * moves past that band without stopping inside it, the content never animates
+ * in and stays at `opacity: 0` for the rest of the visit. A page opened at a
+ * hash (`/circumcision#clinic`) or reloaded with a restored scroll position
+ * does exactly that, and takes the hero with it.
+ *
+ * Nothing here waits on the viewport, so there is no band to miss.
+ */
+export function Rise({
+  children,
+  delay = 0,
+  y = 18,
+  className = "",
+}: {
+  children: ReactNode
+  delay?: number
+  y?: number
+  className?: string
+}) {
+  const reduced = useReducedMotion()
+  return (
+    <motion.div
+      className={className}
+      initial={reduced ? false : { opacity: 0, y }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 /** Blur-clearing reveal — reserved for headline moments. */
 export function BlurReveal({
   children,
