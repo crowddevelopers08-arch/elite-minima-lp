@@ -89,7 +89,7 @@ const PrivacyPolicy: React.FC = () => {
             {/* 2. How We Use Your Information */}
             <div className="mb-8">
               <SectionHead n={2} icon={Shield} title="How We Use Your Information" />
-              <p className="mb-3 text-[var(--e-muted)]">We use your information to:</p>
+              <p className="mb-3 text-[var(--e-muted)]">We use your informations to:</p>
               <ul className="space-y-3">
                 {USES.map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
