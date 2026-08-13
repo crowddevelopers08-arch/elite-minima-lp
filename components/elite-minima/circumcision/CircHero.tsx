@@ -65,9 +65,18 @@ export default function CircHero() {
       />
 
       <div className={`${SHELL_WIDE} relative py-8 sm:py-12`}>
-        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-line)] bg-[var(--c-surface)] lg:grid-cols-[1.2fr_0.8fr]">
-          {/* ── Copy ──────────────────────────────────────────────────── */}
-          <div className="min-w-0 p-7 sm:p-10 lg:p-12">
+        {/* Three blocks in one grid rather than two columns of stacked copy.
+            On phones they simply follow each other, which is what puts the
+            portrait between the lead paragraph and the assurances; from lg the
+            two copy halves are placed back into column one and the portrait
+            spans both their rows. Splitting it this way keeps one portrait in
+            the tree — the alternative, a mobile copy and a desktop copy, would
+            download the same 1 MB cut-out twice. */}
+        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-line)] bg-[var(--c-surface)] lg:grid-cols-[1.2fr_0.8fr] lg:grid-rows-[auto_1fr]">
+          {/* ── Copy, above the portrait on mobile ─────────────────────────
+              pb-8 on phones opens the gap before the portrait; at lg that gap
+              belongs to the block below instead, so it goes to zero. */}
+          <div className="min-w-0 px-7 pb-8 pt-7 sm:px-10 sm:pt-10 lg:col-start-1 lg:row-start-1 lg:px-12 lg:pb-0 lg:pt-12">
             <p className="inline-flex items-center gap-2.5 border border-[var(--c-line-strong)] px-3.5 py-2 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[var(--c-violet)]">
               <BadgeCheck className="h-3.5 w-3.5 flex-none" aria-hidden />
               {HERO.eyebrow}
@@ -80,11 +89,42 @@ export default function CircHero() {
             <p className="mt-5 max-w-[52ch] text-[0.98rem] leading-relaxed text-[var(--c-dim)] sm:text-[1.04rem]">
               {HERO.subtext}
             </p>
+          </div>
 
+          {/* ── Portrait ──────────────────────────────────────────────────
+              The figure is a cut-out, so this column supplies the background
+              it stands on: a violet panel lifted out of the page's own accent,
+              with a soft bloom behind the head. A white coat needs something
+              with weight behind it — on the panel's own plum it read as a
+              figure floating in the dark.
+
+              `object-contain object-bottom`, not cover: a cut-out cropped to
+              fill would lose the hands and the crown, and the whole point of
+              the treatment is that he stands on the panel's base edge. */}
+          <div
+            className="relative min-h-[380px] overflow-hidden sm:min-h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:min-h-0"
+            style={{
+              background:
+                "radial-gradient(72% 58% at 50% 22%, rgba(185,167,232,0.30), transparent 72%), linear-gradient(180deg, #2c2457 0%, #1d1936 100%)",
+            }}
+          >
+            <Image
+              src={HERO.portrait}
+              alt={`${DOCTOR.name} — ${DOCTOR.speciality} at Elite-Minima`}
+              fill
+              priority
+              sizes="(min-width: 1024px) 36vw, 100vw"
+              className="object-contain object-bottom"
+            />
+            <CornerTicks />
+          </div>
+
+          {/* ── Copy, below the portrait on mobile ─────────────────────── */}
+          <div className="min-w-0 px-7 pb-7 pt-8 sm:px-10 sm:pb-10 lg:col-start-1 lg:row-start-2 lg:px-12 lg:pb-12 lg:pt-9">
             {/* Two by two from sm, per the reference. Icon and label on one
                 line each, so the four read as a set of promises rather than a
                 list of features. */}
-            <ul className="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {HERO_ASSURANCES.map((a) => {
                 const Icon = ASSURANCE_ICONS[a] ?? BadgeCheck
                 return (
@@ -114,34 +154,6 @@ export default function CircHero() {
                 {HERO.secondaryCta}
               </a>
             </div>
-          </div>
-
-          {/* ── Portrait ──────────────────────────────────────────────────
-              The figure is a cut-out, so this column supplies the background
-              it stands on: a violet panel lifted out of the page's own accent,
-              with a soft bloom behind the head. A white coat needs something
-              with weight behind it — on the panel's own plum it read as a
-              figure floating in the dark.
-
-              `object-contain object-bottom`, not cover: a cut-out cropped to
-              fill would lose the hands and the crown, and the whole point of
-              the treatment is that he stands on the panel's base edge. */}
-          <div
-            className="relative min-h-[380px] overflow-hidden sm:min-h-[460px] lg:min-h-0"
-            style={{
-              background:
-                "radial-gradient(72% 58% at 50% 22%, rgba(185,167,232,0.30), transparent 72%), linear-gradient(180deg, #2c2457 0%, #1d1936 100%)",
-            }}
-          >
-            <Image
-              src={HERO.portrait}
-              alt={`${DOCTOR.name} — ${DOCTOR.speciality} at Elite-Minima`}
-              fill
-              priority
-              sizes="(min-width: 1024px) 36vw, 100vw"
-              className="object-contain object-bottom"
-            />
-            <CornerTicks />
           </div>
         </div>
       </div>

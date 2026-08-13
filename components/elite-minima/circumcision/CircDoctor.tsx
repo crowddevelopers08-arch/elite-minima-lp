@@ -29,8 +29,18 @@ export default function CircDoctor() {
   return (
     <section id="doctor" className={`border-y border-[var(--c-line)] bg-[var(--c-surface)] ${SECTION_Y}`}>
       <div className={SHELL}>
-        <div className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <Reveal className="min-w-0">
+        {/* Three blocks in one grid, same arrangement as the hero: on phones
+            they follow each other, which puts the portrait between the section
+            heading and the surgeon's name; from lg the two copy halves go back
+            into column two and the portrait spans both their rows. */}
+        <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0">
+          {/* ── Heading, above the portrait on mobile ─────────────────── */}
+          <Reveal className="min-w-0 lg:col-start-2 lg:row-start-1">
+            <Eyebrow n="04">Your Specialist</Eyebrow>
+            <h2 className="mt-5">{DOCTOR.title}</h2>
+          </Reveal>
+
+          <Reveal className="min-w-0 lg:col-start-1 lg:row-span-2 lg:row-start-1">
             <MediaFrame
               /* c_limit, not c_fill,g_face: a face-gravity fill at 4:5 centres
                  on the face and takes the crown off the top. This only asks
@@ -62,11 +72,12 @@ export default function CircDoctor() {
             </MediaFrame>
           </Reveal>
 
-          <Reveal delay={0.1} className="min-w-0">
-            <Eyebrow n="04">Your Specialist</Eyebrow>
-            <h2 className="mt-5">{DOCTOR.title}</h2>
-
-            <p className="c-display mt-8 text-[1.5rem] leading-none text-[var(--c-violet)]">{DOCTOR.name}</p>
+          {/* ── Credentials, below the portrait on mobile ────────────────
+              No top margin on the name: the grid's row gap supplies the space
+              on phones and `lg:pt-8` does at desktop, where the heading above
+              is a separate row rather than a sibling. */}
+          <Reveal delay={0.1} className="min-w-0 lg:col-start-2 lg:row-start-2 lg:pt-8">
+            <p className="c-display text-[1.5rem] leading-none text-[var(--c-violet)]">{DOCTOR.name}</p>
             <p className="mt-3 text-[0.74rem] font-bold uppercase tracking-[0.16em] text-[var(--c-text)]">
               {DOCTOR.speciality}
             </p>
