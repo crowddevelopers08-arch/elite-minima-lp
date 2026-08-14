@@ -145,43 +145,43 @@ export const REVIEWS_LEAD = "Real experiences from patients who chose Elite-Mini
 export const REVIEWS = [
   {
     quote:
-      "I had been putting this off for years because I did not want to discuss it with anyone. The consultation was completely private and the doctor explained the options without rushing me.",
-    name: "Naveen S",
+      "Dr. Lohit Sai was patient and attentive, and explained my condition and treatment options clearly. I felt comfortable asking questions, and all my concerns were addressed. The treatment has been effective, and I would definitely recommend him.",
+    name: "Vidya Sharosh",
     place: "Kilpauk",
     tag: "Stapler Circumcision",
   },
   {
     quote:
-      "Everything was explained before the procedure — what would happen, what to expect afterwards, and who to call if I had a question. That is what made the difference for me.",
-    name: "Arun K",
+      "From the first consultation to the post surgery follow-ups, Dr. Lohit Sai made sure I was comfortable at every stage. The professional and compassionate approach made a real difference to my experience. Thank you, Dr. Lohit Sai.",
+    name: "Pankaj Ranka",
     place: "Anna Nagar",
     tag: "Laser Circumcision",
   },
   {
     quote:
-      "I came in with recurring infections that kept coming back after every course of antibiotics. I was evaluated properly first, and the treatment was recommended only after that.",
-    name: "Mohammed R",
+      "Dr. Lohit Sai handled my treatment and surgery gently and politely, and his experience as a surgeon really showed. Whenever you reach out he replies instantly and gives a solution immediately. A very reassuring experience overall.",
+    name: "uma shankar",
     place: "Mogappair",
     tag: "Phimosis Treatment",
   },
   {
     quote:
-      "Day-care procedure, discharged the same evening. The aftercare instructions were written down clearly, and the follow-up appointment was already booked before I left.",
-    name: "Vignesh P",
+      "We chose Elite Minima for a family member's treatment, and it was the right decision. The doctor explained the condition clearly and answered every question patiently. The staff were kind, the facilities neat, and the recovery smooth.",
+    name: "Sethu Pathi",
     place: "Thirumangalam",
     tag: "Stapler Circumcision",
   },
   {
     quote:
-      "The clinic is clean and the staff were matter-of-fact about everything, which is exactly what I wanted. No awkwardness at any point.",
-    name: "Sathish M",
+      "My family member received excellent treatment at Elite Minima. The doctor was calm and confident, and the staff supported us throughout the process. The care and pain management after surgery made recovery smooth and relieving.",
+    name: "PRAKASH G",
     place: "Koyambedu",
     tag: "Circumcision",
   },
   {
     quote:
-      "I asked a lot of questions and none of them were brushed aside. I left the first consultation actually understanding what was wrong and what the options were.",
-    name: "Dinesh V",
+      "Dr. Lohit Sai explained the procedure clearly and made me feel comfortable. The surgery was smooth and well handled, the staff supportive, and the clinic clean. The post-surgery instructions were clear and helpful too.",
+    name: "mani",
     place: "Shenoy Nagar",
     tag: "Laser Circumcision",
   },
