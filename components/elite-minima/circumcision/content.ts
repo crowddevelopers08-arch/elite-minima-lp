@@ -147,42 +147,42 @@ export const REVIEWS = [
     quote:
       "Dr. Lohit Sai was patient and attentive, and explained my condition and treatment options clearly. I felt comfortable asking questions, and all my concerns were addressed. The treatment has been effective, and I would definitely recommend him.",
     name: "Vidya Sharosh",
-    place: "Kilpauk",
+    place: "Choolaimedu",
     tag: "Stapler Circumcision",
   },
   {
     quote:
       "From the first consultation to the post surgery follow-ups, Dr. Lohit Sai made sure I was comfortable at every stage. The professional and compassionate approach made a real difference to my experience. Thank you, Dr. Lohit Sai.",
     name: "Pankaj Ranka",
-    place: "Anna Nagar",
+    place: "Sowkarpet",
     tag: "Laser Circumcision",
   },
   {
     quote:
       "Dr. Lohit Sai handled my treatment and surgery gently and politely, and his experience as a surgeon really showed. Whenever you reach out he replies instantly and gives a solution immediately. A very reassuring experience overall.",
     name: "uma shankar",
-    place: "Mogappair",
+    place: "Avadi",
     tag: "Phimosis Treatment",
   },
   {
     quote:
       "We chose Elite Minima for a family member's treatment, and it was the right decision. The doctor explained the condition clearly and answered every question patiently. The staff were kind, the facilities neat, and the recovery smooth.",
     name: "Sethu Pathi",
-    place: "Thirumangalam",
+    place: "Redhills",
     tag: "Stapler Circumcision",
   },
   {
     quote:
       "My family member received excellent treatment at Elite Minima. The doctor was calm and confident, and the staff supported us throughout the process. The care and pain management after surgery made recovery smooth and relieving.",
     name: "PRAKASH G",
-    place: "Koyambedu",
+    place: "Padiyanallur",
     tag: "Circumcision",
   },
   {
     quote:
       "Dr. Lohit Sai explained the procedure clearly and made me feel comfortable. The surgery was smooth and well handled, the staff supportive, and the clinic clean. The post-surgery instructions were clear and helpful too.",
     name: "mani",
-    place: "Shenoy Nagar",
+    place: "Sowkarpet",
     tag: "Laser Circumcision",
   },
 ] as const
