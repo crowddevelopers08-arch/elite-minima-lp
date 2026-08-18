@@ -26,7 +26,7 @@ export default function CircLocation() {
       <div className={SHELL}>
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal className="min-w-0">
-            <Eyebrow n="06">Map &amp; Location</Eyebrow>
+            <Eyebrow n="05">Map &amp; Location</Eyebrow>
             <h2 className="mt-5">{VISIT.title}</h2>
             <p className="mt-5 max-w-[54ch] text-[0.95rem] leading-relaxed text-[var(--c-dim)]">{VISIT.lead}</p>
 

@@ -1,32 +1,32 @@
 "use client"
 
-import Image from "next/image"
 import { ArrowRight, BadgeCheck, CalendarClock, HeartHandshake, Phone, ShieldCheck, Sparkles } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { track } from "../track"
-import { CornerTicks, SHELL_WIDE } from "./ui"
-import { CIRCUMCISION_BRANCH, CIRC_PHONE_TEL, DOCTOR, HERO, HERO_ASSURANCES } from "./content"
+import { SHELL_WIDE } from "./ui"
+import CircForm from "./CircForm"
+import { BOOKING, CIRCUMCISION_BRANCH, CIRC_PHONE_TEL, HERO, HERO_ASSURANCES } from "./content"
 
 /**
- * Section 01 — the hook, and the surgeon's face.
+ * Section 01 — the hook, and the form.
  *
  * A single contained panel rather than a full-bleed band: copy in the left
- * two-thirds, the portrait bleeding to the panel's own top, bottom and right
- * edges in the right third. That is the reference layout this section was
- * asked to follow — badge, headline with a coloured closing run, lead, a
- * two-by-two grid of assurances, then a solid CTA beside an outlined one.
+ * half — badge, headline with a coloured closing run, lead, a two-by-two grid
+ * of assurances, then a solid CTA beside an outlined one — and the six booking
+ * fields in the right half, which is where the content deck puts them.
  *
- * The booking form is no longer here. It has its own band directly underneath
- * (CircBooking), which is also how the gynecomastia page is arranged: someone
- * deciding whether to be evaluated wants to see who would treat them before
- * they are asked for a phone number, and the form is still the first thing
- * under the fold either way.
+ * The form used to have a band of its own directly underneath,
+ * back when the surgeon's portrait held this column. Both are gone: the deck's
+ * arrangement is one screen that asks for the appointment, and a second band
+ * repeating "Book Your Consultation" under a hero that already shows the
+ * fields is a scroll spent on nothing. `#book` therefore lives on the form
+ * column here, so every CTA on the page still lands on the fields.
  *
  * Two things deliberately do not copy the reference. Its panel has large
  * rounded corners; this page has no rounded corner anywhere, and one here
  * would read as a mistake rather than a flourish. And its palette is green on
  * gold — this keeps the page's plum ink and violet, so the hero belongs to the
- * six sections under it.
+ * five sections under it.
  *
  * Entrance is `.c-rise` / `.c-dN`: a CSS animation on load, not an in-view
  * observer. The hero is on screen already, and anything gated on a scroll band
@@ -65,18 +65,15 @@ export default function CircHero() {
       />
 
       <div className={`${SHELL_WIDE} relative py-8 sm:py-12`}>
-        {/* Three blocks in one grid rather than two columns of stacked copy.
-            On phones they simply follow each other, which is what puts the
-            portrait between the lead paragraph and the assurances; from lg the
-            two copy halves are placed back into column one and the portrait
-            spans both their rows. Splitting it this way keeps one portrait in
-            the tree — the alternative, a mobile copy and a desktop copy, would
-            download the same 1 MB cut-out twice. */}
-        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-line)] bg-[var(--c-surface)] lg:grid-cols-[1.2fr_0.8fr] lg:grid-rows-[auto_1fr]">
-          {/* ── Copy, above the portrait on mobile ─────────────────────────
-              pb-8 on phones opens the gap before the portrait; at lg that gap
-              belongs to the block below instead, so it goes to zero. */}
-          <div className="min-w-0 px-7 pb-8 pt-7 sm:px-10 sm:pt-10 lg:col-start-1 lg:row-start-1 lg:px-12 lg:pb-0 lg:pt-12">
+        {/* Two halves of one bordered panel. They stack on phones — copy, then
+            fields — which is the order someone reads them in anyway: the
+            headline says what the page is before it asks for a phone number.
+            Grid items stretch by default, which is what lets the form column
+            paint its own ground to the panel's full height rather than
+            stopping under the last field. */}
+        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-line)] bg-[var(--c-surface)] lg:grid-cols-[1.05fr_0.95fr]">
+          {/* ── Copy ──────────────────────────────────────────────────────── */}
+          <div className="min-w-0 px-7 py-9 sm:px-10 sm:py-11 lg:px-12 lg:py-14">
             <p className="inline-flex items-center gap-2.5 border border-[var(--c-line-strong)] px-3.5 py-2 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[var(--c-violet)]">
               <BadgeCheck className="h-3.5 w-3.5 flex-none" aria-hidden />
               {HERO.eyebrow}
@@ -89,42 +86,11 @@ export default function CircHero() {
             <p className="mt-5 max-w-[52ch] text-[0.98rem] leading-relaxed text-[var(--c-dim)] sm:text-[1.04rem]">
               {HERO.subtext}
             </p>
-          </div>
 
-          {/* ── Portrait ──────────────────────────────────────────────────
-              The figure is a cut-out, so this column supplies the background
-              it stands on: a violet panel lifted out of the page's own accent,
-              with a soft bloom behind the head. A white coat needs something
-              with weight behind it — on the panel's own plum it read as a
-              figure floating in the dark.
-
-              `object-contain object-bottom`, not cover: a cut-out cropped to
-              fill would lose the hands and the crown, and the whole point of
-              the treatment is that he stands on the panel's base edge. */}
-          <div
-            className="relative min-h-[380px] overflow-hidden sm:min-h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:min-h-0"
-            style={{
-              background:
-                "radial-gradient(72% 58% at 50% 22%, rgba(185,167,232,0.30), transparent 72%), linear-gradient(180deg, #2c2457 0%, #1d1936 100%)",
-            }}
-          >
-            <Image
-              src={HERO.portrait}
-              alt={`${DOCTOR.name} — ${DOCTOR.speciality} at Elite-Minima`}
-              fill
-              priority
-              sizes="(min-width: 1024px) 36vw, 100vw"
-              className="object-contain object-bottom"
-            />
-            <CornerTicks />
-          </div>
-
-          {/* ── Copy, below the portrait on mobile ─────────────────────── */}
-          <div className="min-w-0 px-7 pb-7 pt-8 sm:px-10 sm:pb-10 lg:col-start-1 lg:row-start-2 lg:px-12 lg:pb-12 lg:pt-9">
             {/* Two by two from sm, per the reference. Icon and label on one
                 line each, so the four read as a set of promises rather than a
                 list of features. */}
-            <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            <ul className="mt-9 grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {HERO_ASSURANCES.map((a) => {
                 const Icon = ASSURANCE_ICONS[a] ?? BadgeCheck
                 return (
@@ -136,6 +102,11 @@ export default function CircHero() {
               })}
             </ul>
 
+            {/* The primary CTA is a scroll on phones, where the form is below
+                the fold of this panel, and a no-op nudge on desktop where it
+                is already beside the button. Kept either way: the page's other
+                six CTAs all point at `#book`, and the hero having none would
+                be the odd one out. */}
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
                 href="#book"
@@ -153,6 +124,23 @@ export default function CircHero() {
                 <Phone className="h-4 w-4" aria-hidden />
                 {HERO.secondaryCta}
               </a>
+            </div>
+          </div>
+
+          {/* ── Form ──────────────────────────────────────────────────────
+              Darker ground than the copy half, and a hairline between them, so
+              the fields read as a separate object inside the panel rather than
+              as the tail of the paragraph above. The border flips from top to
+              left when the two go side by side. */}
+          <div
+            id="book"
+            className="min-w-0 border-t border-[var(--c-line)] bg-[var(--c-base)] px-7 py-7 sm:px-10 sm:py-8 lg:border-l lg:border-t-0 lg:px-10 lg:py-10"
+          >
+            <h2 className="text-[1.35rem] sm:text-[1.5rem]">{BOOKING.title}</h2>
+            <p className="mt-2 max-w-[42ch] text-[0.9rem] leading-relaxed text-[var(--c-dim)]">{BOOKING.lead}</p>
+
+            <div className="mt-5">
+              <CircForm />
             </div>
           </div>
         </div>

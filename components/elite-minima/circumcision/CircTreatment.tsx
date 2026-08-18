@@ -65,7 +65,7 @@ function Journey() {
   return (
     <>
       <Reveal className="max-w-[62ch]">
-        <Eyebrow n="03">Treatment Journey</Eyebrow>
+        <Eyebrow n="02">Treatment Journey</Eyebrow>
         <h2 className="mt-5">{JOURNEY_TITLE}</h2>
         <p className="mt-5 text-[0.98rem] leading-relaxed text-[var(--c-dim)]">{JOURNEY_LEAD}</p>
       </Reveal>
@@ -134,7 +134,7 @@ function Options() {
   return (
     <div className="mt-16 border-t border-[var(--c-line)] pt-14 sm:mt-20 sm:pt-16">
       <Reveal>
-        <Eyebrow n="03">Options</Eyebrow>
+        <Eyebrow n="02">Options</Eyebrow>
         <h2 className="mt-5">{OPTIONS_TITLE}</h2>
       </Reveal>
 

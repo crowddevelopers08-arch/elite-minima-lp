@@ -1,7 +1,6 @@
 import SmoothScroll from "../SmoothScroll"
 import CircHeader from "./CircHeader"
 import CircHero from "./CircHero"
-import CircBooking from "./CircBooking"
 import CircReviews from "./CircReviews"
 import CircTreatment from "./CircTreatment"
 import CircDoctor from "./CircDoctor"
@@ -13,17 +12,21 @@ import CircStickyCta from "./CircStickyCta"
 /**
  * The circumcision landing page.
  *
- * Seven sections, in the order and with the copy of the approved content deck
- * (transcribed in ./content.ts):
+ * The hero, five numbered bands and a footer, in the order and with the copy
+ * of the approved content deck (transcribed in ./content.ts):
  *
- *   01 · Hero — headline, assurances, CTAs, the surgeon's portrait
- *   01b · Booking — the concerns, the number, and the form
- *   02 · Patient reviews
- *   03 · Treatment journey + circumcision options
- *   04 · Doctor
- *   05 · Clinic
- *   06 · Map
- *   07 · Footer
+ *   Hero — headline, assurances, CTAs, and the booking form
+ *   01 · Patient reviews
+ *   02 · Treatment journey + circumcision options
+ *   03 · Doctor
+ *   04 · Clinic
+ *   05 · Map
+ *   Footer
+ *
+ * The booking band that used to sit between the hero and the reviews is gone:
+ * the form moved back into the hero's right column, where the deck has it, and
+ * a second band asking for the same six fields was a scroll spent on nothing.
+ * `#book` now lands on the hero's form column.
  *
  * The header and the phone-only action bar are page chrome rather than deck
  * sections: nothing here is reachable without a way to navigate to it, and on
@@ -41,12 +44,12 @@ import CircStickyCta from "./CircStickyCta"
  * is a plum ink mixed from the logo's purple instead of `.gyn`'s cool navy;
  * violet leads and green is reserved for actions, where `.gyn` runs green
  * throughout; the texture is diagonal hairlines instead of a square grid; and
- * every band is numbered 01–07, which makes the deck's seven sections
+ * every band under the hero is numbered 01–05, which makes the sections
  * countable on the way down.
  *
- * Bands alternate ink → surface → bone → ink → surface → bone → ink → ink so
- * no two neighbours are the same weight, and no section carries its own shell
- * width — they all use SHELL from ./ui, which keeps the columns aligned.
+ * Bands alternate weight so no two neighbours are the same, and no section
+ * carries its own shell width — they all use SHELL from ./ui, which keeps the
+ * columns aligned.
  */
 export default function CircPage() {
   return (
@@ -59,7 +62,6 @@ export default function CircPage() {
 
       <main>
         <CircHero />
-        <CircBooking />
         <CircReviews />
         <CircTreatment />
         <CircDoctor />

@@ -154,15 +154,15 @@ export default function CircForm() {
   }
 
   return (
-    // Bare fields, no card and no heading of its own: CircBooking supplies
-    // both, and a second "Book Your Consultation" inside the panel would
-    // repeat the one already above it.
+    // Bare fields, no card and no heading of its own: the hero's form column
+    // supplies both, and a second "Book Your Consultation" inside the panel
+    // would repeat the one already above it.
     //
     // @container: the field grid pairs up on the panel's own width, not the
-    // viewport's — it is full-bleed on phones and drops into the booking
-    // band's wider column at lg.
+    // viewport's — it is full-bleed on phones and pairs up again once the
+    // hero's form column is wide enough at lg.
     <form ref={formRef} onSubmit={onSubmit} noValidate className="c-form @container">
-      <div className="grid gap-x-8 gap-y-5 @min-[440px]:grid-cols-2">
+      <div className="grid gap-x-8 gap-y-2.5 @min-[440px]:grid-cols-2">
         <Field label="Name" htmlFor="circ-name">
           <input id="circ-name" name="name" type="text" required autoComplete="name" placeholder="Your name" className="c-field" />
         </Field>
@@ -241,7 +241,7 @@ export default function CircForm() {
         </Field>
       </div>
 
-      <p className="mt-4 text-[0.72rem] text-[var(--c-dim)]">Callbacks run 10:00 AM – 7:00 PM, clinic time.</p>
+      <p className="mt-2 text-[0.72rem] text-[var(--c-dim)]">Callbacks run 10:00 AM – 7:00 PM, clinic time.</p>
 
       <input type="hidden" name="utm_source" />
       <input type="hidden" name="utm_medium" />
@@ -252,7 +252,7 @@ export default function CircForm() {
       <input type="hidden" name="gclid" />
       <input type="hidden" name="page_url" />
 
-      <button type="submit" disabled={submitting} className="c-btn c-btn-solid mt-8 w-full">
+      <button type="submit" disabled={submitting} className="c-btn c-btn-solid mt-4 w-full">
         {submitting ? "Sending…" : "Book Your Consultation"}
       </button>
 
@@ -260,7 +260,7 @@ export default function CircForm() {
           phones, the map section and the footer all carry it, and repeating
           it here gave the form a second, competing way out at the exact
           point the reader is being asked to submit. */}
-      <p className="mt-4 flex items-start gap-2.5 text-[0.76rem] leading-snug text-[var(--c-dim)]">
+      <p className="mt-2.5 flex items-start gap-2.5 text-[0.76rem] leading-snug text-[var(--c-dim)]">
         <Lock className="mt-0.5 h-3.5 w-3.5 flex-none text-[var(--c-green)]" aria-hidden />
         Your details are handled privately and confidentially.
     </p>

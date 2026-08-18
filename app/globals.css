@@ -739,10 +739,13 @@
   .circ .c-field {
     width: 100%;
     min-width: 0;
-    /* 44px target, and `appearance:none` because iOS Safari sizes a bare
-       select from its own content and ignores width:100%. */
-    min-height: 46px;
-    padding: 10px 2px;
+    /* 44px target — the floor, not a starting point: the rows are tightened
+       to keep the whole form inside the hero panel and this is as short as an
+       input may get and still be reliably tappable. `appearance:none` because
+       iOS Safari sizes a bare select from its own content and ignores
+       width:100%. */
+    min-height: 44px;
+    padding: 8px 2px;
     border: 0;
     border-bottom: 1px solid var(--c-line-strong);
     border-radius: 0;

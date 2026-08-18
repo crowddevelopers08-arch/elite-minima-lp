@@ -26,7 +26,7 @@ export default function CircClinic() {
       <div className={SHELL}>
         <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <Reveal className="min-w-0">
-            <Eyebrow n="05" tone="ink">
+            <Eyebrow n="04" tone="ink">
               The Clinic
             </Eyebrow>
             <h2 className="mt-5">{CLINIC.title}</h2>

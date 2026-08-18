@@ -36,7 +36,7 @@ export default function CircDoctor() {
         <div className="grid items-start gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0">
           {/* ── Heading, above the portrait on mobile ─────────────────── */}
           <Reveal className="min-w-0 lg:col-start-2 lg:row-start-1">
-            <Eyebrow n="04">Your Specialist</Eyebrow>
+            <Eyebrow n="03">Your Specialist</Eyebrow>
             <h2 className="mt-5">{DOCTOR.title}</h2>
           </Reveal>
 

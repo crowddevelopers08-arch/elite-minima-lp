@@ -80,13 +80,6 @@ export const HERO = {
 //   posterAlt: "Clinical illustration of a single-use circular stapling device used for circumcision",
 // } as const
 
-export const HERO_CONCERNS = [
-  "Tight foreskin / Phimosis",
-  "Pain or difficulty retracting the foreskin",
-  "Repeated infections or balanitis",
-  "Foreskin tears or irritation",
-] as const
-
 export const HERO_ASSURANCES = [
   "Private Consultation",
   "Day-Care Treatment",
@@ -94,20 +87,20 @@ export const HERO_ASSURANCES = [
   "Personalized Aftercare",
 ] as const
 
-/* ── Section 01b · Booking band ──────────────────────────────────────────────
-   The form's own section, immediately under the hero. The deck puts the fields
-   in the hero's right column; they were moved out so the hero could carry the
-   surgeon's portrait there instead, and a full-width band gives the six fields
-   more room than the column ever did. Same copy either way. */
+/* ── Section 01 · Booking form ───────────────────────────────────────────────
+   The heading above the fields in the hero's right column, which is where the
+   deck puts them. They spent a while in a band of their own under the hero,
+   back when the surgeon's portrait held that column; the band is gone and the
+   copy came back unchanged.
+
+   The deck's "concerns we treat" list and the second phone number went with
+   the band. The list is the treatment section's subject and the number is in
+   the header, the sticky bar and the footer, so neither lost its only home. */
 
 export const BOOKING = {
   title: "Book Your Consultation",
   lead: "Share your details and our team will call you back to confirm a time that suits you.",
-  concernsTitle: "Concerns we treat",
-  callTitle: "Or call the clinic",
 } as const
-
-/* ── Section 01b · Lead form ─────────────────────────────────────────────── */
 
 export const FORM_CONCERNS = ["Bleeding", "Pain", "Swelling or Lump", "Itching", "Other"] as const
 

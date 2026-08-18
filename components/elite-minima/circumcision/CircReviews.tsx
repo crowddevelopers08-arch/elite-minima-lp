@@ -39,7 +39,7 @@ export default function CircReviews() {
     <section id="reviews" className={`bg-[var(--c-bone)] text-[var(--c-ink)] ${SECTION_Y}`}>
       <div className={SHELL}>
         <Reveal className="max-w-[60ch]">
-          <Eyebrow n="02" tone="ink">
+          <Eyebrow n="01" tone="ink">
             Patient Reviews
           </Eyebrow>
           <h2 className="mt-5">{REVIEWS_TITLE}</h2>
