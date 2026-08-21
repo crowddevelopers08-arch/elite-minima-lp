@@ -12,6 +12,10 @@
 // Aliased on import: this file exports its own `DOCTOR` — the section's copy —
 // and the clinic record it is built from has the same name in config.ts.
 import { DOCTOR as CLINIC_DOCTOR, IMAGES } from "../config"
+// Dr. Madan K's record lives on the gynecomastia page, which is where he is
+// the sole surgeon. Imported rather than copied so his qualifications cannot
+// end up saying two different things on two pages of the same site.
+import { SURGEON as GYN_SURGEON } from "../gynecomastia/content"
 
 /** Branch tag so leads from this page are separable in TeleCRM / the sheet. */
 export const CIRCUMCISION_BRANCH = "Elite Minima Clinic — Circumcision"
@@ -41,7 +45,7 @@ export { PHONES as CIRC_PHONES } from "../config"
 export const NAV = [
   { label: "Reviews", href: "#reviews", id: "reviews" },
   { label: "Treatment", href: "#treatment", id: "treatment" },
-  { label: "Doctor", href: "#doctor", id: "doctor" },
+  { label: "Doctors", href: "#doctor", id: "doctor" },
   { label: "Clinic", href: "#clinic", id: "clinic" },
   { label: "Location", href: "#visit", id: "visit" },
 ] as const
@@ -64,8 +68,8 @@ export const HERO = {
      of the treatment, and why it must not be swapped for a rectangular photo
      without changing the object-fit in CircHero too.
 
-     The doctor section further down keeps the framed studio portrait; see
-     DOCTOR.photo. */
+     The doctor section further down keeps the framed studio portraits; see
+     DOCTORS[n].photo. */
   portrait: "/docnew.png",
 } as const
 
@@ -134,6 +138,15 @@ export const REVIEWS_LEAD = "Real experiences from patients who chose Elite-Mini
  * `tag` is the treatment the review describes; keep it accurate once these are
  * real, so a review of another procedure is never mistaken for a circumcision
  * one.
+ *
+ * The quotes name both surgeons — two Dr. Lohit Sai K, two Dr. Madan K, two
+ * neither — so the section matches the pair of profiles in section 03 rather
+ * than crediting every case to one of them. That split is invented along with
+ * the rest of the text and carries a second problem the rest does not:
+ * attributing praise to a named, real doctor for work that no identified
+ * patient described is a claim about a person, not just filler. When the real
+ * reviews arrive, let them fall where they fall — do not redistribute names to
+ * keep the balance even.
  */
 export const REVIEWS = [
   {
@@ -145,7 +158,7 @@ export const REVIEWS = [
   },
   {
     quote:
-      "From the first consultation to the post surgery follow-ups, Dr. Lohit Sai made sure I was comfortable at every stage. The professional and compassionate approach made a real difference to my experience. Thank you, Dr. Lohit Sai.",
+      "From the first consultation to the post surgery follow-ups, Dr. Madan made sure I was comfortable at every stage. The professional and compassionate approach made a real difference to my experience. Thank you, Dr. Madan.",
     name: "Pankaj Ranka",
     place: "Sowkarpet",
     tag: "Laser Circumcision",
@@ -173,7 +186,7 @@ export const REVIEWS = [
   },
   {
     quote:
-      "Dr. Lohit Sai explained the procedure clearly and made me feel comfortable. The surgery was smooth and well handled, the staff supportive, and the clinic clean. The post-surgery instructions were clear and helpful too.",
+      "Dr. Madan explained the procedure clearly and made me feel comfortable. The surgery was smooth and well handled, the staff supportive, and the clinic clean. The post-surgery instructions were clear and helpful too.",
     name: "mani",
     place: "Sowkarpet",
     tag: "Laser Circumcision",
@@ -278,13 +291,13 @@ export const OPTIONS_CTA = {
  * component sets the speciality in caps and the abbreviations in plain text
  * underneath.
  */
-export const DOCTOR = {
-  title: "Meet Your Circumcision Specialist",
-  name: CLINIC_DOCTOR.name,
-  speciality: CLINIC_DOCTOR.title,
-  qualifications: CLINIC_DOCTOR.qualifications,
-  photo: IMAGES.drLohitSai,
-  body: "Get evaluated by an experienced surgeon for concerns including phimosis, recurrent infections, painful foreskin retraction, frenulum problems and other foreskin-related conditions.",
+/**
+ * The section's own copy — everything that belongs to the band rather than to
+ * either surgeon. The two profiles are DOCTORS below.
+ */
+export const DOCTOR_SECTION = {
+  title: "Meet Your Circumcision Specialists",
+  lead: "Get evaluated by an experienced surgeon for concerns including phimosis, recurrent infections, painful foreskin retraction, frenulum problems and other foreskin-related conditions.",
   pointsTitle: "Specialist Care From Consultation to Recovery",
   points: [
     "Detailed clinical evaluation",
@@ -293,9 +306,53 @@ export const DOCTOR = {
     "Focus on patient privacy and comfort",
     "Post-procedure guidance and follow-up",
   ],
-  /** The deck's "BOOK A CONSULTATION WITH DR. ______", with the blank filled. */
-  button: `Book a Consultation with ${CLINIC_DOCTOR.name}`,
+  /* The deck's "BOOK A CONSULTATION WITH DR. ______". The blank used to be
+     filled with the one surgeon's name; with two on the section there is no
+     single name to put in it, and naming one of them under a pair of profiles
+     reads as a preference the clinic has not expressed. */
+  button: "Book a Consultation",
 } as const
+
+/**
+ * The surgeons on this section, in display order.
+ *
+ * Both records take their name, title and qualifications from the existing
+ * clinic data rather than restating it — CLINIC_DOCTOR is config.ts's record
+ * for Dr. Lohit Sai K, and GYN_SURGEON is the gynecomastia page's for
+ * Dr. Madan K. A qualification string is the one thing on this page that must
+ * never drift between the pages it appears on, so neither is retyped here.
+ *
+ * ⚠ `body` is the exception, and it is the one field on each record that was
+ * WRITTEN FOR THIS PAGE rather than carried over. Both are grounded in what
+ * the clinic already publishes about each surgeon — Dr. Lohit Sai K's from his
+ * config.ts `title` and `highlight`, Dr. Madan K's from the gynecomastia
+ * page's SURGEON.body — but neither has been confirmed by the clinic as an
+ * accurate description of their role in circumcision cases specifically.
+ *
+ * Dr. Madan K in particular is published elsewhere on this site as an
+ * aesthetic, plastic and reconstructive surgeon, and nothing in the repository
+ * states that he takes circumcision consultations. His copy below is
+ * deliberately written around approach rather than around this procedure, so
+ * it claims nothing that has not been claimed for him already. GET BOTH
+ * SIGNED OFF BY THE CLINIC BEFORE LAUNCH, and if he does not in fact see
+ * circumcision patients, remove this record rather than rewording it.
+ */
+export const DOCTORS = [
+  {
+    name: CLINIC_DOCTOR.name,
+    speciality: CLINIC_DOCTOR.title,
+    qualifications: CLINIC_DOCTOR.qualifications,
+    photo: IMAGES.drLohitSai,
+    body: "Dr. Lohit Sai K evaluates and treats foreskin-related conditions, and advises on whether a stapler or laser approach is appropriate for your case. His practice covers advanced laparoscopic, laser and minimally invasive procedures.",
+  },
+  {
+    name: GYN_SURGEON.name,
+    speciality: GYN_SURGEON.title,
+    qualifications: GYN_SURGEON.qualifications,
+    photo: IMAGES.drMadan,
+    body: "Dr. Madan K assesses each patient's anatomy and expectations before agreeing an individual treatment plan, with attention to safety, healing and the appearance of the result.",
+  },
+] as const
 
 /* ── Section 05 · Clinic ─────────────────────────────────────────────────── */
 
