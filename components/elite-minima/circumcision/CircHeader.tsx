@@ -73,12 +73,12 @@ export default function CircHeader() {
     <header
       className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
         scrolled
-          ? "border-[var(--c-line)] bg-[rgba(11,10,22,0.92)] backdrop-blur-[12px]"
-          : "border-transparent bg-[rgba(11,10,22,0.6)] backdrop-blur-[6px]"
+          ? "border-[var(--c-line)] bg-[rgba(255,255,255,0.92)] backdrop-blur-[12px]"
+          : "border-transparent bg-[rgba(255,255,255,0.72)] backdrop-blur-[6px]"
       }`}
     >
       <div className={`${SHELL} flex h-16 items-center gap-4 sm:h-[70px] sm:gap-7`}>
-        <a href="#top" className="flex flex-none items-center bg-white px-2.5 py-1.5" aria-label={`${BRAND_FULL} — top of page`}>
+        <a href="#top" className="flex flex-none items-center py-1.5" aria-label={`${BRAND_FULL} — top of page`}>
           <Image src={IMAGES.logoLockup} alt={BRAND_FULL} width={776} height={180} priority className="h-6 w-auto sm:h-7" />
         </a>
 

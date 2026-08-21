@@ -54,16 +54,18 @@ export default function CircDoctor() {
               sizes="(min-width: 1024px) 32vw, (min-width: 640px) 400px, 100vw"
               className="mx-auto aspect-[4/5] w-full max-w-[400px] lg:mx-0 lg:max-w-none"
             >
-              {/* The portrait is a pale studio frame and this band is plum ink,
-                  so it would otherwise end as a bright rectangle stuck on the
-                  page. The scrim seats the bottom edge into the ground and
-                  gives the name plate something to sit on. */}
+              {/* Kept dark through the move to the white theme, because it is
+                  on the photograph rather than on the page: the name plate has
+                  to stay readable over whatever the bottom of the portrait
+                  turns out to be, and only a scrim guarantees that. It is
+                  shallower than it was — it no longer has a near-black band to
+                  blend into, so it only has to carry the plate. */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(11,10,22,0.9))]"
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(28,24,50,0.86))]"
               />
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-[var(--c-violet)]">
+                <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-[var(--c-violet-soft)]">
                   Your Specialist
                 </p>
                 <p className="c-display mt-2 text-[1.1rem] leading-none text-white">{DOCTOR.name}</p>

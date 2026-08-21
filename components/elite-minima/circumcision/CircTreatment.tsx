@@ -144,7 +144,7 @@ function Options() {
             <article className="flex h-full flex-col bg-[var(--c-base)]">
               <div className="relative aspect-[16/9] overflow-hidden bg-[var(--c-raised)]">
                 <Image src={o.img} alt={o.alt} fill sizes="(min-width: 1024px) 46vw, 100vw" className="object-cover object-center" />
-                <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(11,10,22,0.05),rgba(11,10,22,0.55))]" />
+                <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(28,24,50,0.05),rgba(28,24,50,0.55))]" />
                 <span className="c-numeral c-numeral--on absolute bottom-4 left-5 text-[2.2rem]">
                   {String(i + 1).padStart(2, "0")}
                 </span>

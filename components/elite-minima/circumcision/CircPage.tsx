@@ -33,19 +33,20 @@ import CircStickyCta from "./CircStickyCta"
  * a phone the form ends up a long way from most of the page.
  *
  * ── The design ────────────────────────────────────────────────────────────
- * `.circ` (see globals.css), built from `.gyn` rather than from `.elite`. The
- * gynecomastia page's dark editorial treatment — ink ground cut by bone-white
- * bands, square corners, hairline rules, outlined numerals, underlined form
- * fields, uppercase headings — fits a private men's-health page far better
- * than the white SaaS paper `/` and `/piles` wear, and this is the second page
- * to want it.
+ * `.circ` (see globals.css). The structure is `.gyn`'s editorial treatment —
+ * square corners, hairline rules, outlined numerals, underlined form fields,
+ * uppercase headings — on a white ground.
  *
- * Four things are moved so the two are not mistaken for each other: the ground
- * is a plum ink mixed from the logo's purple instead of `.gyn`'s cool navy;
- * violet leads and green is reserved for actions, where `.gyn` runs green
- * throughout; the texture is diagonal hairlines instead of a square grid; and
- * every band under the hero is numbered 01–05, which makes the sections
- * countable on the way down.
+ * It was a dark page. The client read it as too heavy, so it was inverted to
+ * the white theme entirely in the `.circ` tokens; nothing in this file or in
+ * the sections below changed shape for it, and the `tone` prop each section
+ * passes still selects between two grounds — they are simply both light now.
+ *
+ * What keeps it off `.elite`, the white theme `/` and `/piles` already wear:
+ * nothing here is neutral grey. Every tone above the white ground is mixed
+ * toward the logo's purple, violet leads and green is reserved for actions,
+ * the texture is diagonal hairlines, and every band under the hero is numbered
+ * 01–05, which makes the sections countable on the way down.
  *
  * Bands alternate weight so no two neighbours are the same, and no section
  * carries its own shell width — they all use SHELL from ./ui, which keeps the

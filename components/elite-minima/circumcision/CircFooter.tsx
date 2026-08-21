@@ -13,12 +13,13 @@ import { CIRCUMCISION_BRANCH, CIRC_PHONES, FOOTER, FOOTER_LINKS } from "./conten
  * The deck's own contents: brand line, blurb, three contact details, the menu,
  * one button, the copyright. No columns invented around them.
  *
- * On `--c-ink` — a step darker than the page ground, so the footer closes the
- * page rather than continuing it.
+ * On `--c-deep` — the deepest tint on the page, so the footer still closes it
+ * rather than continuing it. It was a near-black slab before the white theme;
+ * `--c-deep` exists so it can be the closing band without being that.
  */
 export default function CircFooter() {
   return (
-    <footer className="border-t border-[var(--c-line)] bg-[var(--c-ink)] text-[var(--c-dim)]">
+    <footer className="border-t border-[var(--c-line)] bg-[var(--c-deep)] text-[var(--c-dim)]">
       <div className={`${SHELL} grid gap-10 py-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16 lg:py-14`}>
         <div className="min-w-0 max-w-[44ch]">
           {/* The mark is printed for white, so on this ground it sits on its

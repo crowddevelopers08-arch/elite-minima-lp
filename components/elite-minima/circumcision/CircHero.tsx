@@ -46,9 +46,10 @@ const ASSURANCE_ICONS: Record<string, LucideIcon> = {
 
 export default function CircHero() {
   return (
-    <section className="relative overflow-hidden bg-[var(--c-base)]">
-      {/* Ground: diagonal hairlines, faded out toward the bottom so the band
-          below starts on clean ink rather than a hard edge. */}
+    <section className="relative overflow-hidden bg-[var(--c-hero)]">
+      {/* Ground: diagonal hairlines on the hero band, faded out toward the
+          bottom so the grain has stopped by the time the band ends and the
+          edge into the section below is a clean colour change. */}
       <div
         aria-hidden
         className="c-tex pointer-events-none absolute inset-0 opacity-70"
@@ -57,11 +58,13 @@ export default function CircHero() {
           WebkitMaskImage: "linear-gradient(180deg,#000,transparent 90%)",
         }}
       />
-      {/* A single violet bloom behind the headline — the page's only glow. */}
+      {/* A single violet bloom behind the headline — the page's only glow. Much
+          weaker than it was: at the strength it needed against near-black it
+          is a lavender haze across the top of a white page. */}
       <div
         aria-hidden
         className="pointer-events-none absolute -left-40 top-[-14rem] h-[34rem] w-[34rem] rounded-full opacity-40 blur-[120px]"
-        style={{ background: "radial-gradient(circle, rgba(81,62,152,0.55), transparent 68%)" }}
+        style={{ background: "radial-gradient(circle, rgba(81,62,152,0.18), transparent 68%)" }}
       />
 
       <div className={`${SHELL_WIDE} relative py-8 sm:py-12`}>
@@ -71,7 +74,7 @@ export default function CircHero() {
             Grid items stretch by default, which is what lets the form column
             paint its own ground to the panel's full height rather than
             stopping under the last field. */}
-        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-line)] bg-[var(--c-surface)] lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="c-rise c-d1 grid overflow-hidden border border-[var(--c-bone-line)] bg-[var(--c-base)] lg:grid-cols-[1.05fr_0.95fr]">
           {/* ── Copy ──────────────────────────────────────────────────────── */}
           <div className="min-w-0 px-7 py-9 sm:px-10 sm:py-11 lg:px-12 lg:py-14">
             <p className="inline-flex items-center gap-2.5 border border-[var(--c-line-strong)] px-3.5 py-2 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[var(--c-violet)]">
@@ -128,13 +131,15 @@ export default function CircHero() {
           </div>
 
           {/* ── Form ──────────────────────────────────────────────────────
-              Darker ground than the copy half, and a hairline between them, so
-              the fields read as a separate object inside the panel rather than
-              as the tail of the paragraph above. The border flips from top to
-              left when the two go side by side. */}
+              A step deeper than the copy half, and a hairline between them,
+              so the fields read as a separate object inside the panel rather
+              than as the tail of the paragraph above. The panel is white and
+              sits on the tinted hero band, so the tint the panel gave up is
+              what this column now carries. The border flips from top to left
+              when the two go side by side. */}
           <div
             id="book"
-            className="min-w-0 border-t border-[var(--c-line)] bg-[var(--c-base)] px-7 py-7 sm:px-10 sm:py-8 lg:border-l lg:border-t-0 lg:px-10 lg:py-10"
+            className="min-w-0 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-7 py-7 sm:px-10 sm:py-8 lg:border-l lg:border-t-0 lg:px-10 lg:py-10"
           >
             <h2 className="text-[1.35rem] sm:text-[1.5rem]">{BOOKING.title}</h2>
             <p className="mt-2 max-w-[42ch] text-[0.9rem] leading-relaxed text-[var(--c-dim)]">{BOOKING.lead}</p>

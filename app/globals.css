@@ -485,26 +485,30 @@
 /* ============================================================
    ELITE MINIMA — Circumcision landing page  (/circumcision)
 
-   Scoped design system under .circ. Built from .gyn further down
-   this file rather than beside it: the gynecomastia page's dark
-   editorial treatment — near-black ground cut by bone-white
-   bands, square corners, hairline rules, outlined numerals,
-   underlined form fields, uppercase headings — suits a private
-   men's-health page better than .elite's white SaaS paper, and
-   this page is the second one to want it.
+   Scoped design system under .circ. The structure is .gyn's
+   editorial treatment — square corners, hairline rules, outlined
+   numerals, underlined form fields, uppercase headings, bands
+   alternating between two grounds — but light rather than dark.
 
-   Sharing the treatment is deliberate; being mistaken for the
-   same page is not. Four things move:
+   It was dark, on a plum near-black mixed from the logo's purple.
+   The client read the page as too heavy; it was lifted once, and
+   then inverted outright to the white theme it is now. The
+   inversion was done here, on the tokens, rather than in the
+   sections — every band, card, rule and field turns over from
+   this block, and the `tone="ink" | "dark"` prop each section
+   uses to pick a half still resolves correctly.
 
-     ground   .gyn sits on a cool near-black navy (#080c14).
-              This sits on a plum ink mixed from the logo's
-              purple, so the two read as different rooms.
-     accent   .gyn leads with the lifted green everywhere. Here
-              violet leads — eyebrows, numerals, the marked word,
-              the rules — and green is kept for actions only,
-              which is the brand's own division of the two.
-     texture  .gyn overlays a 64px square grid. This overlays
-              diagonal hairlines at the same weight.
+   What keeps it from becoming .elite, which is the white theme /
+   and /piles already wear:
+
+     tint     nothing on this page is neutral grey. The ground is
+              white, and every tone above it — bands, cards,
+              hairlines, the footer — is mixed toward the logo's
+              #513E98.
+     accent   violet leads: eyebrows, numerals, the marked word,
+              the rules. Green is kept for actions only, which is
+              the brand's own division of the two.
+     texture  diagonal hairlines, where .elite has none.
      index    every band is numbered 01–07 in an outlined
               numeral, so the seven sections of the content deck
               are legible as a sequence while scrolling.
@@ -520,34 +524,77 @@
 
 @layer base {
   .circ {
-    /* Dark half — the page's ground. A plum ink, not a navy: mixed toward the
-       logo's #513E98 so it is visibly not the gynecomastia page. */
-    --c-base: #0b0a16;
-    --c-surface: #131127;   /* raised band inside the dark */
-    --c-raised: #1b1832;    /* cards and inputs on the dark */
-    --c-line: #241f3d;      /* hairline on dark */
-    --c-line-strong: #372f5c;
-    --c-text: #f5f3fb;
-    --c-dim: #a49dbd;       /* 8.1:1 on --c-base — AA body on dark */
+    /* ── Paper ──────────────────────────────────────────────────────────
+       The page's ground, and the two tones stacked on it. This page ran on a
+       plum near-black until the client asked for a white theme; what follows
+       is that inversion, done on the tokens rather than in the components, so
+       every band, card, rule and field turned over at once.
 
-    /* Bone half — the light bands that interrupt the dark. Warm, so it never
-       reads as the same paper /piles and / are printed on. */
-    --c-bone: #f2f0ec;
-    --c-bone-2: #e8e5df;
-    --c-bone-line: #d5d1c8;
-    --c-ink: #100d1c;
-    --c-ink-dim: #55506a;   /* 7.2:1 on bone */
+       The ground is plain white and everything above it is tinted toward the
+       logo's #513E98 rather than toward grey. That tint is the whole reason
+       the page still reads as itself: a neutral-grey light theme here would be
+       indistinguishable from `.elite`, which is what / and /piles wear. */
+    --c-base: #ffffff;      /* the ground */
+    --c-surface: #f6f4fc;   /* raised band inside the white */
+    --c-raised: #efebf8;    /* cards and inputs */
+    --c-line: #ddd8ee;      /* hairline, and the gap fill in `gap-px` grids */
+    /* Not a hairline: this draws the form's field underlines and the outlined
+       button's border, so it is held at 3.9:1 on white — a boundary a visitor
+       has to be able to find, not a decorative rule. */
+    --c-line-strong: #847ba6;
+    --c-text: #1c1832;      /* 17.1:1 on white */
+    --c-dim: #5a5477;       /* 7.1:1 on white — AA body */
+    /* The footer, and only the footer: the deepest tint on the page, so it
+       still closes the page the way the near-black slab used to. */
+    --c-deep: #dcd7ee;
+    /* The hero band. Its own token rather than an alias of --c-bone: the hero
+       is the one band that gets re-tinted on its own, and pointing it at
+       --c-bone would drag sections 01 and 04 along with it every time.
 
-    /* Violet leads. The logo's #513E98 is unreadable on near-black, so the
-       lifted tint carries the dark bands and the original carries the bone. */
-    --c-violet: #b9a7e8;
-    --c-violet-soft: #d3c7f2;
-    --c-violet-deep: #513e98;
+       A step deeper than --c-bone, and that step is load-bearing. Section 01
+       sits directly under the hero and is painted --c-bone; at the same value
+       the two grounds would run together into one tinted region with no seam,
+       and the hero would read as having no bottom. */
+    --c-hero: #e9e5f4;
 
-    /* Green is the action colour and nothing else — no eyebrows, no rules.
-       That split is what keeps this page off .gyn's green-everywhere look. */
-    --c-green: #3fbf77;
-    --c-green-soft: #7bd6a3;
+    /* ── The alternating band ────────────────────────────────────────────
+       Sections 01 and 04 sit a step deeper than the ground so the page keeps
+       the light/dark rhythm it was built around — the alternation survived the
+       inversion, it just happens between two light tones now.
+
+       These kept the `bone` and `ink` names through the change. Every section
+       selects between the two halves with `tone="ink" | "dark"`, and renaming
+       the tokens would have meant rewriting that prop in all seven of them for
+       no visual difference. They are no longer warm, though: a warm off-white
+       against a white ground is a smudge, where the violet tint reads as a
+       deliberate band. */
+    --c-bone: #efecf8;
+    --c-bone-2: #e4e0f2;
+    --c-bone-line: #c6bde0;
+    /* Both halves are light now, so the band ink and the ground ink are the
+       same two values. Kept as separate tokens rather than collapsed: the
+       `tone` prop still has to resolve to something in every section. */
+    --c-ink: #1c1832;
+    --c-ink-dim: #5a5477;
+
+    /* ── Violet ──────────────────────────────────────────────────────────
+       Still leads — eyebrows, numerals, the marked word, the rules. The logo's
+       own #513E98 carries it now; the lifted tint that used to be needed for
+       legibility on near-black would vanish on white. */
+    --c-violet: #513e98;
+    /* The one exception, and the only light value left in the palette: the
+       photo scrims in sections 02 and 03 are still dark, because they sit on
+       photographs rather than on the page, and the eyebrow and numeral drawn
+       on them need a tint that survives there. */
+    --c-violet-soft: #cdbff0;
+    --c-violet-deep: #3d2d78;
+
+    /* ── Green ───────────────────────────────────────────────────────────
+       The action colour and nothing else, as before — but deep rather than
+       lifted, because it now has to hold against white both as a solid button
+       ground under white text and as a tick beside body copy. */
+    --c-green: #17743c;
+    --c-green-soft: #0f5c2e;  /* the solid button's hover — deeper, not softer */
     --c-green-deep: #17743c;
 
     background: var(--c-base);
@@ -599,7 +646,7 @@
   }
   .circ ::selection {
     background: var(--c-violet);
-    color: #14092b;
+    color: #fff;
   }
 
   /* Anchor landing offset. The header is sticky, so anything jumped to from
@@ -641,7 +688,8 @@
     font-variant-numeric: tabular-nums;
     opacity: 0.75;
   }
-  /* On the bone bands the lifted violet washes out. */
+  /* A step deeper on the tinted bands, so the eyebrow holds its weight
+     against a ground that is itself a step deeper than white. */
   .circ .c-eyebrow--ink {
     --c-eyebrow-color: var(--c-violet-deep);
   }
@@ -683,7 +731,7 @@
 
   .circ .c-btn-solid {
     background: var(--c-green);
-    color: #04140a;
+    color: #fff;
   }
   .circ .c-btn-solid:not(:disabled):hover {
     background: var(--c-green-soft);
@@ -704,8 +752,10 @@
   .circ .c-btn-ink:not(:disabled):hover {
     background: var(--c-violet-deep);
   }
+  /* --c-line-strong, not --c-bone-line: this is a button's edge and has to
+     clear 3:1, where the bone hairline sits at 1.5:1. */
   .circ .c-btn-ink-line {
-    border-color: var(--c-bone-line);
+    border-color: var(--c-line-strong);
     color: var(--c-ink);
   }
   .circ .c-btn-ink-line:not(:disabled):hover {
@@ -725,16 +775,20 @@
   .circ .c-numeral--ink {
     -webkit-text-stroke-color: var(--c-bone-line);
   }
+  /* The lit numeral, used once: on the dark photo scrim of an option card.
+     It takes the light tint rather than the leading violet for that reason. */
   .circ .c-numeral--on {
-    color: var(--c-violet);
-    -webkit-text-stroke-color: var(--c-violet);
+    color: var(--c-violet-soft);
+    -webkit-text-stroke-color: var(--c-violet-soft);
   }
 
   /* ── Underlined form fields ─────────────────────────────────────────────
      No boxes. The field is a baseline the value sits on — .gyn's treatment,
      kept, because a boxed input would drag the page back toward .elite. */
   .circ .c-form {
-    color-scheme: dark;
+    /* The native date picker and the select popup take their chrome from
+       this. It said `dark` while the page was one. */
+    color-scheme: light;
   }
   .circ .c-field {
     width: 100%;
@@ -757,7 +811,7 @@
     transition: border-color 0.2s ease;
   }
   .circ .c-field::placeholder {
-    color: #79738f;
+    color: #726c88;
   }
   .circ .c-field:focus {
     outline: none;
@@ -772,7 +826,7 @@
      before the visitor had typed anything. It is also the only form that
      behaves on a <select>, where `:placeholder-shown` never matches. */
   .circ .c-field:user-invalid {
-    border-bottom-color: #e2646a;
+    border-bottom-color: #c53b34;
   }
   /* The select's own arrow, drawn here so it survives appearance:none. */
   .circ .c-select {
@@ -794,9 +848,9 @@
   }
 
   /* ── Texture ────────────────────────────────────────────────────────────
-     Diagonal hairlines where .gyn rules a square grid. Same weight, same
-     restraint, different signature — it is the fastest way to tell the two
-     dark pages apart in a screenshot. */
+     Diagonal hairlines where .gyn rules a square grid. Nearly invisible now
+     that they are drawn in --c-line on white — which is the intent: it is a
+     grain in the paper, and at the old contrast it would be a cage. */
   .circ .c-tex {
     background-image: repeating-linear-gradient(
       135deg,
@@ -861,7 +915,7 @@
      the mark wraps a line, instead of only on the ends of the run. */
   .circ .c-mark {
     background-color: var(--c-violet);
-    color: #14092b;
+    color: #fff;
     padding: 0 0.12em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
