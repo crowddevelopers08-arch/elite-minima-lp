@@ -20,7 +20,7 @@ export default function GynBanner() {
             aria-label="Book a gynecomastia consultation"
             className="block min-w-[720px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#16733c] md:min-w-0"
           >
-            {/* Natural image height keeps every comparison row visible. */}
+            {/* Natural image height keeps every comparison visible. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={BANNER_URL}
