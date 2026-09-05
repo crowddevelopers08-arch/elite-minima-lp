@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 import SmoothScroll from "@/components/elite-minima/SmoothScroll"
 import GynHeader from "@/components/elite-minima/gynecomastia/GynHeader"
-import GynHero from "@/components/elite-minima/gynecomastia/GynHero"
+import GynBanner from "@/components/elite-minima/gynecomastia/GynBanner"
 import GynBooking from "@/components/elite-minima/gynecomastia/GynBooking"
 import GynReviews from "@/components/elite-minima/gynecomastia/GynReviews"
 import GynJourney from "@/components/elite-minima/gynecomastia/GynJourney"
@@ -14,6 +14,7 @@ import GynLocation from "@/components/elite-minima/gynecomastia/GynLocation"
 import GynFinalCta from "@/components/elite-minima/gynecomastia/GynFinalCta"
 import GynFooter from "@/components/elite-minima/gynecomastia/GynFooter"
 import GynStickyCta from "@/components/elite-minima/gynecomastia/GynStickyCta"
+import GynHero from "@/components/elite-minima/gynecomastia/GynHero"
 
 export const metadata: Metadata = {
   title: "Gynecomastia Surgery in Chennai | Male Breast Reduction — Elite-Minima, Anna Nagar",
@@ -51,6 +52,7 @@ export default function GynecomastiaPage() {
       <main>
         {/* 1 · Hook + the surgeon's face */}
         <GynHero />
+
         {/* 1b · Lead capture, immediately under the hook */}
         <GynBooking />
         {/* 2 · Social proof */}
@@ -61,6 +63,8 @@ export default function GynecomastiaPage() {
         <GynOptions />
         {/* 3c · Outcomes, scars, recovery */}
         <GynOutcomes />
+
+        <GynBanner />
         {/* 4 · Authority */}
         <GynSurgeon />
         {/* 5 · The clinic and who it serves */}
