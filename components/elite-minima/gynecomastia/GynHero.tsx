@@ -1,4 +1,4 @@
-const BANNER_URL = "https://res.cloudinary.com/m5fcfwt7/image/upload/v1788591065/banner-2.jpg"
+const BANNER_URL = "baner.png"
 const BANNER_URLS = "https://res.cloudinary.com/m5fcfwt7/image/upload/v1788591937/banner-2mbl.png"
 
 export default function GynHero() {
