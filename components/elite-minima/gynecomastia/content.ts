@@ -184,35 +184,23 @@ export interface GynOption {
   category: string
   desc: string
   /**
-   * The preview panel's split frame — exactly two images, always, so every
-   * option is laid out identically and one card can't end up wearing a
-   * full-bleed still while its neighbours wear a pair.
-   *
-   * ⚠️ Gland excision and the combined option draw on a three-shot CDN set and
-   * so reuse it between them; liposuction and contouring each have their own
-   * dedicated pair. Upload more to give the other two the same.
+   * The preview panel's frame — exactly one image per option, so every option
+   * is laid out identically in a single full-width still.
    */
-  images: [GynImage, GynImage]
+  images: [GynImage]
 }
 
 /* Named once so a swapped file is a one-line change rather than a hunt through
-   the pairs below.
+   the options below. One image per option.
 
-   Two sources, deliberately. The CDN set is the site library in config.ts,
-   shared with /general — leave it alone. The /public set is specific to this
-   page: four files supplied for the liposuction and contouring options only.
-
-   The /public shots are surgical-planning photographs rather than male chests,
-   so their alt text describes the markings actually pictured instead of naming
-   a procedure the photo does not show. */
-const LIPO: GynImage = { src: IMAGES.liposuction, alt: "Liposuction for gynecomastia correction" }
+   The GLAND shot is from the CDN site library in config.ts, shared with
+   /general — leave it alone. The /public shots are surgical-planning
+   photographs rather than male chests, so their alt text describes the
+   markings actually pictured instead of naming a procedure the photo does
+   not show. */
 const GLAND: GynImage = { src: IMAGES.glandExcision, alt: "Gland excision for gynecomastia correction" }
-const CONTOUR: GynImage = { src: IMAGES.chestContouring, alt: "Advanced chest contouring for gynecomastia" }
-
-const LIPO_ONE: GynImage = { src: "/Liposuction.jpg", alt: "Liposuction planning markings drawn on the flank" }
-const LIPO_TWO: GynImage = { src: "/Liposuctiontwo.webp", alt: "Liposuction planning markings drawn on the abdomen" }
-const CONTOUR_BODY: GynImage = { src: "/contouring.jpg", alt: "Body contouring markings drawn before surgery" }
-const CONTOUR_FACE: GynImage = { src: "/Face-contouring.jpg", alt: "Facial contouring markings drawn before surgery" }
+const LIPO_ONE: GynImage = { src: "/common-image.jpeg", alt: "Liposuction planning markings drawn on the flank" }
+const CONTOUR_BODY: GynImage = { src: "/common-image.jpeg", alt: "Body contouring markings drawn before surgery" }
 
 export const OPTIONS: GynOption[] = [
   {
@@ -220,28 +208,21 @@ export const OPTIONS: GynOption[] = [
     name: "Liposuction",
     category: "Fat Removal",
     desc: "Used when excess fatty tissue is a major contributor to chest fullness. Targeted fat removal helps improve chest contour and definition.",
-    images: [LIPO_ONE, LIPO_TWO],
+    images: [LIPO_ONE],
   },
   {
     id: "gland-excision",
     name: "Gland Excision",
     category: "Gland Removal",
     desc: "When firm glandular tissue is present, it can be surgically removed through carefully planned incisions.",
-    images: [GLAND, CONTOUR],
-  },
-  {
-    id: "combination",
-    name: "Liposuction + Gland Excision",
-    category: "Combined Approach",
-    desc: "For patients with both excess fat and glandular tissue, a combination approach may provide better contouring and symmetry.",
-    images: [LIPO, GLAND],
+    images: [GLAND],
   },
   {
     id: "contouring",
     name: "Advanced Contouring",
     category: "Chest Shaping",
     desc: "Where appropriate, additional contouring techniques may be used to improve chest shape and skin appearance.",
-    images: [CONTOUR_BODY, CONTOUR_FACE],
+    images: [CONTOUR_BODY],
   },
 ]
 

@@ -62,13 +62,13 @@ export default function GynecomastiaPage() {
         {/* 3b · Which procedure, and why */}
         <GynOptions />
         {/* 3c · Outcomes, scars, recovery */}
-        <GynOutcomes />
+        {/* <GynOutcomes /> */}
 
         <GynBanner />
         {/* 4 · Authority */}
         <GynSurgeon />
         {/* 5 · The clinic and who it serves */}
-        <GynClinic />
+        {/* <GynClinic /> */}
         {/* 6 · Getting there */}
         <GynLocation />
         {/* 7 · Close */}

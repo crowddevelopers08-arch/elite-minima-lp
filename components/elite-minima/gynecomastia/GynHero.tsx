@@ -1,9 +1,29 @@
+"use client"
+
 const BANNER_URL = "banner-3.png"
 const BANNER_URLS = "banner-mbl.png"
 
 export default function GynHero() {
+  function scrollToForm() {
+    const el = document.getElementById("book")
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
   return (
-    <section id="top" className="relative w-full overflow-hidden">
+    <section
+      id="top"
+      onClick={scrollToForm}
+      role="button"
+      tabIndex={0}
+      aria-label="Book a consultation"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          scrollToForm()
+        }
+      }}
+      className="relative w-full cursor-pointer overflow-hidden"
+    >
       <h1 className="sr-only">Gynecomastia Surgery in Chennai</h1>
 
       {/* Mobile image (hidden on lg+) */}

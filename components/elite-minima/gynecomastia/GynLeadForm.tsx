@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ArrowRight, Lock } from "lucide-react"
 import { track } from "../track"
 import { PHONES } from "../config"
@@ -19,68 +19,16 @@ const CONCERNS = [
   "Revision or second opinion",
 ] as const
 
-/* ── Callback window (clinic time, IST) ───────────────────────────────────
-   Slots are minutes-since-midnight so "is this one in the past?" is a number
-   comparison rather than string wrangling. Same window as the other two forms
-   — one clinic, one phone room. */
-const OPEN_MIN = 10 * 60 // 10:00 AM — first bookable slot
-const CLOSE_MIN = 19 * 60 // 7:00 PM — end of the last slot
-const STEP_MIN = 60
-
-function toLabel(mins: number) {
-  const h = Math.floor(mins / 60)
-  const m = mins % 60
-  return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`
-}
-
-const SLOTS: { mins: number; label: string }[] = []
-for (let m = OPEN_MIN; m <= CLOSE_MIN - STEP_MIN; m += STEP_MIN) {
-  SLOTS.push({ mins: m, label: `${toLabel(m)} - ${toLabel(m + STEP_MIN)}` })
-}
-
-/** "Now" in the clinic's timezone, wherever the visitor happens to be. */
-function istNow() {
-  const d = new Date()
-  const ist = new Date(d.getTime() + d.getTimezoneOffset() * 60_000 + 5.5 * 3_600_000)
-  return {
-    minutes: ist.getHours() * 60 + ist.getMinutes(),
-    date: `${ist.getFullYear()}-${String(ist.getMonth() + 1).padStart(2, "0")}-${String(ist.getDate()).padStart(2, "0")}`,
-  }
-}
-
 /**
  * The booking form, as a set of underlined fields on the dark ground.
  *
  * Deliberately not the other pages' form: no card, no rounded filled inputs,
- * and the time is a native select of the same hour slots rather than a custom
- * popup listbox. Fewer moving parts, and it matches the page's rule-and-
- * baseline geometry instead of fighting it.
+ * just underlined fields. Fewer moving parts, and it matches the page's
+ * rule-and-baseline geometry instead of fighting it.
  */
 export default function GynLeadForm() {
   const formRef = useRef<HTMLFormElement>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [today, setToday] = useState("") // IST date, also the date input's min
-  const [nowMins, setNowMins] = useState(0)
-  const [callDate, setCallDate] = useState("")
-  const [callTime, setCallTime] = useState("")
-
-  useEffect(() => {
-    const { minutes, date } = istNow()
-    setNowMins(minutes)
-    setToday(date)
-  }, [])
-
-  // Only today's remaining slots are restricted; any later date opens them all.
-  const open = useMemo(() => {
-    const isToday = callDate !== "" && callDate === today
-    return SLOTS.filter((s) => !isToday || s.mins > nowMins)
-  }, [callDate, today, nowMins])
-
-  // Keep the selection reachable: a slot that has just fallen into the past —
-  // or that belongs to a date the visitor moved off — must not stay selected.
-  useEffect(() => {
-    if (callTime && !open.some((s) => s.label === callTime)) setCallTime("")
-  }, [open, callTime])
 
   // Fill the attribution fields once the URL is readable on the client.
   useEffect(() => {
@@ -118,8 +66,6 @@ export default function GynLeadForm() {
       // No dedicated treatment column on the lead API — the clinical answer
       // rides `area`, which is the sheet's Concern column.
       area: raw.concern,
-      callDate: raw.callDate, // ISO yyyy-mm-dd, so the sheet sorts correctly
-      callTime: raw.callTime, // 12-hour range, e.g. "3:00 PM - 4:00 PM"
       branch: GYN_BRANCH,
       // Own TeleCRM FormName and own tab of the sheet — see lib/forms.ts.
       formName: GYNECOMASTIA_LEADS_FORM,
@@ -189,39 +135,6 @@ export default function GynLeadForm() {
             </option>
             {CONCERNS.map((c) => (
               <option key={c}>{c}</option>
-            ))}
-          </select>
-        </Field>
-
-        <Field label="Preferred call date" htmlFor="gyn-date">
-          <input
-            id="gyn-date"
-            name="callDate"
-            type="date"
-            required
-            min={today}
-            value={callDate}
-            onChange={(e) => setCallDate(e.target.value)}
-            /* appearance-none: iOS Safari sizes a bare date input from its own
-               content and ignores width:100%, overflowing the column. */
-            className="g-field appearance-none"
-          />
-        </Field>
-
-        <Field label="Preferred call time (IST)" htmlFor="gyn-time">
-          <select
-            id="gyn-time"
-            name="callTime"
-            required
-            value={callTime}
-            onChange={(e) => setCallTime(e.target.value)}
-            className="g-field"
-          >
-            <option value="" disabled>
-              {open.length ? "Select a slot" : "No slots left today"}
-            </option>
-            {open.map((s) => (
-              <option key={s.label}>{s.label}</option>
             ))}
           </select>
         </Field>

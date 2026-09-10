@@ -28,23 +28,23 @@ export default function GynOptions() {
 
   return (
     <section id="treatment" className="bg-[var(--g-bone)] text-[var(--g-ink)]">
-      <div className="mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
+      <div className="mx-auto w-full max-w-[1180px] px-5 py-8 sm:px-8 sm:py-12 lg:py-14">
         <Reveal className="max-w-[54ch]">
           <p className="g-eyebrow g-eyebrow--ink">Treatment Options</p>
-          <h2 className="mt-5">Gynecomastia Treatment Options</h2>
-          <p className="mt-5 text-[0.95rem] leading-relaxed text-[var(--g-ink-dim)]">
+          <h2 className="mt-3">Gynecomastia Treatment Options</h2>
+          <p className="mt-3 text-[0.9rem] leading-relaxed text-[var(--g-ink-dim)]">
             Which approach suits you depends on what the enlargement is made of fat, glandular tissue, or both.
           </p>
         </Reveal>
 
-        <div className="mt-8 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] sm:mt-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+        <div className="mt-6 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] sm:mt-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           {/* ── The list ─────────────────────────────────────────────── */}
-          <div className="bg-[var(--g-bone)]">
-            <ul>
+          <div className="flex bg-[var(--g-bone)]">
+            <ul className="flex h-full w-full flex-col">
               {OPTIONS.map((o, i) => {
                 const on = o.id === active.id
                 return (
-                  <li key={o.id} className="border-b border-[var(--g-bone-line)] last:border-b-0">
+                  <li key={o.id} className="flex flex-1 border-b border-[var(--g-bone-line)] last:border-b-0">
                     <button
                       type="button"
                       aria-pressed={on}
@@ -52,13 +52,13 @@ export default function GynOptions() {
                         setActiveId(o.id)
                         track("treatment_option", { branch: GYN_BRANCH, option: o.name })
                       }}
-                      className={`flex w-full items-start gap-5 px-6 py-6 text-left transition-colors duration-300 sm:px-8 ${
+                      className={`flex w-full items-center gap-4 px-5 py-4 text-left transition-colors duration-300 sm:px-6 sm:py-5 ${
                         on ? "bg-[var(--g-ink)] text-[var(--g-bone)]" : "hover:bg-[var(--g-bone-2)]"
                       }`}
                     >
                       <span
                         aria-hidden
-                        className={`g-numeral flex-none text-[1.9rem] leading-none ${
+                        className={`g-numeral flex-none text-[1.75rem] leading-none ${
                           on ? "[-webkit-text-stroke-color:var(--g-accent)]" : "g-numeral--ink"
                         }`}
                       >
@@ -67,13 +67,13 @@ export default function GynOptions() {
 
                       <span className="min-w-0">
                         <span
-                          className={`block text-[0.64rem] font-bold uppercase tracking-[0.22em] ${
+                          className={`block text-[0.72rem] font-bold uppercase tracking-[0.22em] ${
                             on ? "text-[var(--g-accent)]" : "text-[var(--g-ink-dim)]"
                           }`}
                         >
                           {o.category}
                         </span>
-                        <span className={`g-display mt-2 block text-[1.15rem] leading-tight ${on ? "text-[var(--g-bone)]" : "text-[var(--g-ink)]"}`}>
+                        <span className={`g-display mt-1.5 block text-[1.3rem] leading-tight ${on ? "text-[var(--g-bone)]" : "text-[var(--g-ink)]"}`}>
                           {o.name}
                         </span>
                       </span>
@@ -95,27 +95,22 @@ export default function GynOptions() {
                 transition={{ duration: reduced ? 0 : 0.4, ease: EASE }}
                 className="flex h-full flex-col"
               >
-                {/* Split frame, two up, on every option — the columns are fixed
-                    rather than derived from the array so the panel cannot
-                    change shape as the selection moves down the list. The
-                    tuple in content.ts guarantees there are exactly two. */}
-                <div className="grid grid-cols-2 gap-px bg-[var(--g-bone-line)]">
-                  {active.images.map((img, i) => (
-                    <div key={`${active.id}-${i}`} className="relative aspect-[4/3] bg-[var(--g-bone-2)]">
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        sizes="(min-width: 1024px) 20vw, 50vw"
-                        className="object-cover object-center"
-                      />
-                    </div>
-                  ))}
+                {/* One image per option — a single full-width frame with a
+                    fixed aspect ratio so the panel keeps its shape as the
+                    selection moves down the list. */}
+                <div className="relative aspect-[16/9] bg-[var(--g-bone-2)] lg:aspect-[2/1]">
+                  <Image
+                    src={active.images[0].src}
+                    alt={active.images[0].alt}
+                    fill
+                    sizes="(min-width: 1024px) 42vw, 100vw"
+                    className="object-cover object-center"
+                  />
                 </div>
 
-                <div className="flex flex-1 flex-col p-7 sm:p-9">
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
                   <h3 className="text-[var(--g-ink)]">{active.name}</h3>
-                  <p className="mt-4 max-w-[56ch] text-[0.98rem] leading-relaxed text-[var(--g-ink-dim)]">{active.desc}</p>
+                  <p className="mt-3 max-w-[56ch] text-[0.9rem] leading-relaxed text-[var(--g-ink-dim)]">{active.desc}</p>
                 </div>
               </motion.article>
             </AnimatePresence>

@@ -59,7 +59,7 @@ export default function GynBooking() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.1} className="min-w-0 border border-[var(--g-line)] bg-[var(--g-base)] p-6 sm:p-8 lg:p-10">
+        <Reveal delay={0.1} className="flex min-w-0 flex-col justify-center border border-[var(--g-line)] bg-[var(--g-base)] p-6 sm:p-8 lg:p-10">
           <GynLeadForm />
         </Reveal>
       </div>

@@ -16,12 +16,12 @@ import { GYN_BRANCH } from "./content"
  */
 export default function GynLocation() {
   return (
-    <section id="visit" className="bg-[var(--g-bone)] text-[var(--g-ink)]">
+    <section id="visit" className="bg-[var(--g-base)] text-[var(--g-text)]">
       <div className="mx-auto w-full max-w-[1320px] px-5 py-10 sm:px-8 sm:py-16 lg:py-20">
         <Reveal className="max-w-[52ch]">
-          <p className="g-eyebrow g-eyebrow--ink">Location</p>
-          <h2 className="mt-5">Visit Elite-Minima, Anna Nagar</h2>
-          <p className="mt-5 text-[0.95rem] leading-relaxed text-[var(--g-ink-dim)]">
+          <p className="g-eyebrow ">Location</p>
+          <h2 className="mt-5 text-[var(--g-text)]">Visit Elite-Minima, Anna Nagar</h2>
+          <p className="mt-5 text-[0.95rem] leading-relaxed text-[var(--g-text)]">
             Looking for gynecomastia treatment in Chennai? Visit Elite-Minima in {ADDRESS_SHORT} for a specialist consultation and
             personalized chest evaluation.
           </p>
@@ -29,7 +29,7 @@ export default function GynLocation() {
 
         <div className="mt-8 grid gap-px border border-[var(--g-bone-line)] bg-[var(--g-bone-line)] sm:mt-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           {/* ── Details ──────────────────────────────────────────────── */}
-          <div className="flex flex-col justify-between bg-[var(--g-bone)] p-7 sm:p-9">
+          <div className="flex flex-col justify-between bg-[var(--g-bone)] p-7 text-[var(--g-ink)] sm:p-9">
             <dl className="space-y-7">
               <Row icon={MapPin} label="Address">
                 <p className="max-w-[34ch] text-[0.92rem] leading-relaxed text-[var(--g-ink)]">{ADDRESS_FULL}</p>

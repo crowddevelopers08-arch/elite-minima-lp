@@ -12,7 +12,6 @@ const NAV = [
   { label: "Journey", href: "#journey", id: "journey" },
   { label: "Treatment", href: "#treatment", id: "treatment" },
   { label: "Doctor", href: "#surgeon", id: "surgeon" },
-  { label: "Clinic", href: "#clinic", id: "clinic" },
   { label: "Location", href: "#visit", id: "visit" },
 ]
 
