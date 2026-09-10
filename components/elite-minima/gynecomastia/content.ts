@@ -215,7 +215,7 @@ export const OPTIONS: GynOption[] = [
     name: "Gland Excision",
     category: "Gland Removal",
     desc: "When firm glandular tissue is present, it can be surgically removed through carefully planned incisions.",
-    images: [GLAND],
+    images: [LIPO_ONE],
   },
   {
     id: "contouring",

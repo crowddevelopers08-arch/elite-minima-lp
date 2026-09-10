@@ -1,4 +1,5 @@
 const BANNER_URL = "banner.png"
+const BANNER_URL_MOBILE = "banner-1-mbl.png"
 
 export default function GynBanner() {
   return (
@@ -18,17 +19,22 @@ export default function GynBanner() {
           <a
             href="#book"
             aria-label="Book a gynecomastia consultation"
-            className="block min-w-[720px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#16733c] md:min-w-0"
+            className="block cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#16733c]"
           >
             {/* Natural image height keeps every comparison visible. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={BANNER_URL}
-              alt="Comparison of conventional and minimally invasive gynecomastia approaches, including incision size, scar appearance, procedure time, recovery, blood loss, chest contouring and anaesthesia."
-              loading="lazy"
-              decoding="async"
-              className="block h-auto w-full"
-            />
+            <picture>
+              {/* Mobile-only: a dedicated portrait comparison image. Desktop is
+                  untouched — it keeps the wide banner.png below. */}
+              <source media="(max-width: 767px)" srcSet={BANNER_URL_MOBILE} />
+              <img
+                src={BANNER_URL}
+                alt="Comparison of conventional and minimally invasive gynecomastia approaches, including incision size, scar appearance, procedure time, recovery, blood loss, chest contouring and anaesthesia."
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-full"
+              />
+            </picture>
           </a>
         </div>
       </div>
