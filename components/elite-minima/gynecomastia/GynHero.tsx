@@ -1,5 +1,5 @@
 const BANNER_URL = "banner-3.png"
-const BANNER_URLS = "https://res.cloudinary.com/m5fcfwt7/image/upload/v1788591937/banner-2mbl.png"
+const BANNER_URLS = "banner-mbl.png"
 
 export default function GynHero() {
   return (
@@ -14,7 +14,7 @@ export default function GynHero() {
           backgroundSize: "cover",
           backgroundPosition: "center top",
           backgroundRepeat: "no-repeat",
-          minHeight: "188vw",
+          minHeight: "148vw",
         }}
       />
 
