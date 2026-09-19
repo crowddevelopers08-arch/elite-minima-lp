@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { Timer, Users, Star, UserRound, CalendarClock, ShieldCheck, Check, Phone, ArrowRight, ChevronRight } from "lucide-react"
+import CountUp from "../CountUp"
 
 /**
  * Gynecomastia Surgery clinic banner — responsive replica.
@@ -48,16 +49,16 @@ const PURPLE = "#6A6C99"
 const BG = "#F8FCFA"
 
 const stats = [
-  { icon: Timer, value: "60 Minutes", label: "PROCEDURE" },
-  { icon: Users, value: "4,000+", label: "SURGERIES\nPERFORMED" },
-  { icon: Star, value: "12+", label: "YEARS OF\nEXPERIENCE" },
+  { icon: Timer, value: 60, suffix: " Minutes", separator: "", label: "PROCEDURE" },
+  { icon: Users, value: 4000, suffix: "+", separator: ",", label: "SURGERIES\nPERFORMED" },
+  { icon: Star, value: 12, suffix: "+", separator: "", label: "YEARS OF\nEXPERIENCE" },
 ]
 
-const trust = [
-  { icon: UserRound, label: "Evaluated by\nDr. Madan K" },
-  { icon: CalendarClock, label: "Callbacks within\nclinic hours" },
-  { icon: ShieldCheck, label: "Private\nconsultation" },
-]
+// const trust = [
+//   { icon: UserRound, label: "Evaluated by\nDr. Madan K" },
+//   { icon: CalendarClock, label: "Callbacks within\nclinic hours" },
+//   { icon: ShieldCheck, label: "Private\nconsultation" },
+// ]
 
 const benefits = ["Minimal Scars", "Quick Recovery", "Improved Confidence"]
 
@@ -109,14 +110,10 @@ export default function GynecomastiaBanner() {
           </p>
 
           <div className="mt-3 text-[30px] font-extrabold leading-[1.15] tracking-[-0.015em] sm:text-[40px]">
-            <span style={{ color: GREEN }}>Gynecomastia Surgery</span>
+            <span style={{ color: GREEN }}>Male Gynecomastia</span>
             <br />
-            <span style={{ color: NAVY }}>at Lowest Cost in Chennai</span>
+            <span style={{ color: NAVY }}> Surgery in Chennai</span>
           </div>
-
-          <p className="mt-3 text-[18px] font-medium sm:text-[22px]" style={{ color: PURPLE }}>
-            Safe. Effective. Natural Looking Results.
-          </p>
 
           {/* before / after — comes right after the label/heading/subheading
               on mobile, ahead of stats/trust/benefits/buttons. */}
@@ -149,7 +146,7 @@ export default function GynecomastiaBanner() {
                   <s.icon className="h-[24px] w-[24px] text-white sm:h-[30px] sm:w-[30px]" strokeWidth={2} />
                 </span>
                 <span className="mt-2 text-[17px] font-bold sm:text-[22px]" style={{ color: GREEN }}>
-                  {s.value}
+                  <CountUp end={s.value} suffix={s.suffix} separator={s.separator} />
                 </span>
                 <span
                   className="mt-1 whitespace-pre-line text-[9px] font-bold uppercase leading-tight tracking-[0.12em] sm:text-[11px]"
@@ -163,7 +160,7 @@ export default function GynecomastiaBanner() {
 
           {/* trust row — first two side by side, the third centred on its own
               row below, on mobile only (grid-cols-3 takes back over at sm). */}
-          <div className="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {/* <div className="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {trust.map((t, i) => (
               <div
                 key={t.label}
@@ -177,7 +174,7 @@ export default function GynecomastiaBanner() {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* benefits card */}
           <div className="mt-6 rounded-2xl bg-white p-5 shadow-lg">
@@ -274,22 +271,8 @@ export default function GynecomastiaBanner() {
             whiteSpace: "nowrap",
           }}
         >
-          at Lowest Cost in Chennai
+          Surgery in Chennai
         </div>
-
-        {/* ---------- subtitle ---------- */}
-        <p
-          className="absolute z-10 font-medium"
-          style={{
-            left: "10.67%",
-            top: "33.93%",
-            fontSize: "min(1.8cqw, 40px)",
-            color: PURPLE,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Safe. Effective. Natural Looking Results.
-        </p>
 
         {/* ---------- stat dividers (x = 400 / 640) ---------- */}
         {[21.13, 33.81].map((l) => (
@@ -297,7 +280,7 @@ export default function GynecomastiaBanner() {
             key={l}
             aria-hidden
             className="absolute z-[5] w-px bg-[#D3DFDB]"
-            style={{ left: `${l}%`, top: "42.94%", height: "19.39%" }}
+            style={{ left: `${l}%`, top: "35.94%", height: "19.39%" }}
           />
         ))}
 
@@ -309,7 +292,7 @@ export default function GynecomastiaBanner() {
             <div key={s.label} className="absolute inset-0 z-10">
               <span
                 className="absolute flex aspect-square items-center justify-center rounded-full"
-                style={{ left: `${circleLeft}cqw`, top: "42.11%", width: "4.23cqw", backgroundColor: TEAL }}
+                style={{ left: `${circleLeft}cqw`, top: "36.11%", width: "4.23cqw", backgroundColor: TEAL }}
               >
                 <s.icon className="text-white" style={{ width: "52%", height: "52%" }} strokeWidth={2} />
               </span>
@@ -318,19 +301,19 @@ export default function GynecomastiaBanner() {
                 className="absolute -translate-x-1/2 whitespace-nowrap font-bold"
                 style={{
                   left: `${centerLeft}cqw`,
-                  top: "54.02%",
+                  top: "46.02%",
                   fontSize: "min(1.75cqw, 38px)",
                   color: GREEN,
                 }}
               >
-                {s.value}
+                <CountUp end={s.value} suffix={s.suffix} separator={s.separator} />
               </span>
 
               <span
                 className="absolute -translate-x-1/2 whitespace-pre-line text-center font-bold uppercase"
                 style={{
                   left: `${centerLeft}cqw`,
-                  top: "59.97%",
+                  top: "51.97%",
                   fontSize: "min(0.8cqw, 17px)",
                   lineHeight: 1.55,
                   letterSpacing: "0.14em",
@@ -344,7 +327,7 @@ export default function GynecomastiaBanner() {
         })}
 
         {/* ---------- trust row (y = 501) ---------- */}
-        {trust.map((t, i) => (
+        {/* {trust.map((t, i) => (
           <div
             key={t.label}
             className="absolute z-10 flex items-center"
@@ -362,17 +345,17 @@ export default function GynecomastiaBanner() {
               {t.label}
             </span>
           </div>
-        ))}
+        ))} */}
 
         {/* ---------- desktop actions ---------- */}
         <div
           className="absolute z-10 flex items-stretch"
-          style={{ left: "10.67%", top: "81.02%", width: "38.73%", height: "10.14%", gap: "1.06cqw" }}
+          style={{ left: "8.17%", top: "64.02%", width: "38.73%", height: "8.14%", gap: "1.06cqw" }}
         >
           <button
             type="button"
-            className="flex min-w-0 flex-[1.15] items-center justify-center whitespace-nowrap rounded-md text-white transition hover:brightness-110"
-            style={{ gap: "0.6cqw", fontSize: "1.27cqw", backgroundColor: "var(--chart-1)" }}
+            className="flex min-w-0 flex-[1.10] items-center justify-center whitespace-nowrap rounded-md text-white transition hover:brightness-110"
+            style={{ gap: "0.6cqw", fontSize: "1.17cqw", backgroundColor: "var(--chart-1)" }}
           >
             Book Your Consultation
             <ArrowRight className="shrink-0" style={{ width: "1.32cqw", height: "1.32cqw" }} />
@@ -389,7 +372,7 @@ export default function GynecomastiaBanner() {
               fill={GREEN}
               strokeWidth={0}
             />
-            <span className="font-bold leading-tight" style={{ fontSize: "1.38cqw", color: GREEN }}>
+            <span className="font-bold leading-tight" style={{ fontSize: "1.18cqw", color: GREEN }}>
               {PHONE}
             </span>
           </a>
