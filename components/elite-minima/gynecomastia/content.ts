@@ -199,8 +199,14 @@ export interface GynOption {
    markings actually pictured instead of naming a procedure the photo does
    not show. */
 const GLAND: GynImage = { src: IMAGES.glandExcision, alt: "Gland excision for gynecomastia correction" }
-const LIPO_ONE: GynImage = { src: "/common-image.jpeg", alt: "Liposuction planning markings drawn on the flank" }
-const CONTOUR_BODY: GynImage = { src: "/common-image.jpeg", alt: "Body contouring markings drawn before surgery" }
+const LIPO_ONE: GynImage = {
+  src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818739/common-image.jpg",
+  alt: "Liposuction planning markings drawn on the flank",
+}
+const CONTOUR_BODY: GynImage = {
+  src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818739/common-image.jpg",
+  alt: "Body contouring markings drawn before surgery",
+}
 
 export const OPTIONS: GynOption[] = [
   {

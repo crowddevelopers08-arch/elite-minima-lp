@@ -70,7 +70,7 @@ export const HERO = {
 
      The doctor section further down keeps the framed studio portraits; see
      DOCTORS[n].photo. */
-  portrait: "/docnew.png",
+  portrait: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818743/docnew.png",
 } as const
 
 /** The doctor-led explainer. `src` empty → the frame renders as a labelled
@@ -397,22 +397,22 @@ export const CLINIC_MEDIA = [
        next.config.mjs), so this is served byte-for-byte to every visitor —
        roughly thirty times the three .webp frames beside it. Re-export it as
        webp and this section stops being the heaviest thing on the page. */
-    src: "/treatment.png",
+    src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818748/treatment.png",
     label: "Clinic",
     alt: "Two surgeons operating under theatre lights at Elite-Minima, Anna Nagar",
   },
   {
-    src: "/rec.webp",
+    src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818741/rec.webp",
     label: "Reception",
     alt: "Reception and waiting area at Elite-Minima, with seating either side of the front desk",
   },
   {
-    src: "/cons.webp",
+    src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818739/cons.webp",
     label: "Consultation Room",
     alt: "Private consultation room at Elite-Minima, with a desk and seating for two",
   },
   {
-    src: "/tre.webp",
+    src: "https://res.cloudinary.com/xykwtyr0/image/upload/v1789818742/tre.webp",
     label: "Facility",
     alt: "Treatment room at Elite-Minima, with an examination couch and instrument storage",
   },
