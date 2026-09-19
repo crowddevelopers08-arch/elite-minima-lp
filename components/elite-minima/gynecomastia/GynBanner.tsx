@@ -140,7 +140,7 @@ export default function ComparisonBanner() {
           role="region"
           aria-label="Conventional vs. minimally invasive approach comparison table"
           tabIndex={0}
-          className="-mx-5 mt-10 overflow-x-auto px-5 md:mx-0 md:overflow-visible md:px-0"
+          className="-mx-5 mt-6 overflow-x-auto px-5 md:mx-0 md:overflow-visible md:px-0"
         >
           <div className="relative min-w-[820px] md:min-w-0" style={{ containerType: "inline-size" }}>
           {/* header row */}
@@ -197,7 +197,7 @@ export default function ComparisonBanner() {
                     className="flex items-center bg-white"
                     style={{
                       width: "27.5%",
-                      minHeight: tall ? "clamp(60px, 8cqw, 92px)" : "clamp(52px, 7cqw, 80px)",
+                      minHeight: tall ? "clamp(52px, 6.2cqw, 72px)" : "clamp(44px, 5.5cqw, 64px)",
                       paddingLeft: "1.2cqw",
                       gap: "0.9cqw",
                     }}
@@ -221,7 +221,7 @@ export default function ComparisonBanner() {
                     className="flex items-center justify-center rounded-xl text-center"
                     style={{
                       width: "36.4%",
-                      minHeight: tall ? "clamp(60px, 8cqw, 92px)" : "clamp(52px, 7cqw, 80px)",
+                      minHeight: tall ? "clamp(52px, 6.2cqw, 72px)" : "clamp(44px, 5.5cqw, 64px)",
                       backgroundColor: CONV_BG,
                       fontSize: "clamp(14px, 1.2cqw, 21px)",
                       color: "#3A3A3A",
@@ -235,7 +235,7 @@ export default function ComparisonBanner() {
                     className="flex items-center justify-center rounded-xl text-center font-semibold"
                     style={{
                       width: "35.5%",
-                      minHeight: tall ? "clamp(60px, 8cqw, 92px)" : "clamp(52px, 7cqw, 80px)",
+                      minHeight: tall ? "clamp(52px, 6.2cqw, 72px)" : "clamp(44px, 5.5cqw, 64px)",
                       backgroundColor: MINI_BG,
                       fontSize: "clamp(14px, 1.2cqw, 21px)",
                       color: GREEN,

@@ -105,9 +105,7 @@ export default function GynecomastiaBanner() {
         <Blobs />
 
         <div className="relative z-10 mx-auto max-w-[640px]">
-          <p className="text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: PURPLE }}>
-            Get a more <span style={{ color: NAVY }}>Confident You</span>
-          </p>
+
 
           <div className="mt-3 text-[30px] font-extrabold leading-[1.15] tracking-[-0.015em] sm:text-[40px]">
             <span style={{ color: GREEN }}>Male Gynecomastia</span>
@@ -231,18 +229,6 @@ export default function GynecomastiaBanner() {
         <Blobs />
 
         {/* ---------- eyebrow ---------- */}
-        <p
-          className="absolute z-10 font-bold uppercase"
-          style={{
-            left: "10.67%",
-            top: "10.25%",
-            fontSize: "clamp(11px, 0.9cqw, 20px)",
-            letterSpacing: "0.18em",
-            color: PURPLE,
-          }}
-        >
-          Get a more <span style={{ color: NAVY }}>Confident You</span>
-        </p>
 
         {/* ---------- headline (plain divs + inline color so global h1/h2 styles can't override) ---------- */}
         <div
@@ -257,7 +243,7 @@ export default function GynecomastiaBanner() {
             whiteSpace: "nowrap",
           }}
         >
-          Gynecomastia Surgery
+         Male Gynecomastia Surgery
         </div>
         <div
           className="absolute z-10 font-extrabold"
