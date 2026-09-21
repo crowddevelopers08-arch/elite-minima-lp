@@ -1,32 +1,17 @@
 "use client"
 
 import Image from "next/image"
-import { Check } from "lucide-react"
+import { ShieldCheck, Stethoscope, Award } from "lucide-react"
+import CountUp from "./CountUp"
 import TitleUnderline from "./TitleUnderline"
 import { HERO_IMAGE } from "./config"
 import LeadForm from "./LeadForm"
 
-const HIGHLIGHTS = ["Piles & Proctology Care", "Laser Piles Treatment", "4000+ Surgeries Performed", "12+ Years of Experience"]
-
-/** One pass of the highlight pills. Rendered twice so the marquee loop has no
-    visible seam — see .elite .marquee in globals.css. */
-function HighlightTrack({ duplicate }: { duplicate?: boolean }) {
-  return (
-    <ul aria-hidden={duplicate} className={`flex shrink-0 items-stretch gap-3 ${duplicate ? "marquee-dup" : ""}`}>
-      {HIGHLIGHTS.map((text) => (
-        <li
-          key={text}
-          className="flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-[var(--e-line)] bg-white px-4 py-2.5 shadow-sm"
-        >
-          <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)]">
-            <Check className="h-3 w-3" strokeWidth={3} />
-          </span>
-          <span className="text-[0.82rem] font-bold text-[var(--e-ink)] sm:text-[0.86rem]">{text}</span>
-        </li>
-      ))}
-    </ul>
-  )
-}
+const STATS = [
+  { icon: Stethoscope, value: 4000, suffix: "+", label: "Surgeries performed" },
+  { icon: Award, value: 12, suffix: "+", label: "Years of experience" },
+  { icon: ShieldCheck, value: null, label: "Safe & Secure care" },
+]
 
 export default function Hero() {
   return (
@@ -35,18 +20,18 @@ export default function Hero() {
         <div className="min-w-0 self-center">
           <div className="rise d2">
             <h1 className="text-[clamp(1.8rem,1.15rem+2.4vw,2.9rem)] font-extrabold leading-none tracking-tight text-[var(--e-ink)] lg:whitespace-nowrap">
-              1#Piles Care in Chennai
+              Advanced Piles Treatment
             </h1>
             <TitleUnderline className="mt-3" />
 
-            <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <span className="text-[clamp(0.95rem,0.8rem+0.4vw,1.15rem)] font-bold text-[var(--e-ink)]">Dr. Lohit Sai K</span>
-              <span className="text-[clamp(0.78rem,0.68rem+0.3vw,0.92rem)] text-[var(--e-muted)]">(Invasive &amp; Laparoscopic Surgeon)</span>
-            </p>
-
-            <p className="mt-2 max-w-[82ch] text-[clamp(0.78rem,0.68rem+0.3vw,0.95rem)] leading-relaxed text-[var(--e-muted)]">
-              Experienced in piles, laser proctology, fissure, fistula and minimally invasive procedures, with treatment planned according to
-              each patient&apos;s condition.
+            {/* wraps below sm — as a single nowrap row this was clipped on every
+                phone width. The spans keep their own phrases intact. */}
+            <p className="mt-3 flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 text-[clamp(0.72rem,0.58rem+0.5vw,0.98rem)] leading-relaxed text-[var(--e-muted)] [&>span]:whitespace-nowrap">
+              <span>Laser &amp; Minimally Invasive Care</span>
+              <span className="text-[var(--e-green)]">•</span>
+              <span>Personalized Treatment</span>
+              <span className="text-[var(--e-green)]">•</span>
+              <span>Specialist Consultation</span>
             </p>
           </div>
 
@@ -67,13 +52,32 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* The four highlights drift right → left in one row, forever, rather
-              than sitting in a static grid. */}
-          <div className="rise d5 mt-3 marquee-rail marquee-fade">
-            <div className="marquee py-1 [--marquee-duration:15s]">
-              <HighlightTrack />
-              <HighlightTrack duplicate />
-            </div>
+          {/* Four columns on mobile with each card spanning two, so the odd third
+              card can start at column 2 and sit centred under the other two.
+              A plain 2-col grid can only left-align or full-width it. */}
+          <div className="rise d5 mt-3 grid grid-cols-4 gap-2.5 sm:grid-cols-3 sm:gap-3">
+            {STATS.map(({ icon: Icon, value, suffix, label }, i) => (
+              <div
+                key={label}
+                className={`card col-span-2 flex items-center gap-2.5 p-3 sm:col-span-1 sm:col-start-auto sm:gap-3 sm:p-4 ${
+                  i === STATS.length - 1 ? "col-start-2" : ""
+                }`}
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--e-green-soft)] text-[var(--e-green-deep)] sm:h-10 sm:w-10">
+                  <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+                </span>
+                <div className="min-w-0">
+                  {value !== null ? (
+                    <p className="text-[1.05rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.3rem]">
+                      <CountUp end={value} suffix={suffix} />
+                    </p>
+                  ) : (
+                    <p className="text-[0.95rem] font-extrabold leading-none text-[var(--e-ink)] sm:text-[1.15rem]">Safe &amp; Secure</p>
+                  )}
+                  <p className="mt-1 text-[0.68rem] leading-tight text-[var(--e-muted)] sm:text-[0.72rem]">{label}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
