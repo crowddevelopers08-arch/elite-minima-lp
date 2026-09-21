@@ -118,10 +118,10 @@ export default function GynecomastiaBanner() {
           <div className="relative mt-8">
             <div className="grid grid-cols-2 gap-2">
               <div className="relative aspect-[357/515] overflow-hidden rounded-2xl bg-[#DCE6E3]">
-                <Image src="https://res.cloudinary.com/xykwtyr0/image/upload/v1789818736/banner-fats.jpg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
+                <Image src="banner-before.jpeg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
               </div>
               <div className="relative aspect-[357/515] overflow-hidden rounded-2xl bg-[#DCE6E3]">
-                <Image src="https://res.cloudinary.com/xykwtyr0/image/upload/v1789818736/banner-fits.jpg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
+                <Image src="banner-after.jpeg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
               </div>
             </div>
 
@@ -369,7 +369,7 @@ export default function GynecomastiaBanner() {
           className="absolute z-[5] overflow-hidden bg-[#DCE6E3]"
           style={{ left: "49.97%", top: "10.39%", width: "18.86%", height: "71.33%", borderRadius: "1.27cqw" }}
         >
-          <Image src="https://res.cloudinary.com/xykwtyr0/image/upload/v1789818736/banner-fats.jpg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
+          <Image src="banner-before.jpeg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
         </div>
 
         {/* ---------- after photo panel (1311,115 -> 1666,630) ---------- */}
@@ -377,7 +377,7 @@ export default function GynecomastiaBanner() {
           className="absolute z-[5] overflow-hidden bg-[#DCE6E3]"
           style={{ left: "69.26%", top: "15.93%", width: "18.75%", height: "71.33%", borderRadius: "1.27cqw" }}
         >
-          <Image src="https://res.cloudinary.com/xykwtyr0/image/upload/v1789818736/banner-fits.jpg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
+          <Image src="banner-after.jpeg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
         </div>
 
         {/* ---------- arrow circle (center 1307,357, 70px) ---------- */}
