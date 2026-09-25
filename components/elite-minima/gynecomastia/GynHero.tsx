@@ -95,6 +95,30 @@ function ScriptTag({ className = "", style }: { className?: string; style?: Reac
   )
 }
 
+/**
+ * A photo shown whole inside a frame of any shape.
+ *
+ * `object-cover` fills the frame by cropping, which cut the chest out of these
+ * clinical photos in the tall portrait panels. Here the sharp photo sits
+ * `object-contain` on top, so every pixel of it is visible, and the same photo
+ * blurred behind it fills the leftover space so the panel never shows empty bars.
+ */
+function FullPhoto({ src, alt, sizes }: { src: string; alt: string; sizes: string }) {
+  return (
+    <>
+      <Image
+        src={src}
+        alt=""
+        aria-hidden
+        fill
+        sizes="10vw"
+        className="scale-110 object-cover opacity-90 blur-xl"
+      />
+      <Image src={src} alt={alt} fill priority sizes={sizes} className="object-contain" />
+    </>
+  )
+}
+
 export default function GynecomastiaBanner() {
   return (
     <section className="w-full" style={{ backgroundColor: BG }}>
@@ -118,10 +142,10 @@ export default function GynecomastiaBanner() {
           <div className="relative mt-8">
             <div className="grid grid-cols-2 gap-2">
               <div className="relative aspect-[357/515] overflow-hidden rounded-2xl bg-[#DCE6E3]">
-                <Image src="banner-before.jpeg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
+                <FullPhoto src="/banner-before.jpeg" alt="Patient chest before gynecomastia surgery" sizes="50vw" />
               </div>
               <div className="relative aspect-[357/515] overflow-hidden rounded-2xl bg-[#DCE6E3]">
-                <Image src="banner-after.jpeg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
+                <FullPhoto src="/banner-after.jpeg" alt="Patient chest after gynecomastia surgery" sizes="50vw" />
               </div>
             </div>
 
@@ -367,23 +391,37 @@ export default function GynecomastiaBanner() {
         {/* ---------- before photo panel (946,75 -> 1303,590) ---------- */}
         <div
           className="absolute z-[5] overflow-hidden bg-[#DCE6E3]"
-          style={{ left: "49.97%", top: "10.39%", width: "18.86%", height: "71.33%", borderRadius: "1.27cqw" }}
+          style={{ left: "50.2%", top: "calc(50% - 11.47cqw)", width: "22%", height: "28.5cqw", borderRadius: "1.27cqw" }}
         >
-          <Image src="banner-before.jpeg" alt="Patient chest before gynecomastia surgery" fill className="object-cover" />
+          <Image
+            src="/banner-before.jpeg"
+            alt="Patient chest before gynecomastia surgery"
+            fill
+            priority
+            sizes="(min-width: 1024px) 22vw, 50vw"
+            className="object-cover"
+          />
         </div>
 
         {/* ---------- after photo panel (1311,115 -> 1666,630) ---------- */}
         <div
           className="absolute z-[5] overflow-hidden bg-[#DCE6E3]"
-          style={{ left: "69.26%", top: "15.93%", width: "18.75%", height: "71.33%", borderRadius: "1.27cqw" }}
+          style={{ left: "73%", top: "calc(50% - 10.47cqw)", width: "22%", height: "28.5cqw", borderRadius: "1.27cqw" }}
         >
-          <Image src="banner-after.jpeg" alt="Patient chest after gynecomastia surgery" fill className="object-cover" />
+          <Image
+            src="/banner-after.jpeg"
+            alt="Patient chest after gynecomastia surgery"
+            fill
+            priority
+            sizes="(min-width: 1024px) 22vw, 50vw"
+            className="object-cover"
+          />
         </div>
 
         {/* ---------- arrow circle (center 1307,357, 70px) ---------- */}
         <span
           className="absolute z-10 flex aspect-square items-center justify-center rounded-full bg-white shadow-md"
-          style={{ left: "67.19%", top: "44.6%", width: "3.7%" }}
+          style={{ left: "70.75%", top: "calc(50% + 0.93cqw)", width: "3.7%" }}
         >
           <ChevronRight style={{ width: "50%", height: "50%", color: GREEN }} strokeWidth={3} />
         </span>
@@ -392,10 +430,10 @@ export default function GynecomastiaBanner() {
         <div
           className="absolute z-10 flex flex-col justify-center bg-white shadow-lg"
           style={{
-            left: "76.28%",
-            top: "67.45%",
+            left: "78.3%",
+            top: "calc(50% + 6.53cqw)",
             width: "16.69%",
-            height: "23.41%",
+            height: "8.93cqw",
             borderRadius: "1.06cqw",
             padding: "0 1.3cqw",
             gap: "0.85cqw",
