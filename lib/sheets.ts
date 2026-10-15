@@ -26,8 +26,13 @@ export interface SheetLead {
   medium?: string | null
   campaign?: string | null
   pageUrl?: string | null
-  /** Which form this came from — see lib/forms.ts. Doubles as the sheet tab. */
+  /** Which form this came from — see lib/forms.ts. Doubles as the sheet tab
+   *  by default. */
   formName?: string | null
+  /** Overrides which tab the row lands in, for the one form whose sheet tab
+   *  is not the same string as its `formName` — see CIRCUMCISION_LP_* in
+   *  lib/forms.ts. Every other caller omits this and keeps the default. */
+  sheetTab?: string | null
 }
 
 export interface SheetFeedback {
@@ -89,7 +94,10 @@ export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
     formType: "lead",
     // Each form has its own tab. Unnamed submissions keep landing in the piles
     // tab, which is where every lead went before there was a second form.
-    sheetTab: lead.formName || LEADS_TAB,
+    // `sheetTab` wins when a caller sends one explicitly (today, only the
+    // /circumcisions form does, because its tab name differs from its
+    // formName); every other caller falls through to the old default.
+    sheetTab: lead.sheetTab || lead.formName || LEADS_TAB,
     formName: lead.formName || LEADS_TAB,
     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
     name: lead.name,

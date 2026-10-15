@@ -18,8 +18,23 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, email, address, area, duration, callDate, callTime, branch, source, medium, campaign, pageUrl, formName } =
-      body
+    const {
+      name,
+      phone,
+      email,
+      address,
+      area,
+      duration,
+      callDate,
+      callTime,
+      branch,
+      source,
+      medium,
+      campaign,
+      pageUrl,
+      formName,
+      sheetTab,
+    } = body
 
     if (!name || !phone) {
       return NextResponse.json({ error: 'Name and phone are required' }, { status: 400 })
@@ -43,6 +58,10 @@ export async function POST(request: NextRequest) {
       // FormName and the Apps Script routes it to the matching tab; left unset
       // both fall back to the piles form, which is where every lead used to go.
       formName,
+      // Only set when a form's sheet tab isn't the same string as its
+      // formName — see CIRCUMCISION_LP_* in lib/forms.ts. sendToGoogleSheet
+      // falls back to formName when this is absent.
+      sheetTab,
     }
 
     // Deliver to TeleCRM + Google Sheet in parallel; independent best-effort.

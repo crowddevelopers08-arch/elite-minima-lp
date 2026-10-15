@@ -20,13 +20,19 @@
    (`suggestions` / a "feedback" source) and otherwise falls back to Leads, so a
    hand-rolled or legacy POST is never silently dropped.
 
-   There are four lead forms, each with its own tab, chosen by `sheetTab`:
+   There are five lead forms, each with its own tab, chosen by `sheetTab`:
      "Elite Minima Piles Leads"         — the piles landing page at /piles
      "Elite Minima General Leads"       — the general page at /
      "Elite Minima Gynecomastia Leads"  — the page at /gynecomastia
      "Elite Minima Circumcision Leads"  — the page at /circumcision
+     "circumcision-lp-leads"            — the newer page at /circumcisions
    The names come from lib/forms.ts; an unrecognised one falls back to the piles
-   tab. All four tabs share one column layout.
+   tab. All five tabs share one column layout.
+
+   ⚠️ /circumcisions is the one form whose sheet tab is NOT the same string as
+   its TeleCRM FormName — lib/sheets.ts sends `sheetTab` and `formName`
+   separately for it ("circumcision-lp-leads" and "circumcision-leads"). Every
+   other form still sends one string that does both jobs.
 
    NOTE: the booking forms collect name, phone, email, concern and a preferred
    callback date + time (separate native pickers). Address and Duration are kept
@@ -176,6 +182,11 @@ var LEADS_TAB         = 'Elite Minima Piles Leads';
 var GENERAL_LEADS_TAB = 'Elite Minima General Leads';
 var GYN_LEADS_TAB     = 'Elite Minima Gynecomastia Leads';
 var CIRC_LEADS_TAB    = 'Elite Minima Circumcision Leads';
+// /circumcisions (the newer page) — its own tab, separate from CIRC_LEADS_TAB
+// above so the two pages' leads never mix. Lowercase/hyphenated because that
+// is the literal value CIRCUMCISION_LP_SHEET_TAB holds in lib/forms.ts, not a
+// display-style name like the other tabs — matching here is what matters.
+var CIRC_LP_LEADS_TAB = 'circumcision-lp-leads';
 var FEEDBACK_TAB      = 'Elite Minima Feedback';
 
 // One tab per lead form. The names must match lib/forms.ts, which is what the
@@ -189,7 +200,7 @@ var FEEDBACK_TAB      = 'Elite Minima Feedback';
 // here is the only edit a new form needs. Re-deploy afterwards: saving the code
 // alone does not update the live /exec URL, and until it does the new form's
 // rows keep landing in the piles tab.
-var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB, GYN_LEADS_TAB, CIRC_LEADS_TAB];
+var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB, GYN_LEADS_TAB, CIRC_LEADS_TAB, CIRC_LP_LEADS_TAB];
 
 var LEADS_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Concern',
                      'Preferred Date', 'Preferred Time', 'Address', 'Duration',
@@ -473,6 +484,30 @@ function testCircumcisionLead() {
   });
 }
 
+function testCircumcisionLpLead() {
+  // The newer /circumcisions form. Its formName and sheetTab are deliberately
+  // two different strings — see CIRCUMCISION_LP_* in lib/forms.ts — so this
+  // mock sends both that way, the same as the live site does.
+  _mockPost({
+    formType: 'lead',
+    sheetTab: CIRC_LP_LEADS_TAB,
+    formName: 'circumcision-leads',
+    name: 'Circumcision LP Test',
+    phone: '9789012345',
+    email: 'circumcision-lp@example.com',
+    area: 'Pain',
+    callDate: '2026-08-17',
+    callTime: '2:00 PM - 3:00 PM',
+    address: 'Koyambedu',
+    duration: '',
+    branch: 'Elite Minima Clinic — Circumcision',
+    source: 'circumcision-form',
+    medium: '',
+    campaign: '',
+    pageUrl: 'https://eliteminima.in/circumcisions'
+  });
+}
+
 function testFeedback() {
   _mockPost({
     formType: 'feedback',
@@ -503,6 +538,7 @@ function testAll() {
   testGeneralLead();
   testGynLead();
   testCircumcisionLead();
+  testCircumcisionLpLead();
   testFeedback();
   testFeedbackWithoutFormType();
   listSheets();

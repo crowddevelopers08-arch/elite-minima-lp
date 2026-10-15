@@ -1,94 +1,33 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Lock } from "lucide-react"
 import { track } from "../track"
-import { CIRCUMCISION_LEADS_FORM } from "@/lib/forms"
+import { CIRCUMCISION_LP_LEADS_FORM, CIRCUMCISION_LP_SHEET_TAB, CIRCUMCISION_LP_SOURCE } from "@/lib/forms"
 // CIRC_PHONES is still needed: it names the numbers to ring in the failure
 // alert, which is the one place the form does still have to give them.
 import { CIRCUMCISION_BRANCH, CIRC_PHONES, FORM_CONCERNS } from "./content"
 
 const LEAD_ENDPOINT = "/api/leads"
 
-/* ── Callback window (clinic time, IST) ───────────────────────────────────
-   Slots are minutes-since-midnight so "is this one in the past?" is a number
-   comparison rather than string wrangling. Same window and the same hourly
-   step as the piles, general and gynecomastia forms — one clinic, one phone
-   room, so a visitor should not be offered a different set of times depending
-   on which page they landed on.
-
-   This replaces the three broad windows the content deck asked for
-   (9 AM–12 PM / 12 PM–3 PM / 3 PM–6 PM): those ran outside the hours the team
-   actually calls back on, and gave no way to drop a slot that had already
-   passed. */
-const OPEN_MIN = 10 * 60 // 10:00 AM — first bookable slot
-const CLOSE_MIN = 19 * 60 // 7:00 PM — end of the last slot
-const STEP_MIN = 60
-
-function toLabel(mins: number) {
-  const h = Math.floor(mins / 60)
-  return `${h % 12 || 12}:${String(mins % 60).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`
-}
-
-const SLOTS: { mins: number; label: string }[] = []
-for (let m = OPEN_MIN; m <= CLOSE_MIN - STEP_MIN; m += STEP_MIN) {
-  SLOTS.push({ mins: m, label: `${toLabel(m)} - ${toLabel(m + STEP_MIN)}` })
-}
-
-/** "Now" in the clinic's timezone, wherever the visitor happens to be. */
-function istNow() {
-  const d = new Date()
-  const ist = new Date(d.getTime() + d.getTimezoneOffset() * 60_000 + 5.5 * 3_600_000)
-  return {
-    minutes: ist.getHours() * 60 + ist.getMinutes(),
-    date: `${ist.getFullYear()}-${String(ist.getMonth() + 1).padStart(2, "0")}-${String(ist.getDate()).padStart(2, "0")}`,
-  }
-}
-
 /**
  * The booking form — section 01's right-hand column.
  *
- * The deck's six fields — name, phone, email, address, concern and a call-time
- * preference — plus a date, so the callback can actually be scheduled. That
- * pairing is what the piles, general and gynecomastia forms all ask for, and a
- * time with no date is not a slot the phone room can hold.
+ * Five fields: name, phone, email, address and concern. No preferred call
+ * date/time picker — removed on request, so the team calls back without the
+ * visitor having to pin a slot first.
  *
  * Fields are underlines rather than boxes — the gynecomastia treatment, kept,
  * because a boxed input would drag the page back toward `.elite`.
  *
- * Validation is the browser's (`required`, `pattern`, `min`) and submit is
- * gated on `checkValidity()`, so a malformed number never reaches the API. The
- * hidden attribution inputs are filled on mount, which is what makes a lead
+ * Validation is the browser's (`required`, `pattern`) and submit is gated on
+ * `checkValidity()`, so a malformed number never reaches the API. The hidden
+ * attribution inputs are filled on mount, which is what makes a lead
  * traceable back to the ad that produced it.
  */
 export default function CircForm() {
   const formRef = useRef<HTMLFormElement>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [today, setToday] = useState("") // IST date, also the date input's min
-  const [nowMins, setNowMins] = useState(0)
-  const [callDate, setCallDate] = useState("")
-  const [callTime, setCallTime] = useState("")
-
-  useEffect(() => {
-    const { minutes, date } = istNow()
-    setNowMins(minutes)
-    setToday(date)
-  }, [])
-
-  /* Only today's remaining slots are restricted; any later date opens them all.
-     `today` is "" until the effect above runs, so the server render and the
-     first client render agree on the full list and there is no hydration
-     mismatch — the past slots drop out a tick later. */
-  const open = useMemo(() => {
-    const isToday = callDate !== "" && callDate === today
-    return SLOTS.filter((s) => !isToday || s.mins > nowMins)
-  }, [callDate, today, nowMins])
-
-  // Keep the selection reachable: a slot that has just fallen into the past —
-  // or that belongs to a date the visitor moved off — must not stay selected.
-  useEffect(() => {
-    if (callTime && !open.some((s) => s.label === callTime)) setCallTime("")
-  }, [open, callTime])
 
   // Fill the attribution fields once the URL is readable on the client.
   useEffect(() => {
@@ -123,11 +62,12 @@ export default function CircForm() {
       email: raw.email,
       address: raw.address,
       area: raw.concern,
-      callDate: raw.callDate, // ISO yyyy-mm-dd, so the sheet sorts correctly
-      callTime: raw.callTime, // 12-hour range, e.g. "3:00 PM - 4:00 PM"
       branch: CIRCUMCISION_BRANCH,
-      formName: CIRCUMCISION_LEADS_FORM,
-      source: raw.utm_source || "direct",
+      formName: CIRCUMCISION_LP_LEADS_FORM,
+      // This page's own sheet tab — distinct from its formName, which is why
+      // it has to be sent separately. See CIRCUMCISION_LP_* in lib/forms.ts.
+      sheetTab: CIRCUMCISION_LP_SHEET_TAB,
+      source: raw.utm_source || CIRCUMCISION_LP_SOURCE,
       medium: raw.utm_medium || "",
       campaign: raw.utm_campaign || "",
       pageUrl: raw.page_url || window.location.href,
@@ -182,21 +122,27 @@ export default function CircForm() {
           />
         </Field>
 
-        <Field label="Email" htmlFor="circ-email">
-          <input id="circ-email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" className="c-field" />
-        </Field>
+        {/* Email and Address always sit in two columns, independent of the
+            @container breakpoint above — Name/Phone and Concern still follow
+            it, but these two were asked to stay side by side regardless of
+            how narrow the form's own column gets. */}
+        <div className="col-span-2 grid grid-cols-2 gap-x-8 gap-y-2.5">
+          <Field label="Email" htmlFor="circ-email">
+            <input id="circ-email" name="email" type="email" required autoComplete="email" placeholder="you@example.com" className="c-field" />
+          </Field>
 
-        <Field label="Address" htmlFor="circ-address">
-          <input
-            id="circ-address"
-            name="address"
-            type="text"
-            required
-            autoComplete="street-address"
-            placeholder="Area / city"
-            className="c-field"
-          />
-        </Field>
+          <Field label="Address" htmlFor="circ-address">
+            <input
+              id="circ-address"
+              name="address"
+              type="text"
+              required
+              autoComplete="street-address"
+              placeholder="Area / city"
+              className="c-field"
+            />
+          </Field>
+        </div>
 
         <Field label="Concern" htmlFor="circ-concern" full>
           <select id="circ-concern" name="concern" required defaultValue="" className="c-field c-select">
@@ -208,40 +154,7 @@ export default function CircForm() {
             ))}
           </select>
         </Field>
-
-        <Field label="Preferred Call Date" htmlFor="circ-date">
-          <input
-            id="circ-date"
-            name="callDate"
-            type="date"
-            required
-            min={today}
-            value={callDate}
-            onChange={(e) => setCallDate(e.target.value)}
-            className="c-field"
-          />
-        </Field>
-
-        <Field label="Preferred Call Time (IST)" htmlFor="circ-time">
-          <select
-            id="circ-time"
-            name="callTime"
-            required
-            value={callTime}
-            onChange={(e) => setCallTime(e.target.value)}
-            className="c-field c-select"
-          >
-            <option value="" disabled>
-              {open.length ? "Select a slot" : "No slots left today"}
-            </option>
-            {open.map((s) => (
-              <option key={s.label}>{s.label}</option>
-            ))}
-          </select>
-        </Field>
       </div>
-
-      <p className="mt-2 text-[0.72rem] text-[var(--c-dim)]">Callbacks run 10:00 AM – 7:00 PM, clinic time.</p>
 
       <input type="hidden" name="utm_source" />
       <input type="hidden" name="utm_medium" />

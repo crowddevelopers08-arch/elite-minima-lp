@@ -135,7 +135,7 @@ export default function CircHeros() {
               when the two go side by side. */}
           <div
             id="book"
-            className="min-w-0 border-t border-[var(--c-line)] bg-[var(--c-surface)] px-7 py-7 sm:px-10 sm:py-8 lg:border-l lg:border-t-0 lg:px-10 lg:py-10"
+            className="flex min-w-0 flex-col justify-center border-t border-[var(--c-line)] bg-[var(--c-surface)] px-7 py-7 sm:px-10 sm:py-8 lg:border-l lg:border-t-0 lg:px-10 lg:py-10"
           >
             <h2 className="text-[1.35rem] sm:text-[1.5rem]">{BOOKING.title}</h2>
             <p className="mt-2 max-w-[42ch] text-[0.9rem] leading-relaxed text-[var(--c-dim)]">{BOOKING.lead}</p>
