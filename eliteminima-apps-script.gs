@@ -20,19 +20,22 @@
    (`suggestions` / a "feedback" source) and otherwise falls back to Leads, so a
    hand-rolled or legacy POST is never silently dropped.
 
-   There are five lead forms, each with its own tab, chosen by `sheetTab`:
+   There are six lead forms, each with its own tab, chosen by `sheetTab`:
      "Elite Minima Piles Leads"         — the piles landing page at /piles
      "Elite Minima General Leads"       — the general page at /
      "Elite Minima Gynecomastia Leads"  — the page at /gynecomastia
      "Elite Minima Circumcision Leads"  — the page at /circumcision
      "circumcision-lp-leads"            — the newer page at /circumcisions
+     "gynecomastias-consult"            — the newer page at /gynecomastias
    The names come from lib/forms.ts; an unrecognised one falls back to the piles
-   tab. All five tabs share one column layout.
+   tab. All six tabs share one column layout.
 
-   ⚠️ /circumcisions is the one form whose sheet tab is NOT the same string as
-   its TeleCRM FormName — lib/sheets.ts sends `sheetTab` and `formName`
-   separately for it ("circumcision-lp-leads" and "circumcision-leads"). Every
-   other form still sends one string that does both jobs.
+   ⚠️ /circumcisions and /gynecomastias are the two forms whose sheet tab is
+   NOT the same string as their TeleCRM FormName — lib/sheets.ts sends
+   `sheetTab` and `formName` separately for each of them ("circumcision-lp-
+   leads" / "circumcision-leads", and "gynecomastias-consult" /
+   "gynecomastias-lp-leads"). Every other form still sends one string that
+   does both jobs.
 
    NOTE: the booking forms collect name, phone, email, concern and a preferred
    callback date + time (separate native pickers). Address and Duration are kept
@@ -187,6 +190,10 @@ var CIRC_LEADS_TAB    = 'Elite Minima Circumcision Leads';
 // is the literal value CIRCUMCISION_LP_SHEET_TAB holds in lib/forms.ts, not a
 // display-style name like the other tabs — matching here is what matters.
 var CIRC_LP_LEADS_TAB = 'circumcision-lp-leads';
+// /gynecomastias (the newer page) — its own tab, same reasoning as
+// CIRC_LP_LEADS_TAB: separate from GYN_LEADS_TAB above so the two
+// gynecomastia pages' leads never mix.
+var GYN_LP_LEADS_TAB  = 'gynecomastias-consult';
 var FEEDBACK_TAB      = 'Elite Minima Feedback';
 
 // One tab per lead form. The names must match lib/forms.ts, which is what the
@@ -200,7 +207,7 @@ var FEEDBACK_TAB      = 'Elite Minima Feedback';
 // here is the only edit a new form needs. Re-deploy afterwards: saving the code
 // alone does not update the live /exec URL, and until it does the new form's
 // rows keep landing in the piles tab.
-var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB, GYN_LEADS_TAB, CIRC_LEADS_TAB, CIRC_LP_LEADS_TAB];
+var LEAD_TABS = [LEADS_TAB, GENERAL_LEADS_TAB, GYN_LEADS_TAB, CIRC_LEADS_TAB, CIRC_LP_LEADS_TAB, GYN_LP_LEADS_TAB];
 
 var LEADS_HEADERS = ['Timestamp', 'Name', 'Phone', 'Email', 'Concern',
                      'Preferred Date', 'Preferred Time', 'Address', 'Duration',
@@ -508,6 +515,30 @@ function testCircumcisionLpLead() {
   });
 }
 
+function testGynecomastiaLpLead() {
+  // The newer /gynecomastias form. Its formName and sheetTab are deliberately
+  // two different strings — see GYNECOMASTIA_LP_* in lib/forms.ts — so this
+  // mock sends both that way, the same as the live site does.
+  _mockPost({
+    formType: 'lead',
+    sheetTab: GYN_LP_LEADS_TAB,
+    formName: 'gynecomastias-lp-leads',
+    name: 'Gynecomastia LP Test',
+    phone: '9678901234',
+    email: 'gynecomastia-lp@example.com',
+    area: 'Puffy or enlarged chest',
+    callDate: '2026-08-18',
+    callTime: '1:00 PM - 2:00 PM',
+    address: 'Thirumangalam',
+    duration: '',
+    branch: 'Elite Minima Clinic — Gynecomastia',
+    source: 'gynecomastis-model',
+    medium: '',
+    campaign: '',
+    pageUrl: 'https://eliteminima.in/gynecomastias'
+  });
+}
+
 function testFeedback() {
   _mockPost({
     formType: 'feedback',
@@ -539,6 +570,7 @@ function testAll() {
   testGynLead();
   testCircumcisionLead();
   testCircumcisionLpLead();
+  testGynecomastiaLpLead();
   testFeedback();
   testFeedbackWithoutFormType();
   listSheets();

@@ -1,6 +1,7 @@
-import Header from "@/components/elite-minima/Header"
+// import Header from "@/components/elite-minima/Header"
 import Footer from "@/components/elite-minima/Footer"
 import ThankYouPanel from "@/components/elite-minima/ThankYouPanel"
+import Header from "@/components/elite-minima/circumcisions/Header"
 import { PHONES } from "@/components/elite-minima/config"
 
 /** Confirmation for the piles landing page at `/piles`. The home page has its
@@ -15,7 +16,7 @@ export default function ThankYouPage() {
       <Header />
 
       <main className="ribbon-wash relative flex flex-1 items-center justify-center overflow-hidden bg-[var(--e-canvas)] px-5 py-14 sm:py-20">
-        <ThankYouPanel phones={PHONES} homeHref="/piles" branch="Elite Minima Clinic" />
+        <ThankYouPanel phones={PHONES} homeHref="/circumcisions" branch="Elite Minima Clinic" />
       </main>
 
       <Footer />

@@ -84,7 +84,7 @@ export default function CircForm() {
       track("lead_submit", { branch: CIRCUMCISION_BRANCH, concern: raw.concern })
       // This page's own confirmation, not the piles one — see
       // app/circumcision/thank-you/page.tsx.
-      window.location.href = "/circumcision/thank-you"
+      window.location.href = "/circumcisions/thank-you"
     } catch {
       setSubmitting(false)
       // Both lines here: the submission has just failed, so this is the last

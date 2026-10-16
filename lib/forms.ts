@@ -42,3 +42,18 @@ export const CIRCUMCISION_LEADS_FORM = "Elite Minima Circumcision Leads"
 export const CIRCUMCISION_LP_LEADS_FORM = "circumcision-leads"
 export const CIRCUMCISION_LP_SHEET_TAB = "circumcision-lp-leads"
 export const CIRCUMCISION_LP_SOURCE = "circumcision-form"
+
+/** The newer gynecomastia landing page form (/gynecomastias) — same reasoning
+    as CIRCUMCISION_LP_* above: a separate page from /gynecomastia, so it gets
+    its own identity rather than sharing GYNECOMASTIA_LEADS_FORM and mixing
+    the two pages' leads together. Three different strings again:
+      - GYNECOMASTIA_LP_LEADS_FORM — TeleCRM's FormName
+      - GYNECOMASTIA_LP_SHEET_TAB  — the Google Sheet tab
+      - GYNECOMASTIA_LP_SOURCE     — the Lead_Source fallback for untracked
+        (no utm_source) traffic to this page
+    ⚠️ GYNECOMASTIA_LP_SHEET_TAB must also be added to LEAD_TABS in
+    eliteminima-apps-script.gs (done), and that script re-deployed, or its
+    rows fall back to the piles tab. */
+export const GYNECOMASTIA_LP_LEADS_FORM = "gynecomastias-lp-leads"
+export const GYNECOMASTIA_LP_SHEET_TAB = "gynecomastias-consult"
+export const GYNECOMASTIA_LP_SOURCE = "gynecomastis-model"
